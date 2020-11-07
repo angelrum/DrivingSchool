@@ -3,6 +3,7 @@ package ru.project.drivingschool.repository;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,11 +16,21 @@ public abstract class AbstractRepository <T, N extends Number> {
         this.repository = repository;
     }
 
-    public List<T> getAll() {
-        return repository.findAll(Sort.by("created_on"));
+    List<T> getAll() {
+        return repository.findAll(Sort.by("createdOn"));
     }
 
-    public T getOne(N id) {
+    public T get(N id) {
         return repository.getOne(id);
+    }
+
+    @Transactional
+    public void delete(N id) {
+        repository.deleteById(id);
+    }
+
+    @Transactional
+    public T save(T t) {
+        return repository.save(t);
     }
 }

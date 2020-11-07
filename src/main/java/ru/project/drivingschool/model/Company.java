@@ -3,6 +3,7 @@ package ru.project.drivingschool.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.project.drivingschool.util.DateTimeUtil;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "companys")
 @Getter @Setter
 @NoArgsConstructor
+@ToString
 public class Company implements HasId {
 
     @Id
