@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS schools;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS employees;
 DROP TABLE IF EXISTS employee_roles;
+DROP TABLE IF EXISTS employees;
 DROP TABLE IF EXISTS companys;
 DROP SEQUENCE IF EXISTS GLOBAL_SEQ;
 DROP SEQUENCE IF EXISTS REGISTER_SEQ;
@@ -21,6 +21,7 @@ CREATE TABLE companys
     phone       VARCHAR(20)                     NOT NULL,
     email       VARCHAR(30)                     NULL,
     enabled     BOOLEAN         DEFAULT TRUE    NOT NULL,
+    created_on  TIMESTAMP       DEFAULT now()   NOT NULL,
 
     CONSTRAINT company_idx UNIQUE (name)
 );

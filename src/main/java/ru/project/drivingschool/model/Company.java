@@ -3,9 +3,12 @@ package ru.project.drivingschool.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import ru.project.drivingschool.util.DateTimeUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "companys")
@@ -42,7 +45,11 @@ public class Company implements HasId {
     @Column(name = "email")
     protected String email;
 
-    public Company(Long id, @NotBlank String name, Country country, String city, String street, String home, String postalCode, @NotBlank String phone, String email) {
+    @Column(name = "created_on")
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
+    protected LocalDateTime createdOn;
+
+    public Company(Long id, @NotBlank String name, Country country, String city, String street, String home, String postalCode, @NotBlank String phone, String email, LocalDateTime createdOn) {
         this.id = id;
         this.name = name;
         this.country = country;
@@ -52,5 +59,6 @@ public class Company implements HasId {
         this.postalCode = postalCode;
         this.phone = phone;
         this.email = email;
+        this.createdOn = createdOn;
     }
 }
