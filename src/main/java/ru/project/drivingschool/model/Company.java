@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.project.drivingschool.util.DateTimeUtil;
 
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 public class Company implements HasId {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @Column(name = "name")
@@ -47,8 +49,9 @@ public class Company implements HasId {
     @Column(name = "email")
     protected String email;
 
-    @Column(name = "created_on")
+    @Column(name = "created_on", updatable = false)
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
+    @CreationTimestamp
     protected LocalDateTime createdOn;
 
     public Company(Long id, @NotBlank String name, Country country, String city, String street, String home, String postalCode, @NotBlank String phone, String email, LocalDateTime createdOn) {
@@ -62,5 +65,9 @@ public class Company implements HasId {
         this.phone = phone;
         this.email = email;
         this.createdOn = createdOn;
+    }
+
+    public Company(Company c) {
+        this(c.id, c.name, c.country, c.city, c.street, c.home, c.postalCode, c.phone, c.email, c.createdOn);
     }
 }

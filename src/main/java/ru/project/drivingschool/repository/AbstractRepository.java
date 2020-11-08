@@ -1,18 +1,19 @@
 package ru.project.drivingschool.repository;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
+import ru.project.drivingschool.model.HasId;
+import ru.project.drivingschool.repository.jpa.JpaKeyRepository;
 
 import java.util.List;
 
 @NoRepositoryBean
-public abstract class AbstractRepository <T, N extends Number> {
+public abstract class AbstractRepository <T extends HasId> {
 
-    private JpaRepository<T, N> repository;
+    private JpaKeyRepository<T> repository;
 
-    public AbstractRepository(JpaRepository<T, N> repository) {
+    public AbstractRepository(JpaKeyRepository<T> repository) {
         this.repository = repository;
     }
 
@@ -20,17 +21,20 @@ public abstract class AbstractRepository <T, N extends Number> {
         return repository.findAll(Sort.by("createdOn"));
     }
 
-    public T get(N id) {
-        return repository.getOne(id);
+    public T get(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
     @Transactional
-    public void delete(N id) {
-        repository.deleteById(id);
+    public boolean delete(Long id) {
+        return repository.delete(id)!=0;
     }
 
     @Transactional
     public T save(T t) {
+        if (!t.isNew() && !repository.existsById(t.id()))
+            return null;
+
         return repository.save(t);
     }
 }

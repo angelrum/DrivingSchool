@@ -11,7 +11,7 @@ import ru.project.drivingschool.repository.jpa.JpaNamedRepository;
 import java.time.LocalDateTime;
 
 @NoRepositoryBean
-public abstract class AbstractNamedHistoryRepository <T extends AbstractNamedEntity> extends AbstractRepository<T, Long> {
+public abstract class AbstractNamedHistoryRepository <T extends AbstractNamedEntity> extends AbstractRepository<T> {
 
     private JpaNamedRepository<T> repository;
 

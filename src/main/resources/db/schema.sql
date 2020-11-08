@@ -38,6 +38,7 @@ CREATE TABLE employees
     middlename  VARCHAR(30)                     NULL,
     email       VARCHAR(30)                     NULL,
     enabled     BOOLEAN         DEFAULT TRUE    NOT NULL,
+    score       INTEGER,
     created_on  TIMESTAMP       DEFAULT now()   NOT NULL,
     created_by  BIGINT                          NULL,
     changed_on  TIMESTAMP                       NULL,

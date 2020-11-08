@@ -5,7 +5,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import ru.project.drivingschool.model.AbstractNamedEntity;
 
 @NoRepositoryBean
-public interface JpaNamedRepository <T extends AbstractNamedEntity> extends JpaRepository<T, Long> {
+public interface JpaNamedRepository <T extends AbstractNamedEntity> extends JpaKeyRepository<T> {
 
     T getFirstByPhone(String phone);
 
