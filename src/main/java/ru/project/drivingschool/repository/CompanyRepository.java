@@ -7,7 +7,7 @@ import ru.project.drivingschool.repository.jpa.JpaCompanyRepository;
 
 @Repository
 @Transactional(readOnly = true)
-public class CompanyRepository extends AbstractRepository<Company, Integer> {
+public class CompanyRepository extends AbstractRepository<Company, Long> {
 
     public CompanyRepository(JpaCompanyRepository repository) {
         super(repository);

@@ -16,7 +16,7 @@ public abstract class AbstractRepository <T, N extends Number> {
         this.repository = repository;
     }
 
-    List<T> getAll() {
+    public List<T> getAll() {
         return repository.findAll(Sort.by("createdOn"));
     }
 

@@ -8,6 +8,8 @@ public interface HasId {
 
     Long getId();
 
+    void setId(Long id);
+
     default boolean isNew() {
         return Objects.isNull(getId());
     }
