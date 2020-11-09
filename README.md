@@ -11,3 +11,6 @@ c) Пароль: password
 Полезная информация
 1. Spring Boot DevTools настройка: https://habr.com/ru/post/479382/
 2. Функции Lombok: https://projectlombok.org/features/all
+3. В случае, если не установлен Git, смотреть ссылку https://gist.github.com/flumono/6e6734334bd4e0d8187d32433430278f
+4. Нужно обновить  java
+
