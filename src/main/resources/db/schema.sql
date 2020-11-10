@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS school_employees;
+DROP TABLE IF EXISTS school_users;
 DROP TABLE IF EXISTS schools;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS employee_roles;
@@ -68,7 +70,7 @@ CREATE TABLE schools
     name        VARCHAR(120)                    NOT NULL,
     city        VARCHAR(30)                     NULL,
     street      VARCHAR(120)                    NULL,
-    home        VARCHAR(10)                     NULL,
+    home        VARCHAR(30)                     NULL,
     postal_code VARCHAR(10)                     NULL,
     phone       VARCHAR(20)                     NULL,
     email       VARCHAR(30)                     NULL,
@@ -83,6 +85,18 @@ CREATE TABLE schools
     FOREIGN KEY (changed_by) REFERENCES employees (id),
 
     CONSTRAINT school_idx UNIQUE (company_id, name)
+);
+
+CREATE TABLE school_employees
+(
+    school_id   INTEGER                         NOT NULL,
+    employee_id BIGINT                          NOT NULL,
+    active      BOOLEAN         DEFAULT TRUE    NOT NULL,
+
+    FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE,
+    FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE,
+
+    CONSTRAINT school_employee_idx UNIQUE (school_id, employee_id)
 );
 
 CREATE TABLE users
@@ -105,4 +119,16 @@ CREATE TABLE users
     FOREIGN KEY (changed_by) REFERENCES employees (id),
 
     CONSTRAINT user_idx UNIQUE (phone)
+);
+
+CREATE TABLE school_users
+(
+    school_id   INTEGER                         NOT NULL,
+    user_id     BIGINT                          NOT NULL,
+    active      BOOLEAN         DEFAULT TRUE    NOT NULL,
+
+    FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id)   REFERENCES users (id)   ON DELETE CASCADE,
+
+    CONSTRAINT school_user_idx UNIQUE (school_id, user_id)
 )

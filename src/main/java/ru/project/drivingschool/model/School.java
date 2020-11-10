@@ -4,6 +4,7 @@ package ru.project.drivingschool.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,13 +12,13 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "schools")
-@Getter @Setter
+@Getter @Setter @ToString
 @NoArgsConstructor
 public class School extends AbstractHistoryEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
-    protected Company company;
+    @ToString.Exclude protected Company company;
 
     @Column(name = "name")
     @NotBlank

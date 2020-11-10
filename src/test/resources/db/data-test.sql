@@ -19,3 +19,10 @@ INSERT INTO employee_roles (employee_id, role)
 VALUES (1000, 'ADMIN'),
        (1001, 'MANAGER');
 
+INSERT INTO schools (company_id, name, city, street, home, postal_code, phone, email, created_by)
+VALUES (10000, 'Школа N1', 'Москва', 'ул.Первого мая', 'д.160, 5 этаж', '111100', '8(495)111-111-11', null, 1000),
+       (10000, 'Школа N2', 'Москва', 'ул.Нижняя Красносельская', 'д.40, 5 этаж', '111100', '8(495)111-111-12', null, 1000);
+
+INSERT INTO school_employees (school_id, employee_id)
+VALUES (10002, 1000),
+       (10003, 1000)
