@@ -19,9 +19,9 @@ INSERT INTO employee_roles (employee_id, role)
 VALUES (1000, 'ADMIN'),
        (1001, 'MANAGER');
 
-INSERT INTO users (phone, password, avatar, firstname, lastname, middlename, email, enabled, created_on, created_by, changed_on, changed_by)
-VALUES ('8(911)111-11-11', 'test_pass', null, 'Иван', 'Иванов','Ивановоич', 'ivan@ivan.ru',1, '2020-11-11 20:00:00.000','2020-11-11 20:00:00.000','2020-11-11 20:00:00.000', null)
-VALUES ('8(911)111-11-12', 'test_pass1', null, 'Сергей', 'Иванов', 'Ивановоич', 'serg@ivan.ru',1, '2020-11-11 20:00:00.000','2020-11-11 20:00:00.000','2020-11-11 20:00:00.000',null)
-VALUES ('8(911)111-11-13', 'test_pass1', null, 'Евлампий', 'Блябляс', 'Цырендоржиевич', 'qwe@ivan.ru',1, '2020-11-11 20:00:00.000','2020-11-11 20:00:00.000','2020-11-11 20:00:00.000',null);
+INSERT INTO users (phone, password, avatar, firstname, lastname, middlename, email, enabled)
+VALUES ('8(911)111-11-11', 'test_pass', null, 'Иван', 'Иванов','Ивановоич', 'ivan@ivan.ru',1)
+VALUES ('8(911)111-11-12', 'test_pass1', null, 'Сергей', 'Иванов', 'Ивановоич', 'serg@ivan.ru',1)
+VALUES ('8(911)111-11-13', 'test_pass1', null, 'Евлампий', 'Блябляс', 'Цырендоржиевич', 'qwe@ivan.ru',1);
 
 
