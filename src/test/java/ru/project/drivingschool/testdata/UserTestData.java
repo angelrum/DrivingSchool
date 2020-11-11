@@ -21,7 +21,7 @@ public class UserTestData {
             true, null, null,
             null, null);
     public static User User2 = new User(USER_ID2, "8(911)111-11-12", null,
-            null, "Сергей", "Иванов", "Иванович", "sergey@ivan.ru",
+            null, "Сергей", "Иванов", "Иванович", "serg@ivan.ru",
             true, null, null,
             null, null);
 
