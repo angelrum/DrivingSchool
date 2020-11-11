@@ -31,14 +31,14 @@ public class UserTestData {
 
     public static List<User> Users = List.of(User1, User2, User3);
 
-    public static User getNew() {
+    public static User getNewUser() {
         User userNew = new User(User1);
         userNew.setId(null);
         userNew.setFirstname("Новый пользователь");
         return userNew;
     }
 
-    public static User getUpdate() {
+    public static User getUpdateUser() {
         User upd = new User(User2);
         upd.setFirstname("Обновленный пользователь");
         return upd;

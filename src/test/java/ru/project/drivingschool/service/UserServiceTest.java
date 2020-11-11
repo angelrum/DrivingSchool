@@ -36,13 +36,13 @@ public class UserServiceTest {
 
     @Test
     void get() {
-        User user = service.get(User1);
+        User user = service.get(USER_ID1);
         USER_TEST_MATCHER.assertMatch(User1, user);
     }
 
     @Test
     void create() {
-        User user = getNew();
+        User user = getNewUser();
         service.create(user);
         List<User> list = new ArrayList<>(Users);
         list.add(user);
@@ -51,7 +51,7 @@ public class UserServiceTest {
 
     @Test
     void update() {
-        User user = getUpdate();
+        User user = getUpdateUser();
         User upd = service.update(user);
         USER_TEST_MATCHER.assertMatch(upd, user);
     }
@@ -59,7 +59,7 @@ public class UserServiceTest {
     @Test
     void delete() {
         USER_TEST_MATCHER.assertMatch(service.getAll(), Users);
-        service.delete(User1);
+        service.delete(USER_ID1);
         USER_TEST_MATCHER.assertMatch(service.getAll(), List.of(User2));
     }
 
@@ -70,7 +70,7 @@ public class UserServiceTest {
 
     @Test
     void updateNotFoundException() {
-        User upd = getUpdate();
+        User upd = getUpdateUser();
         upd.setId(NOT_FOUND_ID);
         Assertions.assertThrows(NotFoundException.class, () -> service.update(upd));
     }
