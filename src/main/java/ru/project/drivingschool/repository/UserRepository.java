@@ -11,7 +11,7 @@ import ru.project.drivingschool.repository.jpa.JpaUserRepository;
 @Transactional(readOnly = true)
 public class UserRepository extends AbstractRepository<User> {
 
-    public UserRepository(JpaKeyRepository<User> repository) {
+    public UserRepository(JpaUserRepository repository) {
         super(repository);
     }
 
