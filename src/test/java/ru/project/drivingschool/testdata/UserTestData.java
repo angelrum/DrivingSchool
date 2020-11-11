@@ -11,9 +11,9 @@ public class UserTestData {
 
     public static final TestMatcher<User> USER_TEST_MATCHER = TestMatcher.usingFieldsComparator(User.class, "createdOn");
 
-    public static final long USER_ID1 = 10000;
-    public static final long USER_ID2 = 10001;
-    public static final long USER_ID3 = 10002;
+    public static final long USER_ID1 = 1000;
+    public static final long USER_ID2 = 1001;
+    public static final long USER_ID3 = 1002;
     public static final long NOT_FOUND_ID = 99999;
 
     public static User User1 = new User(USER_ID1, "8(911)111-11-11", "testpsw",
