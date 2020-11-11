@@ -16,16 +16,16 @@ public class UserTestData {
     public static final long USER_ID3 = 1002;
     public static final long NOT_FOUND_ID = 99999;
 
-    public static User User1 = new User(USER_ID1, "8(911)111-11-11", "testpsw",
-            "ne znayu", "Иван", "Иванов", "Иванович", "ivan@ivan.ru",
+    public static User User1 = new User(USER_ID1, "8(911)111-11-11", null,
+            null, "Иван", "Иванов", "Иванович", "ivan@ivan.ru",
             true, null, null,
             null, null);
-    public static User User2 = new User(USER_ID2, "8(911)111-11-12", "testpsw",
-            "ne znayu", "Сергей", "Иванов", "Иванович", "sergey@ivan.ru",
+    public static User User2 = new User(USER_ID2, "8(911)111-11-12", null,
+            null, "Сергей", "Иванов", "Иванович", "sergey@ivan.ru",
             true, null, null,
             null, null);
-    public static User User3 = new User(USER_ID3, "8(911)111-11-13", "testpsw",
-            "ne znayu", "Евлампий", "Блябляс", "Цырендоржиевич", "qwe@ivan.ru",
+    public static User User3 = new User(USER_ID3, "8(911)111-11-13", null,
+            null, "Евлампий", "Блябляс", "Цырендоржиевич", "qwe@ivan.ru",
             true, null, null,
             null, null);
 
