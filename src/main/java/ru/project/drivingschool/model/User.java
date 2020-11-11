@@ -20,4 +20,8 @@ public class User extends AbstractNamedEntity {
                 LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy) {
         super(id, phone, password, avatar, firstname, lastname, middlename, email, enabled, createdOn, createdBy, changedOn, changedBy);
     }
+
+    public User(User user1) {
+        super();
+    }
 }

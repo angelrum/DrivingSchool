@@ -3,6 +3,7 @@ package ru.project.drivingschool.testdata;
 import ru.project.drivingschool.TestMatcher;
 import ru.project.drivingschool.model.Company;
 import ru.project.drivingschool.model.Country;
+import ru.project.drivingschool.model.User;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class CompanyTestData {
         return companyNew;
     }
 
-    public static Company getUpdate() {
+    public static User getUpdate() {
         Company upd = new Company(COMPANY2);
         upd.setName("Обновленная компания");
         return upd;
