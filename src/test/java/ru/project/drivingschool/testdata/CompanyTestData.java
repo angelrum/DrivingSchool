@@ -32,7 +32,7 @@ public class CompanyTestData {
         return companyNew;
     }
 
-    public static User getUpdate() {
+    public static Company getUpdate() {
         Company upd = new Company(COMPANY2);
         upd.setName("Обновленная компания");
         return upd;

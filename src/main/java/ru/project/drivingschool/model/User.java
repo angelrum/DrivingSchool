@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class User extends AbstractNamedEntity {
 
@@ -22,6 +23,6 @@ public class User extends AbstractNamedEntity {
     }
 
     public User(User user1) {
-        super();
+        this(user1.id, user1.phone, user1.password, user1.avatar, user1.firstname, user1.lastname, user1.middlename, user1.email, user1.enabled, user1.createdOn, user1.createdBy, user1.changedOn, user1.changedBy);
     }
 }

@@ -34,13 +34,13 @@ public class UserTestData {
     public static User getNew() {
         User userNew = new User(User1);
         userNew.setId(null);
-        userNew.setName("Новый пользователь");
+        userNew.setFirstname("Новый пользователь");
         return userNew;
     }
 
     public static User getUpdate() {
         User upd = new User(User2);
-        upd.setName("Обновленный пользователь");
+        upd.setFirstname("Обновленный пользователь");
         return upd;
     }
 
