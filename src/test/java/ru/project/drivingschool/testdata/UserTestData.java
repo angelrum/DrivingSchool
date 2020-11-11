@@ -13,7 +13,7 @@ public class UserTestData {
 
     public static final long USER_ID1 = 1000;
     public static final long USER_ID2 = 1001;
-    public static final long USER_ID3 = 1002;
+
     public static final long NOT_FOUND_ID = 99999;
 
     public static User User1 = new User(USER_ID1, "8(911)111-11-11", null,
@@ -24,12 +24,9 @@ public class UserTestData {
             null, "Сергей", "Иванов", "Иванович", "sergey@ivan.ru",
             true, null, null,
             null, null);
-    public static User User3 = new User(USER_ID3, "8(911)111-11-13", null,
-            null, "Евлампий", "Блябляс", "Цырендоржиевич", "qwe@ivan.ru",
-            true, null, null,
-            null, null);
 
-    public static List<User> Users = List.of(User1, User2, User3);
+
+    public static List<User> Users = List.of(User1, User2);
 
     public static User getNewUser() {
         User userNew = new User(User1);
