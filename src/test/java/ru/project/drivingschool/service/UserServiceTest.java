@@ -26,6 +26,7 @@ import static ru.project.drivingschool.testdata.UserTestData.*;
 @ExtendWith(TimingExtension.class)
 @Sql(scripts = "classpath:db/data-test.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class UserServiceTest {
+
     @Autowired
     protected UserService service;
 
@@ -74,6 +75,5 @@ public class UserServiceTest {
         upd.setId(NOT_FOUND_ID);
         Assertions.assertThrows(NotFoundException.class, () -> service.update(upd));
     }
-
 
 }

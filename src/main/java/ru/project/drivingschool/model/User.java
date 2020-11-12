@@ -12,9 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
-@ToString(callSuper = true)
+@Getter @Setter @ToString(callSuper = true)
 @NoArgsConstructor
 public class User extends AbstractNamedEntity {
 

@@ -3,6 +3,7 @@ package ru.project.drivingschool.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@Getter @Setter
+@Getter @Setter @ToString(callSuper = true)
 @NoArgsConstructor
 public abstract class AbstractNamedEntity extends AbstractHistoryEntity {
 
