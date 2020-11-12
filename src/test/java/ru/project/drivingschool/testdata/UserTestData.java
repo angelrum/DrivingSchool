@@ -11,8 +11,8 @@ public class UserTestData {
 
     public static final TestMatcher<User> USER_TEST_MATCHER = TestMatcher.usingFieldsComparator(User.class, "createdOn");
 
-    public static final long USER_ID1 = 1000;
-    public static final long USER_ID2 = 1001;
+    public static final long USER_ID1 = 1002;
+    public static final long USER_ID2 = 1003;
 
     public static final long NOT_FOUND_ID = 99999;
 
