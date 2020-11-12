@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import ru.project.drivingschool.TimingExtension;
+import static ru.project.drivingschool.testdata.EmployeeTestData.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,8 +21,12 @@ class EmployeeServiceTest {
 
     @Test
     void getAll() {
-        service.getAll().forEach(System.out::println);
+        EMPLOYEE_MATCHER.assertMatch(service.getAll(), EMPLOYEES);
+    }
 
+    @Test
+    void get() {
+        EMPLOYEE_MATCHER.assertMatch(service.get(EMPLOYEE_ID1), EMPLOYEE1);
     }
 
 }

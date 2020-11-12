@@ -9,9 +9,7 @@ import org.springframework.util.CollectionUtils;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "employees")
@@ -19,12 +17,14 @@ import java.util.Set;
 @NoArgsConstructor
 public class Employee extends AbstractNamedEntity {
 
+    public static final int DEF_SCORE = 5;
+
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     @ToString.Exclude protected Company company;
 
     @Column(name = "score")
-    protected Integer score;
+    protected Integer score = 5;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "employee_roles", joinColumns = @JoinColumn(name = "employee_id"))
@@ -45,9 +45,9 @@ public class Employee extends AbstractNamedEntity {
                     LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy, Set<School> schools, Collection<Role> roles) {
         super(id, phone, password, avatar, firstname, lastname, middlename, email, enabled, createdOn, createdBy, changedOn, changedBy);
         this.company = company;
-        this.score = score;
+        setScore(score);
         setRoles(roles);
-        this.schools = schools;
+        setSchools(schools);
     }
 
     public Employee(Long id, Company company, @NotBlank String phone, @NotBlank String password, String avatar,
@@ -63,5 +63,13 @@ public class Employee extends AbstractNamedEntity {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    }
+
+    public void setScore(Integer score) {
+        this.score = Objects.isNull(score) ? DEF_SCORE : score;
+    }
+
+    public void setSchools(Set<School> schools) {
+        this.schools = CollectionUtils.isEmpty(schools) ? new HashSet<>() : schools;
     }
 }
