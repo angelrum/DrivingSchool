@@ -19,8 +19,8 @@ INSERT INTO employee_roles (employee_id, role)
 VALUES (1000, 'ADMIN'),
        (1001, 'MANAGER');
 
-INSERT INTO users (phone, password, avatar, firstname, lastname, middlename, email, enabled)
-VALUES ('8(911)111-11-11', null, null, 'Иван', 'Иванов','Ивановоич', 'ivan@ivan.ru',true),
-       ('8(911)111-11-12', null, null, 'Сергей', 'Иванов', 'Ивановоич', 'serg@ivan.ru',true);
+INSERT INTO users (phone, password, firstname, lastname, middlename, email, enabled)
+VALUES ('8(911)111-11-11', '12345', 'Иван', 'Иванов','Ивановоич', 'ivan@ivan.ru',true),
+       ('8(911)111-11-12', '123456', 'Сергей', 'Иванов', 'Ивановоич', 'serg@ivan.ru',true);
 
 

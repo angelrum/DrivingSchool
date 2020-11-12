@@ -16,11 +16,11 @@ public class UserTestData {
 
     public static final long NOT_FOUND_ID = 99999;
 
-    public static User User1 = new User(USER_ID1, "8(911)111-11-11", null,
+    public static User User1 = new User(USER_ID1, "8(911)111-11-11", "12345",
             null, "Иван", "Иванов", "Иванович", "ivan@ivan.ru",
             true, null, null,
             null, null);
-    public static User User2 = new User(USER_ID2, "8(911)111-11-12", null,
+    public static User User2 = new User(USER_ID2, "8(911)111-11-12", "123456",
             null, "Сергей", "Иванов", "Иванович", "serg@ivan.ru",
             true, null, null,
             null, null);
