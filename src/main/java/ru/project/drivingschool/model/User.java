@@ -3,6 +3,7 @@ package ru.project.drivingschool.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Getter
 @Setter
+@ToString(callSuper = true)
 @NoArgsConstructor
 public class User extends AbstractNamedEntity {
 
