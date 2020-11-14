@@ -1,9 +1,6 @@
 package ru.project.drivingschool.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -13,7 +10,8 @@ import java.util.*;
 
 @Entity
 @Table(name = "employees")
-@Getter @Setter @ToString
+@Getter @Setter @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class Employee extends AbstractNamedEntity {
 

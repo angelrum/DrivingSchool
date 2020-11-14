@@ -47,8 +47,8 @@ CREATE TABLE employees
     changed_by  BIGINT                          NULL,
 
     FOREIGN KEY (company_id) REFERENCES companys (id) ON DELETE CASCADE,
-    FOREIGN KEY (created_by) REFERENCES employees (id),
-    FOREIGN KEY (changed_by) REFERENCES employees (id),
+--     FOREIGN KEY (created_by) REFERENCES employees (id),
+--     FOREIGN KEY (changed_by) REFERENCES employees (id),
 
     CONSTRAINT employee_phone_idx UNIQUE (company_id, phone)
 );
@@ -81,8 +81,8 @@ CREATE TABLE schools
     changed_by  BIGINT                          NULL,
 
     FOREIGN KEY (company_id) REFERENCES companys (id) ON DELETE CASCADE,
-    FOREIGN KEY (created_by) REFERENCES employees (id),
-    FOREIGN KEY (changed_by) REFERENCES employees (id),
+--     FOREIGN KEY (created_by) REFERENCES employees (id),
+--     FOREIGN KEY (changed_by) REFERENCES employees (id),
 
     CONSTRAINT school_idx UNIQUE (company_id, name)
 );
@@ -114,8 +114,8 @@ CREATE TABLE users
     changed_on  TIMESTAMP                       NULL,
     changed_by  BIGINT                          NULL,
 
-    FOREIGN KEY (created_by) REFERENCES employees (id),
-    FOREIGN KEY (changed_by) REFERENCES employees (id),
+--     FOREIGN KEY (created_by) REFERENCES employees (id),
+--     FOREIGN KEY (changed_by) REFERENCES employees (id),
 
     CONSTRAINT user_idx UNIQUE (phone)
 );

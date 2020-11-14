@@ -3,16 +3,18 @@ package ru.project.drivingschool.testdata;
 import ru.project.drivingschool.TestMatcher;
 import ru.project.drivingschool.model.Employee;
 import ru.project.drivingschool.model.Role;
+import ru.project.drivingschool.model.School;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static ru.project.drivingschool.testdata.CompanyTestData.*;
 import static ru.project.drivingschool.testdata.SchoolTestData.*;
 
 public class EmployeeTestData {
 
-    public static final TestMatcher<Employee> EMPLOYEE_MATCHER = TestMatcher.usingFieldsComparator(Employee.class, "createdOn", "changedOn","company", "schools", "roles");
+    public static final TestMatcher<Employee> EMPLOYEE_MATCHER =
+            //TestMatcher.usingClassComparator(Employee.class, Map.of(Comparator.comparing(Employee::id), Employee.class, Comparator.comparing(School::getId), School.class), "company", "createdOn", "changedOn", "createdBy", "school");
+            TestMatcher.usingFieldsComparator(Employee.class, "company", "createdOn", "changedOn", "createdBy", "schools");
 
     public static final long EMPLOYEE_ID1 = 1_000;
     public static final long EMPLOYEE_ID2 = 1_001;
