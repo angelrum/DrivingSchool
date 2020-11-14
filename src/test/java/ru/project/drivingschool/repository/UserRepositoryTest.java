@@ -14,4 +14,15 @@ public class UserRepositoryTest {
     void getAll() {
         repository.getAll().forEach(System.out::println);
     }
+
+    @Test
+    void get(){
+       repository.get((long) 1002);
+    }
+
+    @Test
+    void createNew(){
+
+    }
+
 }

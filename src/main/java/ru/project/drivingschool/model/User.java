@@ -22,7 +22,7 @@ public class User extends AbstractNamedEntity {
         super(id, phone, password, avatar, firstname, lastname, middlename, email, enabled, createdOn, createdBy, changedOn, changedBy);
     }
 
-    public User(User user1) {
-        this(user1.id, user1.phone, user1.password, user1.avatar, user1.firstname, user1.lastname, user1.middlename, user1.email, user1.enabled, user1.createdOn, user1.createdBy, user1.changedOn, user1.changedBy);
+    public User(User u) {
+        this(u.id, u.phone, u.password, u.avatar, u.firstname, u.lastname, u.middlename, u.email, u.enabled, u.createdOn, u.createdBy, u.changedOn, u.changedBy);
     }
 }
