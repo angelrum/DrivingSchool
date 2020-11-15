@@ -1,15 +1,13 @@
 package ru.project.drivingschool.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.project.drivingschool.util.DateTimeUtil;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @MappedSuperclass
 @Getter @Setter
@@ -26,7 +24,7 @@ public abstract class AbstractHistoryEntity implements HasId {
     @Column(name = "created_on", updatable = false)
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     @CreationTimestamp
-    protected LocalDateTime createdOn;
+    @ToString.Exclude protected LocalDateTime createdOn;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Employee.class)
     @JoinColumn(name = "created_by", referencedColumnName = "id", updatable = false)
@@ -34,10 +32,18 @@ public abstract class AbstractHistoryEntity implements HasId {
 
     @Column(name = "changed_on")
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
-    protected LocalDateTime changedOn;
+    @ToString.Exclude protected LocalDateTime changedOn;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Employee.class)
     @JoinColumn(name = "changed_by", referencedColumnName = "id")
     protected Employee changedBy;
 
+    @Override
+    public String toString() {
+        return "AbstractHistoryEntity{" +
+                "id=" + id +
+                ", createdBy=" + (Objects.isNull(createdBy) ? null : createdBy.id) +
+                ", changedBy=" + (Objects.isNull(changedBy) ? null : changedBy.id) +
+                '}';
+    }
 }
