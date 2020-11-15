@@ -16,10 +16,6 @@ import ru.project.drivingschool.util.exception.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.project.drivingschool.testdata.CompanyTestData.*;
-import static ru.project.drivingschool.testdata.CompanyTestData.COMPANY2;
-import static ru.project.drivingschool.testdata.CompanyTestData.NOT_FOUND_ID;
-import static ru.project.drivingschool.testdata.CompanyTestData.getUpdate;
 import static ru.project.drivingschool.testdata.UserTestData.*;
 
 @SpringBootTest
