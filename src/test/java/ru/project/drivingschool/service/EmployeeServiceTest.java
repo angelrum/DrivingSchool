@@ -19,7 +19,7 @@ class EmployeeServiceTest extends AbstractServiceTest<Employee> {
     private EmployeeTestData testData;
 
     @Autowired
-    public EmployeeServiceTest(EmployeeService service) {
+    EmployeeServiceTest(EmployeeService service) {
         super(service, new EmployeeTestData(), EMPLOYEE_MATCHER);
         this.service = service;
         this.testData = new EmployeeTestData();
