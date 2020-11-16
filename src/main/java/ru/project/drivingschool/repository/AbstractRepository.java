@@ -18,7 +18,7 @@ public abstract class AbstractRepository <T extends HasId> {
     }
 
     public List<T> getAll() {
-        return repository.findAll(Sort.by("createdOn"));
+        return repository.findAll(Sort.by("createdOn", "id"));
     }
 
     public T get(Long id) {

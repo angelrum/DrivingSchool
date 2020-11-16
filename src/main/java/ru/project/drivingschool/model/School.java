@@ -1,23 +1,22 @@
 package ru.project.drivingschool.model;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "schools")
-@Getter @Setter
+@Getter @Setter @ToString(callSuper = true)
 @NoArgsConstructor
 public class School extends AbstractHistoryEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
-    protected Company company;
+    @ToString.Exclude protected Company company;
 
     @Column(name = "name")
     @NotBlank
@@ -60,5 +59,26 @@ public class School extends AbstractHistoryEntity {
         this.phone = phone;
         this.email = email;
         this.enabled = enabled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof School)) return false;
+        School school = (School) o;
+        return enabled == school.enabled &&
+                Objects.equals(company, school.company) &&
+                name.equals(school.name) &&
+                city.equals(school.city) &&
+                street.equals(school.street) &&
+                home.equals(school.home) &&
+                Objects.equals(postalCode, school.postalCode) &&
+                Objects.equals(phone, school.phone) &&
+                Objects.equals(email, school.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(company, name, city, street, home, postalCode, phone, email, enabled);
     }
 }
