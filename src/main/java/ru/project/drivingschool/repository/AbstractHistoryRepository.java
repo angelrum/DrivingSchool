@@ -3,6 +3,7 @@ package ru.project.drivingschool.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import ru.project.drivingschool.model.AbstractNamedEntity;
 import ru.project.drivingschool.model.Employee;
 import ru.project.drivingschool.repository.jpa.JpaEmployeeRepository;
@@ -11,13 +12,13 @@ import ru.project.drivingschool.repository.jpa.JpaNamedRepository;
 import java.time.LocalDateTime;
 
 @NoRepositoryBean
-public abstract class AbstractNamedHistoryRepository <T extends AbstractNamedEntity> extends AbstractRepository<T> {
+public abstract class AbstractHistoryRepository<T extends AbstractNamedEntity> extends AbstractRepository<T> {
 
     private JpaNamedRepository<T> repository;
 
     private JpaEmployeeRepository employeeRepository;
 
-    public AbstractNamedHistoryRepository(JpaNamedRepository<T> repository, JpaEmployeeRepository employeeRepository) {
+    public AbstractHistoryRepository(JpaNamedRepository<T> repository, JpaEmployeeRepository employeeRepository) {
         super(repository);
         this.repository = repository;
         this.employeeRepository = employeeRepository;
@@ -38,7 +39,7 @@ public abstract class AbstractNamedHistoryRepository <T extends AbstractNamedEnt
     }
 
     public T getByPhone(String phone) {
-        return repository.getFirstByPhone(phone);
+        return StringUtils.hasText(phone) ? repository.getFirstByPhone(phone) : null;
     }
 
 }

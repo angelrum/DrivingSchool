@@ -2,15 +2,19 @@ package ru.project.drivingschool.model;
 
 
 import lombok.*;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "schools")
 @Getter @Setter @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class School extends AbstractHistoryEntity {
 
@@ -47,8 +51,23 @@ public class School extends AbstractHistoryEntity {
     @Column(name = "enabled")
     protected boolean enabled = true;
 
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = User.class)
+    @JoinTable(
+            name = "school_users",
+            joinColumns = @JoinColumn(name = "school_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+    protected List<User> users;
+
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Employee.class)
+    @JoinTable(
+            name = "school_employees",
+            joinColumns = @JoinColumn(name = "school_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
+    protected List<Employee> employees;
+
     public School(Long id, Company company, @NotBlank String name, @NotBlank String city, @NotBlank String street, @NotBlank String home, @NotBlank String postalCode,
-                  String phone, String email, boolean enabled, LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy) {
+                  String phone, String email, boolean enabled, List<User> users, List<Employee> employees, LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy) {
         super(id, createdOn, createdBy, changedOn, changedBy);
         this.company = company;
         this.name = name;
@@ -59,26 +78,15 @@ public class School extends AbstractHistoryEntity {
         this.phone = phone;
         this.email = email;
         this.enabled = enabled;
+        setUsers(users);
+        setEmployees(employees);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof School)) return false;
-        School school = (School) o;
-        return enabled == school.enabled &&
-                Objects.equals(company, school.company) &&
-                name.equals(school.name) &&
-                city.equals(school.city) &&
-                street.equals(school.street) &&
-                home.equals(school.home) &&
-                Objects.equals(postalCode, school.postalCode) &&
-                Objects.equals(phone, school.phone) &&
-                Objects.equals(email, school.email);
+    public void setUsers(List<User> users) {
+        this.users = CollectionUtils.isEmpty(users) ? new ArrayList<>() : users;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(company, name, city, street, home, postalCode, phone, email, enabled);
+    public void setEmployees(List<Employee> employees) {
+        this.employees = CollectionUtils.isEmpty(employees) ? new ArrayList<>() : employees;
     }
 }

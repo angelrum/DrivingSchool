@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 @ToString
 public class Company implements HasId {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;

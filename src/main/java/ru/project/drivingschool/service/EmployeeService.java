@@ -1,10 +1,14 @@
 package ru.project.drivingschool.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import ru.project.drivingschool.model.Employee;
 import ru.project.drivingschool.repository.EmployeeRepository;
 
+import javax.validation.constraints.Min;
 import java.util.List;
+
+import static ru.project.drivingschool.util.ValidationUtil.*;
 
 @Service
 public class EmployeeService extends AbstractService<Employee> {
@@ -20,4 +24,31 @@ public class EmployeeService extends AbstractService<Employee> {
         return this.repository.getAll(companyId);
     }
 
+    public Employee get(long companyId, long id) {
+        return checkNotFoundWithId(repository.get(companyId, id), companyId, id);
+    }
+
+    public Employee getByPhone(String phone) {
+        checkNotNull(phone);
+        return checkNotFound(repository.getByPhone(phone), String.format("Not fount with phone=%s", phone));
+    }
+
+    public Employee create(Employee employee, long companyId, long createdBy) {
+        log.debug("Create employee {}. Company={} and created={}", employee.toString(), companyId, createdBy);
+        checkNotNull(employee);
+        checkNew(employee);
+        return repository.save(employee, companyId, createdBy);
+    }
+
+    public Employee update(Employee employee, long companyId, long createdBy) {
+        log.debug("Update employee {}. Company={} and changed={}", employee.toString(), companyId, createdBy);
+        checkNotNull(employee);
+        return checkNotFoundWithId(repository.save(employee, companyId, createdBy), companyId, employee.id());
+    }
+
+    public void delete(long companyId, long id) {
+        log.debug("Delete employee. Company={}, id={}", companyId, id);
+        if (repository.delete(companyId, id))
+            checkNotFoundWithId(null, companyId, id);
+    }
 }

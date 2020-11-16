@@ -10,6 +10,10 @@ import java.util.List;
 
 public class ValidationUtil {
 
+    public final static long REGISTER_SEQ = 1000L;
+
+    public final static long GLOBAL_SEQ = 10_000L;
+
     public static void assureIdConsistent(HasId bean, long id) {
 //      conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)
         if (bean.isNew()) {
@@ -22,8 +26,21 @@ public class ValidationUtil {
     private ValidationUtil() {
     }
 
+    public static void checkByRegisterId(long id) {
+        checknotfoundwithid(id > REGISTER_SEQ, id );
+    }
+
+    public static void checkByGlobalId(long id) {
+        checknotfoundwithid(id > GLOBAL_SEQ, id);
+    }
+
     public static <T> T checkNotFoundWithId(T object, long id) {
         checknotfoundwithid(object != null, id);
+        return object;
+    }
+
+    public static <T> T checkNotFoundWithId(T object, long companyId, long id) {
+        checkNotFound(object!=null, String.format("id=%s companyId=%s", id, companyId));
         return object;
     }
 

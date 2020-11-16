@@ -34,7 +34,6 @@ public abstract class AbstractRepository <T extends HasId> {
     public T save(T t) {
         if (!t.isNew() && !repository.existsById(t.id()))
             return null;
-
         return repository.save(t);
     }
 }
