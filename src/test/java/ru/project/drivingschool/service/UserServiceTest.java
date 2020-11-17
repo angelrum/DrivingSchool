@@ -21,8 +21,8 @@ import java.util.List;
 import static ru.project.drivingschool.testdata.UserTestData.*;
 
 @SpringBootTest
-@ExtendWith(TimingExtension.class)
-@Sql(scripts = "classpath:db/data-test.sql", config = @SqlConfig(encoding = "UTF-8"))
+//@ExtendWith(TimingExtension.class)
+//@Sql(scripts = "classpath:db/data-test.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class UserServiceTest extends AbstractServiceTest<User>{
 
     @Autowired
