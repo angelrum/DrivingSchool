@@ -33,7 +33,3 @@ c) Пароль: password
 
 https://swagger.io/docs/open-source-tools/swagger-editor/
    
-
-
-
-
