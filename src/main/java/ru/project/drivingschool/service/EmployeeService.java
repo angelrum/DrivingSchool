@@ -48,7 +48,7 @@ public class EmployeeService extends AbstractService<Employee> {
 
     public void delete(long companyId, long id) {
         log.debug("Delete employee. Company={}, id={}", companyId, id);
-        if (repository.delete(companyId, id))
+        if (!repository.delete(companyId, id))
             checkNotFoundWithId(null, companyId, id);
     }
 }

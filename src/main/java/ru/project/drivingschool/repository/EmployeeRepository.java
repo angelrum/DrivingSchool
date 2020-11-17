@@ -1,6 +1,7 @@
 package ru.project.drivingschool.repository;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.project.drivingschool.model.Company;
 import ru.project.drivingschool.model.Employee;
 import ru.project.drivingschool.repository.jpa.JpaCompanyRepository;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
+@Transactional(readOnly = true)
 public class EmployeeRepository extends AbstractHistoryRepository<Employee> {
 
     private JpaEmployeeRepository repository;
@@ -30,12 +32,14 @@ public class EmployeeRepository extends AbstractHistoryRepository<Employee> {
         return repository.findFirstByCompanyIdAndId(companyId, id);
     }
 
+    @Transactional
     public Employee save(Employee e, long companyId, long createdBy) {
         Company company = companyRepository.getOne(companyId);
         e.setCompany(company);
         return save(e, createdBy);
     }
 
+    @Transactional
     public boolean delete(long companyId, long id) {
         return repository.delete(companyId, id)!=0;
     }

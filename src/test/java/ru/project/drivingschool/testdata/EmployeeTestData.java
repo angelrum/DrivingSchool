@@ -18,11 +18,15 @@ public class EmployeeTestData implements TestDataInterface<Employee> {
     private final long employeeId1 = 1_000;
     private final long employeeId2 = 1_001;
 
+    private final long employeeId3 = 1_002;
+
     // (10000, '+7(911)111-11-11', '12345', null, 'Иванов', 'Иван', 'Иванович', 'test1@test.ru', null),
     // (10000, '+7(911)111-11-12', '123456', null, 'Иванов', 'Антон', 'Иванович', 'test2@test.ru', 1000);
+    // (10001, '+7(911)111-12-13', '123456', null, 'Иванов', 'Сергей', 'Иванович', 'test3@test.ru', 5, null)
 
     private Employee employee1 = new Employee(employeeId1, companyData.getObjectById(companyData.getId1()), "+7(911)111-11-11", "12345", null, "Иванов", "Иван", "Иванович", "test1@test.ru", true, Employee.DEF_SCORE, null, null, null, null, Set.of(SCHOOL1, SCHOOL2), Role.ADMIN);
     private Employee employee2 = new Employee(employeeId2, companyData.getObjectById(companyData.getId1()), "+7(911)111-11-12", "123456", null, "Иванов", "Антон", "Иванович", "test2@test.ru", true, Employee.DEF_SCORE, null, employee1, null, null, null, Role.MANAGER);
+    private Employee employee3 = new Employee(employeeId3, companyData.getObjectById(companyData.getId2()), "+7(911)111-12-13", "123456", null, "Иванов", "Сергей", "Иванович", "test3@test.ru", true, Employee.DEF_SCORE, null, null, null, null, null, Role.ADMIN);
 
     @Override
     public Employee getNew() {
@@ -51,8 +55,12 @@ public class EmployeeTestData implements TestDataInterface<Employee> {
         return employeeId2;
     }
 
+    public long getId3() {
+        return employeeId3;
+    }
+
     @Override
     public List<Employee> getAll() {
-        return new ArrayList<>(List.of(employee1, employee2));
+        return new ArrayList<>(List.of(employee1, employee2, employee3));
     }
 }

@@ -1,5 +1,6 @@
 package ru.project.drivingschool.repository.jpa;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.project.drivingschool.model.Employee;
@@ -12,6 +13,7 @@ public interface JpaEmployeeRepository extends JpaNamedRepository<Employee> {
 
     Employee findFirstByCompanyIdAndId(long companyId, long id);
 
-    @Query("DELETE FROM Employee WHERE company.id =:companyId AND id =:id")
+    @Modifying
+    @Query("DELETE FROM Employee e WHERE e.company.id =:companyId AND e.id =:id")
     int delete(@Param("companyId") long companyId, @Param("id") long id);
 }
