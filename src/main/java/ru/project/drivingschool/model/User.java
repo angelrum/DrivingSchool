@@ -18,18 +18,20 @@ public class User extends AbstractNamedEntity {
 
     @OneToOne(fetch = FetchType.EAGER, targetEntity = School.class)
     @JoinTable(
-            name = "school_learners",
-            joinColumns = @JoinColumn(name = "employee_id"),
+            name = "school_users",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "school_id", referencedColumnName = "id"))
     protected School schools;
 
     public User(Long id, @NotBlank String phone, @NotBlank String password, String avatar,
                 @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, boolean enabled,
-                LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy) {
+                LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy,School schools) {
         super(id, phone, password, avatar, firstname, lastname, middlename, email, enabled, createdOn, createdBy, changedOn, changedBy);
+        this.schools = schools;
     }
 
     public User(User u) {
-        this(u.id, u.phone, u.password, u.avatar, u.firstname, u.lastname, u.middlename, u.email, u.enabled, u.createdOn, u.createdBy, u.changedOn, u.changedBy);
+        this(u.id, u.phone, u.password, u.avatar, u.firstname, u.lastname, u.middlename,
+                u.email, u.enabled, u.createdOn, u.createdBy, u.changedOn, u.changedBy, u.schools);
     }
 }
