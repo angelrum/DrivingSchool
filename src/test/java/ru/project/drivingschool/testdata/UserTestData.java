@@ -48,6 +48,7 @@ public class UserTestData implements TestDataInterface<User>{
     public User getNew() {
         User userNew = new User(User1);
         userNew.setId(null);
+        userNew.setPhone("8(912)111-11-11");
         userNew.setFirstname("Новый пользователь");
         return userNew;
     }

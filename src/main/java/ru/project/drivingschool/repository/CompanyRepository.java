@@ -12,4 +12,5 @@ public class CompanyRepository extends AbstractRepository<Company> {
     public CompanyRepository(JpaCompanyRepository repository) {
         super(repository);
     }
+
 }

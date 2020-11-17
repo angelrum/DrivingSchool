@@ -30,4 +30,5 @@ public class UserServiceTest extends AbstractServiceTest<User>{
         super(service, new UserTestData(), UserTestData.USER_TEST_MATCHER);
     }
 
+
 }
