@@ -14,5 +14,4 @@ public class UserRepository extends AbstractRepository<User> {
     }
 
 
-
 }

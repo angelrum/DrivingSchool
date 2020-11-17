@@ -34,20 +34,20 @@ public class EmployeeService extends AbstractService<Employee> {
     }
 
     public Employee create(Employee employee, long companyId, long createdBy) {
-        log.debug("Create employee {}. Company={} and created={}", employee.toString(), companyId, createdBy);
+        log.info("Create employee {}. Company={} and created={}", employee.toString(), companyId, createdBy);
         checkNotNull(employee);
         checkNew(employee);
         return repository.save(employee, companyId, createdBy);
     }
 
     public Employee update(Employee employee, long companyId, long createdBy) {
-        log.debug("Update employee {}. Company={} and changed={}", employee.toString(), companyId, createdBy);
+        log.info("Update employee {}. Company={} and changed={}", employee.toString(), companyId, createdBy);
         checkNotNull(employee);
         return checkNotFoundWithId(repository.save(employee, companyId, createdBy), companyId, employee.id());
     }
 
     public void delete(long companyId, long id) {
-        log.debug("Delete employee. Company={}, id={}", companyId, id);
+        log.info("Delete employee. Company={}, id={}", companyId, id);
         if (!repository.delete(companyId, id))
             checkNotFoundWithId(null, companyId, id);
     }

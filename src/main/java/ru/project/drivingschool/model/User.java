@@ -12,11 +12,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter @ToString(callSuper = true)
+@Getter @Setter @ToString(callSuper = true, exclude = "schools")
 @NoArgsConstructor
 public class User extends AbstractNamedEntity {
 
-    @OneToOne(fetch = FetchType.EAGER, targetEntity = School.class)
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = School.class)
     @JoinTable(
             name = "school_users",
             joinColumns = @JoinColumn(name = "user_id"),

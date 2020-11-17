@@ -42,8 +42,8 @@ public abstract class AbstractHistoryEntity implements HasId {
     public String toString() {
         return "AbstractHistoryEntity{" +
                 "id=" + id +
-                ", createdBy=" + (Objects.isNull(createdBy) ? null : createdBy.id) +
-                ", changedBy=" + (Objects.isNull(changedBy) ? null : changedBy.id) +
+//                ", createdBy=" + (Objects.isNull(createdBy) ? null : createdBy.id) +
+//                ", changedBy=" + (Objects.isNull(changedBy) ? null : changedBy.id) +
                 '}';
     }
 }
