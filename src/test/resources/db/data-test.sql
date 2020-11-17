@@ -21,9 +21,9 @@ VALUES (1000, 'ADMIN'),
        (1001, 'MANAGER'),
        (1002, 'ADMIN');
 
-INSERT INTO users (phone, password, firstname, lastname, middlename, email, enabled)
-VALUES ('8(911)111-11-11', '12345', 'Иван', 'Иванов','Иванович', 'ivan@ivan.ru',true),
-       ('8(911)111-11-12', '123456', 'Сергей', 'Иванов', 'Иванович', 'serg@ivan.ru',true);
+INSERT INTO users (id, phone, password, firstname, lastname, middlename, email, enabled)
+VALUES (100, '8(911)111-12-11', '12345', 'Иван', 'Иванов','Иванович', 'ivan@ivan.ru',true),
+       (101, '8(911)111-12-12', '123456', 'Сергей', 'Иванов', 'Иванович', 'serg@ivan.ru',true);
 
 
 INSERT INTO schools (company_id, name, city, street, home, postal_code, phone, email, created_by)
