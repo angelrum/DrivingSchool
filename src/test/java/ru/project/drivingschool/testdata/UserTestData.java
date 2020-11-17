@@ -4,11 +4,36 @@ import ru.project.drivingschool.TestMatcher;
 import ru.project.drivingschool.model.Company;
 import ru.project.drivingschool.model.User;
 
-import java.awt.desktop.UserSessionEvent;
-import java.util.List;
 
-public class UserTestData {
+import java.util.Collection;
 
+
+public class UserTestData implements TestDataInterface<User>{
+    @Override
+    public long getId1() {
+        return 0;
+    }
+
+    @Override
+    public long getId2() {
+        return 0;
+    }
+
+    @Override
+    public Collection<User> getAll() {
+        return null;
+    }
+
+    @Override
+    public User getNew() {
+        return null;
+    }
+
+    @Override
+    public User getUpdate() {
+        return null;
+    }
+/*
     public static final TestMatcher<User> USER_TEST_MATCHER = TestMatcher.usingFieldsComparator(User.class, "createdOn");
 
     public static final long USER_ID1 = 1003;
@@ -41,4 +66,5 @@ public class UserTestData {
         return upd;
     }
 
+ */
 }
