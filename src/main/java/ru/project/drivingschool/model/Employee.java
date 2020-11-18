@@ -31,12 +31,12 @@ public class Employee extends AbstractNamedEntity {
     protected Set<Role> roles;
 
     //https://www.codejava.net/frameworks/hibernate/hibernate-one-to-many-association-on-join-table-annotations-example
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = School.class)
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = School.class)
     @JoinTable(
             name = "school_employees",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "school_id", referencedColumnName = "id"))
-    protected Set<School> schools;
+    @ToString.Exclude protected Set<School> schools;
 
     public Employee(Long id, Company company, @NotBlank String phone, @NotBlank String password, String avatar,
                     @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, boolean enabled, Integer score,

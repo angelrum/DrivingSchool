@@ -16,4 +16,7 @@ public interface JpaEmployeeRepository extends JpaNamedRepository<Employee> {
     @Modifying
     @Query("DELETE FROM Employee e WHERE e.company.id =:companyId AND e.id =:id")
     int delete(@Param("companyId") long companyId, @Param("id") long id);
+
+    @Query("SELECT e FROM Employee e LEFT JOIN FETCH e.schools WHERE e.id=:id")
+    Employee getWithSchool(@Param("id") long id);
 }

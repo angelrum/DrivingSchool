@@ -32,4 +32,8 @@ VALUES (10000, 'Школа N1', 'Москва', 'ул.Первого мая', '�
 
 INSERT INTO school_employees (school_id, employee_id)
 VALUES (10002, 1000),
-       (10003, 1000)
+       (10003, 1000);
+
+INSERT INTO school_users (school_id, user_id)
+VALUES (10002, 1003),
+       (10002, 1004);

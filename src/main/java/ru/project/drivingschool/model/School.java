@@ -57,14 +57,14 @@ public class School extends AbstractHistoryEntity {
             joinColumns = @JoinColumn(name = "school_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-    protected List<User> users;
+    @ToString.Exclude protected List<User> users;
 
     @OneToMany(fetch = FetchType.LAZY, targetEntity = Employee.class)
     @JoinTable(
             name = "school_employees",
             joinColumns = @JoinColumn(name = "school_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
-    protected List<Employee> employees;
+    @ToString.Exclude protected List<Employee> employees;
 
     public School(Long id, Company company, @NotBlank String name, @NotBlank String city, @NotBlank String street, @NotBlank String home, @NotBlank String postalCode,
                   String phone, String email, boolean enabled, List<User> users, List<Employee> employees, LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy) {
@@ -80,6 +80,11 @@ public class School extends AbstractHistoryEntity {
         this.enabled = enabled;
         setUsers(users);
         setEmployees(employees);
+    }
+
+    public School(School s) {
+        this(s.id, s.company, s.name, s.city, s.street, s.home, s.postalCode,
+                s.phone, s.email, s.enabled, s.users, s.employees, s.createdOn, s.createdBy, s.changedOn, s.changedBy);
     }
 
     public void setUsers(List<User> users) {
