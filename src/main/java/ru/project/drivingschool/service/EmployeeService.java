@@ -51,4 +51,9 @@ public class EmployeeService extends AbstractService<Employee> {
         if (!repository.delete(companyId, id))
             checkNotFoundWithId(null, companyId, id);
     }
+
+    public Employee getWithSchools(long id) {
+        checkByRegisterId(id);
+        return checkNotFoundWithId(repository.getWithSchools(id), id);
+    }
 }

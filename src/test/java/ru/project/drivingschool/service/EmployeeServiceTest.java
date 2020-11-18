@@ -1,13 +1,18 @@
 package ru.project.drivingschool.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.project.drivingschool.model.Employee;
+import ru.project.drivingschool.model.School;
 import ru.project.drivingschool.testdata.CompanyTestData;
 import ru.project.drivingschool.testdata.EmployeeTestData;
+import ru.project.drivingschool.testdata.SchoolTestData;
+
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static ru.project.drivingschool.testdata.EmployeeTestData.*;
 
@@ -22,25 +27,26 @@ class EmployeeServiceTest extends AbstractServiceTest<Employee> {
 
     private EmployeeTestData testData;
 
+    private SchoolTestData schoolData;
+
     @Autowired
     EmployeeServiceTest(EmployeeService service) {
         super(service, new EmployeeTestData(), EMPLOYEE_MATCHER);
         this.service = service;
         this.testData = new EmployeeTestData();
         this.companyTestData = new CompanyTestData();
+        this.schoolData = new SchoolTestData();
     }
 
-    //что бы сравнивать schools необходимо из сравнения исключить поля createdBy и createdOn
-    //это будет сделано после реализации тестов для ServiceSchools
-    @Override
     @Test
-    void getAll() {
-        super.getAll();
-        List<Employee> actual = service.getAll();
-        for (int i = 0; i < actual.size(); i++)
-            Assertions.assertThat(actual.get(i).getSchools())
-                    .hasSize(testData.getAll().get(i).getSchools().size());
+    void getWithSchools() {
+        Set<School> schools = service.getWithSchools(testData.getId1()).getSchools();
+        List<School> list = schools.stream()
+                .sorted(Comparator.comparing(School::getId))
+                .collect(Collectors.toList());
+        SchoolTestData.SCHOOL_MATCHER.assertMatch(list, schoolData.getAll());
     }
+
     @Test
     void getByCompanyId() {
         EMPLOYEE_MATCHER.assertMatch(service.get(companyTestData.getId1(), testData.getId1()), testData.getObjectById(testData.getId1()));

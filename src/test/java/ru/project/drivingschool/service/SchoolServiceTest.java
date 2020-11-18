@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.project.drivingschool.model.School;
 import ru.project.drivingschool.model.User;
+import ru.project.drivingschool.testdata.CompanyTestData;
+import ru.project.drivingschool.testdata.EmployeeTestData;
 import ru.project.drivingschool.testdata.SchoolTestData;
 import ru.project.drivingschool.testdata.UserTestData;
 
@@ -16,6 +18,10 @@ import static ru.project.drivingschool.testdata.SchoolTestData.*;
 public class SchoolServiceTest extends AbstractServiceTest<School> {
 
     private UserTestData userTestData = new UserTestData();
+
+    private EmployeeTestData employeeData = new EmployeeTestData();
+
+    private CompanyTestData companyData = new CompanyTestData();
 
     private SchoolTestData testData = new SchoolTestData();
 
@@ -38,11 +44,16 @@ public class SchoolServiceTest extends AbstractServiceTest<School> {
         System.out.println(users);
     }
 
+    @Test
     void getAllEmployees() {
-
+        EmployeeTestData.EMPLOYEE_MATCHER.assertMatch(
+                service.getWithEmployee(testData.getId1()).getEmployees(),
+                List.of(employeeData.getObjectById(employeeData.getId1())));
     }
 
+    @Test
     void getAllByCompany() {
+        SCHOOL_MATCHER.assertMatch(service.getAll(companyData.getId1()), testData.getAll());
 
     }
 }

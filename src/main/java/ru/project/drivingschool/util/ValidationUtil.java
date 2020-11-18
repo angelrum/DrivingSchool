@@ -27,11 +27,11 @@ public class ValidationUtil {
     }
 
     public static void checkByRegisterId(long id) {
-        checknotfoundwithid(id > REGISTER_SEQ, id );
+        checknotfoundwithid(id >= REGISTER_SEQ, id );
     }
 
     public static void checkByGlobalId(long id) {
-        checknotfoundwithid(id > GLOBAL_SEQ, id);
+        checknotfoundwithid(id >= GLOBAL_SEQ, id);
     }
 
     public static <T> T checkNotFoundWithId(T object, long id) {

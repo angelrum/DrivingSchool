@@ -43,4 +43,8 @@ public class EmployeeRepository extends AbstractHistoryRepository<Employee> {
     public boolean delete(long companyId, long id) {
         return repository.delete(companyId, id)!=0;
     }
+
+    public Employee getWithSchools(long id) {
+        return repository.getWithSchool(id);
+    }
 }
