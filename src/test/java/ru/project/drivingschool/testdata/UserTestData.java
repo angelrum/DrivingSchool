@@ -11,10 +11,10 @@ import java.util.List;
 
 public class UserTestData implements TestDataInterface<User>{
 
-    public static final long USER_ID1 = 100;
-    public static final long USER_ID2 = 101;
+    public static final long USER_ID1 = 1003;
+    public static final long USER_ID2 = 1004;
     public static final long NOT_FOUND_ID = 99999;
-    public static final TestMatcher<User> USER_TEST_MATCHER = TestMatcher.usingFieldsComparator(User.class, "createdOn");
+    public static final TestMatcher<User> USER_TEST_MATCHER = TestMatcher.usingFieldsComparator(User.class, "createdOn", "schools");
 
 
    // public static List<User> Users = List.of(User1, User2);

@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter @ToString(callSuper = true, exclude = "schools")
+@Getter @Setter @ToString(callSuper = true)
 @NoArgsConstructor
 public class User extends AbstractNamedEntity {
 
@@ -21,7 +21,7 @@ public class User extends AbstractNamedEntity {
             name = "school_users",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "school_id", referencedColumnName = "id"))
-    protected School schools;
+    @ToString.Exclude protected School schools;
 
     public User(Long id, @NotBlank String phone, @NotBlank String password, String avatar,
                 @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, boolean enabled,
