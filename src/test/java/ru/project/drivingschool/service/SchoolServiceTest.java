@@ -13,11 +13,12 @@ import ru.project.drivingschool.testdata.UserTestData;
 import java.util.List;
 
 import static ru.project.drivingschool.testdata.SchoolTestData.*;
+import static ru.project.drivingschool.testdata.UserTestData.*;
 
 @SpringBootTest
-public class SchoolServiceTest extends AbstractServiceTest<School> {
+class SchoolServiceTest extends AbstractServiceTest<School> {
 
-    private UserTestData userTestData = new UserTestData();
+    private UserTestData userData = new UserTestData();
 
     private EmployeeTestData employeeData = new EmployeeTestData();
 
@@ -27,21 +28,19 @@ public class SchoolServiceTest extends AbstractServiceTest<School> {
 
     private SchoolService service;
 
+    private UserService userService;
+
     @Autowired
-    public SchoolServiceTest(SchoolService service) {
+    SchoolServiceTest(SchoolService service, UserService userService) {
         super(service, new SchoolTestData(), SCHOOL_MATCHER);
         this.service = service;
+        this.userService = userService;
     }
 
     @Test
     void getAllUsers() {
-        System.out.println(service.getWithUsers(testData.getId1()).getUsers().size());
-        List<User> users = service.getWithUsers(testData.getId2()).getUsers();
-        users.add(new User(1003L, "8(911)111-11-11", "12345",
-                null, "Иван", "Иванов", "Иванович", "ivan@ivan.ru",
-                true, null, null,
-                null, null, null));
-        System.out.println(users);
+        List<User> users = service.getWithUsers(testData.getId1()).getUsers();
+        USER_TEST_MATCHER.assertMatch(users, userData.getAll());
     }
 
     @Test
@@ -54,6 +53,15 @@ public class SchoolServiceTest extends AbstractServiceTest<School> {
     @Test
     void getAllByCompany() {
         SCHOOL_MATCHER.assertMatch(service.getAll(companyData.getId1()), testData.getAll());
+    }
 
+    @Test
+    void setNewUser() {
+        School school = service.getWithUsers(testData.getId2());
+        school.getUsers().add(userService.get(userData.getId1()));
+        service.update(school);
+        school = service.getWithUsers(testData.getId2());
+        school.getUsers().add(userService.get(userData.getId2()));
+        service.update(school);
     }
 }

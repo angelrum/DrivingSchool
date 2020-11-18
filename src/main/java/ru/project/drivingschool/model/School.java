@@ -59,7 +59,7 @@ public class School extends AbstractHistoryEntity {
     )
     @ToString.Exclude protected List<User> users;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Employee.class)
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = Employee.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = "school_employees",
             joinColumns = @JoinColumn(name = "school_id"),
