@@ -2,6 +2,7 @@ package ru.project.drivingschool.model;
 
 import lombok.*;
 import org.springframework.util.CollectionUtils;
+import ru.project.drivingschool.model.embedded.SchoolEmployees;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -30,17 +31,12 @@ public class Employee extends AbstractNamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     protected Set<Role> roles;
 
-    //https://www.codejava.net/frameworks/hibernate/hibernate-one-to-many-association-on-join-table-annotations-example
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = School.class)
-    @JoinTable(
-            name = "school_employees",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "school_id", referencedColumnName = "id"))
-    @ToString.Exclude protected Set<School> schools;
+    @OneToMany(mappedBy = "employee")
+    @ToString.Exclude protected Set<SchoolEmployees> schools;
 
     public Employee(Long id, Company company, @NotBlank String phone, @NotBlank String password, String avatar,
                     @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, boolean enabled, Integer score,
-                    LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy, Set<School> schools, Collection<Role> roles) {
+                    LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy, Set<SchoolEmployees> schools, Collection<Role> roles) {
         super(id, phone, password, avatar, firstname, lastname, middlename, email, enabled, createdOn, createdBy, changedOn, changedBy);
         this.company = company;
         setScore(score);
@@ -50,7 +46,7 @@ public class Employee extends AbstractNamedEntity {
 
     public Employee(Long id, Company company, @NotBlank String phone, @NotBlank String password, String avatar,
                     @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, boolean enabled, Integer score,
-                    LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy, Set<School> schools, Role role, Role... roles) {
+                    LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy, Set<SchoolEmployees> schools, Role role, Role... roles) {
         this(id, company, phone, password, avatar, firstname, lastname, middlename, email, enabled, score, createdOn, createdBy, changedOn, changedBy, schools, EnumSet.of(role, roles));
     }
 
@@ -67,7 +63,7 @@ public class Employee extends AbstractNamedEntity {
         this.score = Objects.isNull(score) ? DEF_SCORE : score;
     }
 
-    public void setSchools(Set<School> schools) {
+    public void setSchools(Set<SchoolEmployees> schools) {
         this.schools = CollectionUtils.isEmpty(schools) ? new HashSet<>() : schools;
     }
 }

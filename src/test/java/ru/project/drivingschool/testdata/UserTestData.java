@@ -2,11 +2,14 @@ package ru.project.drivingschool.testdata;
 
 import ru.project.drivingschool.TestMatcher;
 import ru.project.drivingschool.model.User;
+import ru.project.drivingschool.model.embedded.SchoolUsers;
 
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class UserTestData implements TestDataInterface<User>{
@@ -60,4 +63,7 @@ public class UserTestData implements TestDataInterface<User>{
         return upd;
     }
 
+    public List<User> getUserFromSchoolUsers(Set<SchoolUsers> su) {
+        return su.stream().map(SchoolUsers::getUser).collect(Collectors.toList());
+    }
 }

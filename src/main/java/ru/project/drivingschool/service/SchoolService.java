@@ -30,9 +30,9 @@ public class SchoolService extends AbstractService<School> {
         return checkNotFoundWithId(repository.getWithUsers(id), id);
     }
 
-    public School getWithEmployee(long id) {
+    public School getWithEmployees(long id) {
         log.info("get school with employees. Id={}", id);
         checkByGlobalId(id);
-        return checkNotFoundWithId(repository.getWithEmployee(id), id);
+        return checkNotFoundWithId(repository.getWithEmployees(id), id);
     }
 }

@@ -91,6 +91,7 @@ CREATE TABLE school_employees
 (
     school_id   INTEGER                         NOT NULL,
     employee_id BIGINT                          NOT NULL,
+    enable      BOOLEAN DEFAULT TRUE,
 
     FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE,
     FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE,
@@ -124,6 +125,7 @@ CREATE TABLE school_users
 (
     school_id   INTEGER                         NOT NULL,
     user_id     BIGINT                          NOT NULL,
+    enable      BOOLEAN DEFAULT TRUE,
 
     FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id)   REFERENCES users (id)   ON DELETE CASCADE,

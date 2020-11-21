@@ -3,13 +3,13 @@ package ru.project.drivingschool.model;
 
 import lombok.*;
 import org.springframework.util.CollectionUtils;
+import ru.project.drivingschool.model.embedded.SchoolEmployees;
+import ru.project.drivingschool.model.embedded.SchoolUsers;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "schools")
@@ -22,52 +22,33 @@ public class School extends AbstractHistoryEntity {
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     @ToString.Exclude protected Company company;
 
-    @Column(name = "name")
-    @NotBlank
-    protected String name;
+    @NotBlank protected String name;
 
-    @Column(name = "city")
-    @NotBlank
-    protected String city;
+    @NotBlank protected String city;
 
-    @Column(name = "street")
-    @NotBlank
-    protected String street;
+    @NotBlank protected String street;
 
-    @Column(name = "home")
-    @NotBlank
-    protected String home;
+    @NotBlank protected String home;
 
     @Column(name = "postal_code")
-    @NotBlank
-    protected String postalCode;
+    @NotBlank protected String postalCode;
 
-    @Column(name = "phone")
     protected String phone;
 
-    @Column(name = "email")
     protected String email;
 
-    @Column(name = "enabled")
     protected boolean enabled = true;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = User.class)
-    @JoinTable(
-            name = "school_users",
-            joinColumns = @JoinColumn(name = "school_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
-    )
-    @ToString.Exclude protected List<User> users;
+    //https://www.baeldung.com/jpa-many-to-many
+    //https://vladmihalcea.com/merge-entity-collections-jpa-hibernate/
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude protected Set<SchoolUsers> users;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Employee.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(
-            name = "school_employees",
-            joinColumns = @JoinColumn(name = "school_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
-    @ToString.Exclude protected List<Employee> employees;
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude protected Set<SchoolEmployees> employees;
 
     public School(Long id, Company company, @NotBlank String name, @NotBlank String city, @NotBlank String street, @NotBlank String home, @NotBlank String postalCode,
-                  String phone, String email, boolean enabled, List<User> users, List<Employee> employees, LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy) {
+                  String phone, String email, boolean enabled, Set<SchoolUsers> users, Set<SchoolEmployees> employees, LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy) {
         super(id, createdOn, createdBy, changedOn, changedBy);
         this.company = company;
         this.name = name;
@@ -87,11 +68,11 @@ public class School extends AbstractHistoryEntity {
                 s.phone, s.email, s.enabled, s.users, s.employees, s.createdOn, s.createdBy, s.changedOn, s.changedBy);
     }
 
-    public void setUsers(List<User> users) {
-        this.users = CollectionUtils.isEmpty(users) ? new ArrayList<>() : users;
+    public void setUsers(Set<SchoolUsers> users) {
+        this.users = CollectionUtils.isEmpty(users) ? new HashSet<>() : users;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = CollectionUtils.isEmpty(employees) ? new ArrayList<>() : employees;
+    public void setEmployees(Set<SchoolEmployees> employees) {
+        this.employees = CollectionUtils.isEmpty(employees) ? new HashSet<>() : employees;
     }
 }

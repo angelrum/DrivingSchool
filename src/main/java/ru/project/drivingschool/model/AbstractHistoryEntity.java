@@ -24,7 +24,7 @@ public abstract class AbstractHistoryEntity implements HasId {
     @Column(name = "created_on", updatable = false)
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     @CreationTimestamp
-    @ToString.Exclude protected LocalDateTime createdOn;
+    protected LocalDateTime createdOn;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Employee.class)
     @JoinColumn(name = "created_by", referencedColumnName = "id", updatable = false)
@@ -32,7 +32,7 @@ public abstract class AbstractHistoryEntity implements HasId {
 
     @Column(name = "changed_on")
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
-    @ToString.Exclude protected LocalDateTime changedOn;
+    protected LocalDateTime changedOn;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Employee.class)
     @JoinColumn(name = "changed_by", referencedColumnName = "id")

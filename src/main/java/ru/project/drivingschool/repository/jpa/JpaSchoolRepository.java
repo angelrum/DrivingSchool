@@ -12,7 +12,7 @@ public interface JpaSchoolRepository extends JpaKeyRepository<School> {
     School getWithUsers(@Param("id") long id);
 
     @Query("SELECT s FROM School s LEFT JOIN FETCH s.employees WHERE s.id=:id")
-    School getWithEmployee(@Param("id") long id);
+    School getWithEmployees(@Param("id") long id);
     
     @Query("SELECT s FROM School s WHERE s.company.id=:companyId")
     List<School> getAll(@Param("companyId") long companyId);

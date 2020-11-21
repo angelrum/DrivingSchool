@@ -17,7 +17,7 @@ public class SchoolRepository extends AbstractRepository<School> {
         super(repository);
         this.repository = repository;
     }
-    
+
     public List<School> getAll(long companyId) {
         return repository.getAll(companyId);
     }
@@ -26,7 +26,7 @@ public class SchoolRepository extends AbstractRepository<School> {
         return repository.getWithUsers(id);
     }
     
-    public School getWithEmployee(long id) {
-        return repository.getWithEmployee(id);
+    public School getWithEmployees(long id) {
+        return repository.getWithEmployees(id);
     }
 }

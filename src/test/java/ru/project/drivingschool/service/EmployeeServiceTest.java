@@ -39,15 +39,6 @@ class EmployeeServiceTest extends AbstractServiceTest<Employee> {
     }
 
     @Test
-    void getWithSchools() {
-        Set<School> schools = service.getWithSchools(testData.getId1()).getSchools();
-        List<School> list = schools.stream()
-                .sorted(Comparator.comparing(School::getId))
-                .collect(Collectors.toList());
-        SchoolTestData.SCHOOL_MATCHER.assertMatch(list, schoolData.getAll());
-    }
-
-    @Test
     void getByCompanyId() {
         EMPLOYEE_MATCHER.assertMatch(service.get(companyTestData.getId1(), testData.getId1()), testData.getObjectById(testData.getId1()));
     }

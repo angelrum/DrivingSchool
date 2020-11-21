@@ -55,4 +55,5 @@ public class SchoolTestData implements TestDataInterface<School>  {
         upd.setPhone("8(495)211-111-11");
         return upd;
     }
+
 }

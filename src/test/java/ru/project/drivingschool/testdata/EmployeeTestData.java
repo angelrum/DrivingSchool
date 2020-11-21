@@ -3,8 +3,12 @@ package ru.project.drivingschool.testdata;
 import ru.project.drivingschool.TestMatcher;
 import ru.project.drivingschool.model.Employee;
 import ru.project.drivingschool.model.Role;
+import ru.project.drivingschool.model.User;
+import ru.project.drivingschool.model.embedded.SchoolEmployees;
+import ru.project.drivingschool.model.embedded.SchoolUsers;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EmployeeTestData implements TestDataInterface<Employee> {
 
@@ -15,7 +19,7 @@ public class EmployeeTestData implements TestDataInterface<Employee> {
     public EmployeeTestData() {
         CompanyTestData companyData = new CompanyTestData();
         SchoolTestData schoolData = new SchoolTestData();
-        employee1 = new Employee(employeeId1, companyData.getObjectById(companyData.getId1()), "+7(911)111-11-11", "12345", null, "Иванов", "Иван", "Иванович", "test1@test.ru", true, Employee.DEF_SCORE, null, null, null, null, new HashSet<>(schoolData.getAll()), Role.ADMIN);
+        employee1 = new Employee(employeeId1, companyData.getObjectById(companyData.getId1()), "+7(911)111-11-11", "12345", null, "Иванов", "Иван", "Иванович", "test1@test.ru", true, Employee.DEF_SCORE, null, null, null, null, null, Role.ADMIN);
         employee2 = new Employee(employeeId2, companyData.getObjectById(companyData.getId1()), "+7(911)111-11-12", "123456", null, "Иванов", "Антон", "Иванович", "test2@test.ru", true, Employee.DEF_SCORE, null, employee1, null, null, null, Role.MANAGER);
         employee3 = new Employee(employeeId3, companyData.getObjectById(companyData.getId2()), "+7(911)111-12-13", "123456", null, "Иванов", "Сергей", "Иванович", "test3@test.ru", true, Employee.DEF_SCORE, null, null, null, null, null, Role.ADMIN);
     }
@@ -68,4 +72,9 @@ public class EmployeeTestData implements TestDataInterface<Employee> {
     public List<Employee> getAll() {
         return new ArrayList<>(List.of(employee1, employee2, employee3));
     }
+
+    public List<Employee> getEmployeeFromSchoolEmployees(Set<SchoolEmployees> su) {
+        return su.stream().map(SchoolEmployees::getEmployee).collect(Collectors.toList());
+    }
+
 }
