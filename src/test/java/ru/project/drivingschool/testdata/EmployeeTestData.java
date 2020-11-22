@@ -14,7 +14,7 @@ public class EmployeeTestData implements TestDataInterface<Employee> {
 
     public static final TestMatcher<Employee> EMPLOYEE_MATCHER =
             //TestMatcher.usingClassComparator(Employee.class, Map.of(Comparator.comparing(Employee::id), Employee.class, Comparator.comparing(School::getId), School.class), "company", "createdOn", "changedOn", "createdBy", "school");
-            TestMatcher.usingFieldsComparator(Employee.class, "company", "createdOn", "changedOn", "createdBy", "schools");
+            TestMatcher.usingFieldsComparator(Employee.class, "company", "createdOn", "changedOn", "createdBy", "schools", "$$_hibernate_interceptor");
 
     public EmployeeTestData() {
         CompanyTestData companyData = new CompanyTestData();
