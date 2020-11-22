@@ -19,36 +19,26 @@ import java.time.LocalDateTime;
 @ToString
 public class Company implements HasId {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column(name = "name")
-    @NotBlank
-    protected String name;
+    @NotBlank protected String name;
 
     @Enumerated(EnumType.STRING)
     protected Country country;
 
-    @Column(name = "city")
     protected String city;
 
-    @Column(name = "street")
     protected String street;
 
-    @Column(name = "home")
     protected String home;
 
     @Column(name = "postal_code")
     protected String postalCode;
 
-    @Column(name = "phone")
-    @NotBlank
-    protected String phone;
+    @NotBlank protected String phone;
 
-    @Column(name = "email")
     protected String email;
 
     @Column(name = "created_on", updatable = false)

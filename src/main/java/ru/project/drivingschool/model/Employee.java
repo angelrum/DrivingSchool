@@ -22,7 +22,6 @@ public class Employee extends AbstractNamedEntity {
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     @ToString.Exclude protected Company company;
 
-    @Column(name = "score")
     protected Integer score = 5;
 
     @Enumerated(EnumType.STRING)
