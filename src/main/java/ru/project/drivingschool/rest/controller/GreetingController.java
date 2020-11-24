@@ -1,4 +1,4 @@
-package ru.project.drivingschool.controller;
+package ru.project.drivingschool.rest.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

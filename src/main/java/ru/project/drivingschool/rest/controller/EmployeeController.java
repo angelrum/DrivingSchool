@@ -1,13 +1,14 @@
-package ru.project.drivingschool.controller;
+package ru.project.drivingschool.rest.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import ru.project.drivingschool.AuthorizedUser;
+import ru.project.drivingschool.View;
+import ru.project.drivingschool.model.Employee;
 import ru.project.drivingschool.service.EmployeeService;
 import ru.project.drivingschool.to.EmployeeTo;
 import java.util.List;
@@ -18,7 +19,7 @@ import static ru.project.drivingschool.util.EmployeeUtil.*;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private EmployeeService service;
 
@@ -37,4 +38,18 @@ public class EmployeeController {
         log.info("get employees by id {} and company {}", id, AuthorizedUser.getCompanyId());
         return createTo(service.get(AuthorizedUser.getCompanyId(), id));
     }
+
+    @PostMapping
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void create(@Validated(View.Web.class)Employee e) {
+        log.info("create employee {}", e.toString());
+        service.create(e, AuthorizedUser.getCompanyId(), AuthorizedUser.getId());
+    }
+
+    @PutMapping
+    public void update(@Validated(View.Web.class) Employee e) {
+        log.info("update employee {}", e.toString());
+        service.update(e, AuthorizedUser.getCompanyId(), AuthorizedUser.getId());
+    }
+
 }

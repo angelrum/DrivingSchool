@@ -8,6 +8,7 @@ import ru.project.drivingschool.model.embedded.SchoolUsers;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -19,8 +20,9 @@ import java.util.*;
 public class School extends AbstractHistoryEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
-    @JoinColumn(name = "company_id", referencedColumnName = "id")
-    @ToString.Exclude protected Company company;
+    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
+    @ToString.Exclude
+    @NotNull protected Company company;
 
     @NotBlank protected String name;
 
@@ -30,7 +32,6 @@ public class School extends AbstractHistoryEntity {
 
     @NotBlank protected String home;
 
-    @Column(name = "postal_code")
     @NotBlank protected String postalCode;
 
     protected String phone;
@@ -41,13 +42,13 @@ public class School extends AbstractHistoryEntity {
 
     //https://www.baeldung.com/jpa-many-to-many
     //https://vladmihalcea.com/merge-entity-collections-jpa-hibernate/
-    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
     @ToString.Exclude protected Set<SchoolUsers> users;
 
-    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
     @ToString.Exclude protected Set<SchoolEmployees> employees;
 
-    public School(Long id, Company company, @NotBlank String name, @NotBlank String city, @NotBlank String street, @NotBlank String home, @NotBlank String postalCode,
+    public School(Long id, @NotNull Company company, @NotBlank String name, @NotBlank String city, @NotBlank String street, @NotBlank String home, @NotBlank String postalCode,
                   String phone, String email, boolean enabled, Set<SchoolUsers> users, Set<SchoolEmployees> employees, LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy) {
         super(id, createdOn, createdBy, changedOn, changedBy);
         this.company = company;

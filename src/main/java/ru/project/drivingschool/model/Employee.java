@@ -30,7 +30,7 @@ public class Employee extends AbstractNamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     protected Set<Role> roles;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     @ToString.Exclude protected Set<SchoolEmployees> schools;
 
     public Employee(Long id, Company company, @NotBlank String phone, @NotBlank String password, String avatar,
