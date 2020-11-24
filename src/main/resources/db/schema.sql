@@ -126,9 +126,9 @@ CREATE TABLE school_users
     school_id   INTEGER                         NOT NULL,
     user_id     BIGINT                          NOT NULL,
     enable      BOOLEAN DEFAULT TRUE,
-    start_date  date                            NULL ,
-    end_date    date                            NULL ,
-    contract    VARCHAR(30),
+    start_date  DATE                            NULL,
+    end_date    DATE                            NULL,
+    contract    VARCHAR(120),
 
     FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id)   REFERENCES users (id)   ON DELETE CASCADE,
