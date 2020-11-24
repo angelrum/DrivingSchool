@@ -23,25 +23,25 @@ public abstract class AbstractService <T extends HasId> {
         return repository.getAll();
     }
 
-    T get(long id) {
+    public T get(long id) {
         log.info("Get entity by id= {}", id);
         return checkNotFoundWithId(repository.get(id), id);
     }
 
-    T create(T t) {
+    public T create(T t) {
         log.info("Create entity {}", t.toString());
         checkNotNull(t);
         checkNew(t);
         return repository.save(t);
     }
 
-    T update(T t) {
+    public T update(T t) {
         log.info("Update entity {}", t.toString());
         checkNotNull(t);
         return checkNotFoundWithId(repository.save(t), t.id());
     }
 
-    void delete(long id) {
+    public void delete(long id) {
         log.info("Delete entity by id={}", id);
         checknotfoundwithid(repository.delete(id), id);
     }

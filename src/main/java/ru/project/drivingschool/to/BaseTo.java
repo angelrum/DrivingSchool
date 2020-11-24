@@ -1,17 +1,23 @@
 package ru.project.drivingschool.to;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.project.drivingschool.model.HasId;
 
-@Getter @Setter
+@Setter
 @NoArgsConstructor
-public class BaseTo implements HasId {
+public abstract class BaseTo implements HasId {
 
     private Long id;
 
-    public BaseTo(Long id) {
+    BaseTo(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
     }
 }
