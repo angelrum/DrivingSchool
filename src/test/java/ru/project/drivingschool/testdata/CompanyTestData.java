@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CompanyTestData implements TestDataInterface<Company> {
 
-    public static final TestMatcher<Company> COMPANY_MATCHER = TestMatcher.usingFieldsComparator(Company.class, "createdOn");
+    public static final TestMatcher<Company> COMPANY_MATCHER = TestMatcher.usingFieldsComparator(Company.class, "createdOn", "schools");
 
     private final long companyId1 = 10000;
 
@@ -18,9 +18,9 @@ public class CompanyTestData implements TestDataInterface<Company> {
     // ('ООО "Рога и копыта"', 'Москва', 'ул.Ленина', 'д.1', '111100', '+7(911)111-11-11'),
     // ('ООО "Копыта и рога"', 'Москва', 'ул.Ленина', 'д.2', '111100', '+7(911)111-11-12');
 
-    private Company company1 = new Company(companyId1, "ООО \"Рога и копыта\"", Country.RUS, "Москва", "ул.Ленина", "д.1", "111100", "+7(911)111-11-11", null, null);
+    private Company company1 = new Company(companyId1, "ООО \"Рога и копыта\"", Country.RUS, "Москва", "ул.Ленина", "д.1", "111100", "+7(911)111-11-11", null, null, null);
 
-    private Company company2 = new Company(companyId2, "ООО \"Копыта и рога\"", Country.RUS, "Москва", "ул.Ленина", "д.2", "111100", "+7(911)111-11-12", null, null);
+    private Company company2 = new Company(companyId2, "ООО \"Копыта и рога\"", Country.RUS, "Москва", "ул.Ленина", "д.2", "111100", "+7(911)111-11-12", null, null, null);
 
     @Override
     public Company getNew() {

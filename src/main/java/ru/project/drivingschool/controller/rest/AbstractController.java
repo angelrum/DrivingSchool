@@ -1,4 +1,4 @@
-package ru.project.drivingschool.rest.controller;
+package ru.project.drivingschool.controller.rest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

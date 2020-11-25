@@ -1,4 +1,4 @@
-package ru.project.drivingschool.rest.controller;
+package ru.project.drivingschool.controller.rest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
