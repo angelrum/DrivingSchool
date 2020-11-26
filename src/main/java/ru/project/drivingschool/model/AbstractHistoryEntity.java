@@ -1,13 +1,8 @@
 package ru.project.drivingschool.model;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
 import ru.project.drivingschool.model.embedded.History;
-import ru.project.drivingschool.util.DateTimeUtil;
-
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -58,8 +53,8 @@ public abstract class AbstractHistoryEntity implements HasId {
     public String toString() {
         return "AbstractHistoryEntity{" +
                 "id=" + id +
-//                ", createdBy=" + (Objects.isNull(createdBy) ? null : createdBy.id) +
-//                ", changedBy=" + (Objects.isNull(changedBy) ? null : changedBy.id) +
+                ", createdBy=" + (Objects.isNull(history.getCreatedBy()) ? null : history.getCreatedBy().id) +
+                ", changedBy=" + (Objects.isNull(history.getChangedBy()) ? null : history.getChangedBy().id) +
                 '}';
     }
 }
