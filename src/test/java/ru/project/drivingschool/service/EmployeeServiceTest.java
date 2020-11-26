@@ -8,6 +8,7 @@ import ru.project.drivingschool.model.School;
 import ru.project.drivingschool.testdata.CompanyTestData;
 import ru.project.drivingschool.testdata.EmployeeTestData;
 import ru.project.drivingschool.testdata.SchoolTestData;
+import ru.project.drivingschool.util.exception.NotFoundException;
 
 import java.util.Comparator;
 import java.util.List;
@@ -36,6 +37,14 @@ class EmployeeServiceTest extends AbstractServiceTest<Employee> {
         this.testData = new EmployeeTestData();
         this.companyTestData = new CompanyTestData();
         this.schoolData = new SchoolTestData();
+    }
+
+    @Test
+    @Override
+    void update() {
+        Employee upd = testData.getUpdate();
+        service.update(upd, companyTestData.getId1(), testData.getId1());
+        EMPLOYEE_MATCHER.assertMatch(service.get(upd.id()), upd);
     }
 
     @Test

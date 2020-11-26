@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SchoolTestData implements TestDataInterface<School>  {
 
-    public static final TestMatcher<School> SCHOOL_MATCHER = TestMatcher.usingFieldsComparator(School.class, "employees", "users", "company", "createdOn", "changedOn", "createdBy");
+    public static final TestMatcher<School> SCHOOL_MATCHER = TestMatcher.usingFieldsComparator(School.class, "employees", "users", "company", "history");
 
     private final long schoolId1 = 10_002;
     private final long schoolId2 = 10_003;

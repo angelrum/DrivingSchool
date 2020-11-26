@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import ru.project.drivingschool.model.embedded.History;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -15,29 +16,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public abstract class AbstractNamedEntity extends AbstractHistoryEntity {
 
-    @Column(name = "phone")
-    @NotBlank
-    protected String phone;
+    @NotBlank protected String phone;
 
-    @Column(name = "password")
-    @NotBlank
-    protected String password;
+    @NotBlank protected String password;
 
-    @Column(name = "avatar")
     protected String avatar;
 
-    @Column(name = "firstname")
-    @NotBlank
-    protected String firstname;
+    @NotBlank protected String firstname;
 
-    @Column(name = "lastname")
-    @NotBlank
-    protected String lastname;
+    @NotBlank protected String lastname;
 
-    @Column(name = "middlename")
     protected String middlename;
 
-    @Column(name = "email")
     protected String email;
 
     protected boolean enabled = true;
@@ -45,7 +35,7 @@ public abstract class AbstractNamedEntity extends AbstractHistoryEntity {
     public AbstractNamedEntity(Long id, @NotBlank String phone, @NotBlank String password, String avatar,
                                @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, boolean enabled,
                                LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy) {
-        super(id, createdOn, createdBy, changedOn, changedBy);
+        super(id, new History(createdOn, createdBy, changedOn, changedBy));
         this.phone = phone;
         this.password = password;
         this.avatar = avatar;

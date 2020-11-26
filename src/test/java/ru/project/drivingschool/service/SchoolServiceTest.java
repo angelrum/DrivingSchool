@@ -39,6 +39,18 @@ class SchoolServiceTest extends AbstractServiceTest<School> {
     }
 
     @Test
+    @Override
+    void create() {
+        School schNew = testData.getNew();
+        School create = service.create(schNew, schNew.getCompany().id(), employeeData.getId1());
+        schNew.setId(create.getId());
+        List<School> list = new ArrayList<>(testData.getAll());
+        list.add(schNew);
+        SCHOOL_MATCHER.assertMatch(service.get(schNew.id()), schNew);
+        SCHOOL_MATCHER.assertMatch(service.getAll(), list);
+    }
+
+    @Test
     void getAllUsers() {
         Set<SchoolUsers> users = service.getWithUsers(testData.getId1()).getUsers();
         USER_TEST_MATCHER.assertMatch(userData.getUserFromSchoolUsers(users),

@@ -41,7 +41,7 @@ CREATE TABLE employees
     email       VARCHAR(30)                     NULL,
     enabled     BOOLEAN         DEFAULT TRUE    NOT NULL,
     score       INTEGER         DEFAULT 5       NOT NULL,
-    created_on  TIMESTAMP       DEFAULT now()   NOT NULL,
+    created_on  TIMESTAMP       DEFAULT now()   ,
     created_by  BIGINT                          NULL,
     changed_on  TIMESTAMP                       NULL,
     changed_by  BIGINT                          NULL,

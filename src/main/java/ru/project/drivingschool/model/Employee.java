@@ -50,7 +50,8 @@ public class Employee extends AbstractNamedEntity {
     }
 
     public Employee(Employee e) {
-        this(e.id, e.company, e.phone, e.password, e.avatar, e.firstname, e.lastname, e.middlename, e.email, e.enabled, e.score, e.createdOn, e.createdBy, e.changedOn, e.changedBy, e.schools, e.roles);
+        this(e.id, e.company, e.phone, e.password, e.avatar, e.firstname, e.lastname, e.middlename, e.email, e.enabled, e.score,
+                e.getHistory().getCreatedOn(), e.getHistory().getCreatedBy(), e.getHistory().getChangedOn(), e.getHistory().getChangedBy(), e.schools, e.roles);
 
     }
 

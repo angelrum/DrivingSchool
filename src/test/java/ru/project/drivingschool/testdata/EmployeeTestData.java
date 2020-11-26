@@ -14,7 +14,7 @@ public class EmployeeTestData implements TestDataInterface<Employee> {
 
     public static final TestMatcher<Employee> EMPLOYEE_MATCHER =
             //TestMatcher.usingClassComparator(Employee.class, Map.of(Comparator.comparing(Employee::id), Employee.class, Comparator.comparing(School::getId), School.class), "company", "createdOn", "changedOn", "createdBy", "school");
-            TestMatcher.usingFieldsComparator(Employee.class, "company", "createdOn", "changedOn", "createdBy", "schools", "$$_hibernate_interceptor");
+            TestMatcher.usingFieldsComparator(Employee.class, "company", "history", "schools", "$$_hibernate_interceptor");
 
     public EmployeeTestData() {
         CompanyTestData companyData = new CompanyTestData();
@@ -43,7 +43,7 @@ public class EmployeeTestData implements TestDataInterface<Employee> {
         emp.setId(null);
         emp.setPhone("+7(911)111-11-13");
         emp.setFirstname("Петров");
-        emp.setCreatedBy(employee2);
+        emp.getHistory().setCreatedBy(employee2);
         return emp;
     }
 
