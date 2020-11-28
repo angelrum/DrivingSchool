@@ -31,4 +31,8 @@ public class UserServiceTest extends AbstractServiceTest<User>{
     }
 
 
+    //get all school from user
+    //update enable connect to school
+    // add new connect to school
+
 }

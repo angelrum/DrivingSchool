@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.util.CollectionUtils;
+import ru.project.drivingschool.model.embedded.SchoolUsers;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -25,6 +26,9 @@ public class User extends AbstractNamedEntity {
             inverseJoinColumns = @JoinColumn(name = "school_id", referencedColumnName = "id"))
     @ToString.Exclude protected Set<School> schools;
 
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
+    @ToString.Exclude protected Set<SchoolUsers> schoolsUsers;
+
     public User(Long id, @NotBlank String phone, @NotBlank String password, String avatar,
                 @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, boolean enabled,
                 LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy,Set<School> schools) {
@@ -38,6 +42,6 @@ public class User extends AbstractNamedEntity {
     }
 
     public void setSchools(Set<School> schools) {
-        this.schools = CollectionUtils.isEmpty(schools) ? new HashSet<>() : schools;;
+        this.schools = CollectionUtils.isEmpty(schools) ? new HashSet<>() : schools;
     }
 }
