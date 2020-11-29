@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SchoolTestData implements TestDataInterface<School>  {
 
@@ -14,6 +15,7 @@ public class SchoolTestData implements TestDataInterface<School>  {
 
     private final long schoolId1 = 10_002;
     private final long schoolId2 = 10_003;
+    private final long schoolId3 = 10_004;
 
     private CompanyTestData companyData = new CompanyTestData();
 
@@ -23,6 +25,8 @@ public class SchoolTestData implements TestDataInterface<School>  {
     private School school1 = new School(schoolId1, companyData.getObjectById(companyData.getId1()), "Школа N1", "Москва", "ул.Первого мая", "д.160, 5 этаж", "111100", "8(495)111-111-11", null, true, null, null, null, null, null, null);
 
     private School school2 = new School(schoolId2, companyData.getObjectById(companyData.getId1()), "Школа N2", "Москва", "ул.Нижняя Красносельская", "д.40, 5 этаж", "111100", "8(495)111-111-12", null, true, null, null, null, null, null, null);
+
+    private School school3 = new School(schoolId3, companyData.getObjectById(companyData.getId2()), "Школа N21", "Москва", "ул.Муравская", "д.1, 1 этаж", "111100", "8(495)111-111-13", null, true, null, null, null, null, null, null);
 
     @Override
     public long getId1() {
@@ -36,7 +40,11 @@ public class SchoolTestData implements TestDataInterface<School>  {
 
     @Override
     public Collection<School> getAll() {
-        return new ArrayList<>(List.of(school1, school2));
+        return new ArrayList<>(List.of(school1, school2, school3));
+    }
+
+    public Collection<School> getAllByCompany(long companyId) {
+        return getAll().stream().filter(s->s.getCompany().id()==companyId).collect(Collectors.toList());
     }
 
     @Override

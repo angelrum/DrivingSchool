@@ -3,13 +3,14 @@ package ru.project.drivingschool.model.embedded;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.project.drivingschool.model.Employee;
 import ru.project.drivingschool.model.School;
+import ru.project.drivingschool.model.User;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "school_employees")
 @Getter @Setter
 @NoArgsConstructor
 public class SchoolEmployees {
@@ -22,19 +23,19 @@ public class SchoolEmployees {
     private School school;
 
     @ManyToOne
-    @MapsId("employeeId")
-    private Employee employee;
+    @MapsId("userId")
+    private User user;
 
     private Boolean enable = true;
 
-    public SchoolEmployees(School school, Employee employee) {
+    public SchoolEmployees(School school, User user) {
         this.id = new SchoolEmployeeId();
         this.school = school;
-        this.employee = employee;
+        this.user = user;
     }
 
-    public SchoolEmployees(School school, Employee employee, Boolean enable) {
-        this(school, employee);
+    public SchoolEmployees(School school, User user, Boolean enable) {
+        this(school, user);
         this.enable = enable;
     }
 
@@ -45,12 +46,12 @@ public class SchoolEmployees {
         SchoolEmployees that = (SchoolEmployees) o;
         return id.equals(that.id) &&
                 Objects.equals(school, that.school) &&
-                Objects.equals(employee, that.employee) &&
+                Objects.equals(user, that.user) &&
                 enable.equals(that.enable);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id.getSchoolId(), id.getEmployeeId(), enable);
+        return Objects.hash(id.getSchoolId(), id.getUserId(), enable);
     }
 }

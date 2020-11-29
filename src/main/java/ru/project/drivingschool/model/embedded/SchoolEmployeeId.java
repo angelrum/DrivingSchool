@@ -13,11 +13,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode
-public class SchoolEmployeeId implements Serializable {
+class SchoolEmployeeId implements Serializable {
 
     @Column(name = "school_id")
     private Long schoolId;
 
-    @Column(name = "employee_id")
-    private Long employeeId;
+    @Column(name = "user_id")
+    private Long userId;
 }

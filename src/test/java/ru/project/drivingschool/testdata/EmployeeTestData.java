@@ -1,58 +1,32 @@
 package ru.project.drivingschool.testdata;
 
-import ru.project.drivingschool.TestMatcher;
-import ru.project.drivingschool.model.Employee;
 import ru.project.drivingschool.model.Role;
 import ru.project.drivingschool.model.User;
-import ru.project.drivingschool.model.embedded.SchoolEmployees;
-import ru.project.drivingschool.model.embedded.SchoolUsers;
+import ru.project.drivingschool.model.embedded.History;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.List;
 
-public class EmployeeTestData implements TestDataInterface<Employee> {
 
-    public static final TestMatcher<Employee> EMPLOYEE_MATCHER =
-            //TestMatcher.usingClassComparator(Employee.class, Map.of(Comparator.comparing(Employee::id), Employee.class, Comparator.comparing(School::getId), School.class), "company", "createdOn", "changedOn", "createdBy", "school");
-            TestMatcher.usingFieldsComparator(Employee.class, "company", "history", "schools", "$$_hibernate_interceptor");
+public class EmployeeTestData implements TestDataInterface<User> {
 
-    public EmployeeTestData() {
-        CompanyTestData companyData = new CompanyTestData();
-        SchoolTestData schoolData = new SchoolTestData();
-        employee1 = new Employee(employeeId1, companyData.getObjectById(companyData.getId1()), "+7(911)111-11-11", "12345", null, "Иванов", "Иван", "Иванович", "test1@test.ru", true, Employee.DEF_SCORE, null, null, null, null, null, Role.ADMIN);
-        employee2 = new Employee(employeeId2, companyData.getObjectById(companyData.getId1()), "+7(911)111-11-12", "123456", null, "Иванов", "Антон", "Иванович", "test2@test.ru", true, Employee.DEF_SCORE, null, employee1, null, null, null, Role.MANAGER);
-        employee3 = new Employee(employeeId3, companyData.getObjectById(companyData.getId2()), "+7(911)111-12-13", "123456", null, "Иванов", "Сергей", "Иванович", "test3@test.ru", true, Employee.DEF_SCORE, null, null, null, null, null, Role.ADMIN);
-    }
+    private final long employeeId1 = 1000L;
 
-    private final long employeeId1 = 1_000;
-    private final long employeeId2 = 1_001;
+    private final long employeeId2 = 1001L;
 
-    private final long employeeId3 = 1_002;
+    private final long employeeId3 = 1002L;
 
-    // (10000, '+7(911)111-11-11', '12345', null, 'Иванов', 'Иван', 'Иванович', 'test1@test.ru', null),
-    // (10000, '+7(911)111-11-12', '123456', null, 'Иванов', 'Антон', 'Иванович', 'test2@test.ru', 1000);
-    // (10001, '+7(911)111-12-13', '123456', null, 'Иванов', 'Сергей', 'Иванович', 'test3@test.ru', 5, null)
+    private CompanyTestData companyData = new CompanyTestData();
 
-    private Employee employee1;
-    private Employee employee2;
-    private Employee employee3;
+//        (10000, '+7(911)111-11-11', '12345', 'Иван', 'Иванов', 'Иванович', 'test1@test.ru', 0, null),
+//        (10000, '+7(911)111-11-12', '123456', 'Антон', 'Иванов', 'Иванович', 'test2@test.ru', 0, 1000),
+//        (10001, '+7(911)111-11-13', '123456', 'Сергей', 'Иванов', 'Иванович', 'test3@test.ru', 0, null),
 
-    @Override
-    public Employee getNew() {
-        Employee emp = new Employee(employee2);
-        emp.setId(null);
-        emp.setPhone("+7(911)111-11-13");
-        emp.setFirstname("Петров");
-        emp.getHistory().setCreatedBy(employee2);
-        return emp;
-    }
+    public User Employee1 = new User(employeeId1, companyData.getObjectById(companyData.getId1()), User.DEF_SCORE, "+7(911)111-11-11", "12345", null, "Иван", "Иванов", "Иванович", "test1@test.ru", true, null, null, null, Role.ADMIN);
 
-    @Override
-    public Employee getUpdate() {
-        Employee upd = new Employee(employee2);
-        upd.setPhone("+7(911)111-11-14");
-        return upd;
-    }
+    public User Employee2 = new User(employeeId2, companyData.getObjectById(companyData.getId1()), User.DEF_SCORE, "+7(911)111-11-12", "123456", null, "Антон", "Иванов", "Иванович", "test2@test.ru", true, null, null, new History(null, Employee1, null, null), Role.MANAGER);
+
+    public User Employee3 = new User(employeeId3, companyData.getObjectById(companyData.getId2()), User.DEF_SCORE, "+7(911)111-11-13", "123456", null, "Сергей", "Иванов", "Иванович", "test3@test.ru", true, null, null, null, Role.ADMIN);
 
     @Override
     public long getId1() {
@@ -64,17 +38,18 @@ public class EmployeeTestData implements TestDataInterface<Employee> {
         return employeeId2;
     }
 
-    public long getId3() {
-        return employeeId3;
+    @Override
+    public Collection<User> getAll() {
+        return List.of(Employee1, Employee2, Employee3);
     }
 
     @Override
-    public List<Employee> getAll() {
-        return new ArrayList<>(List.of(employee1, employee2, employee3));
+    public User getNew() {
+        return null;
     }
 
-    public List<Employee> getEmployeeFromSchoolEmployees(Set<SchoolEmployees> su) {
-        return su.stream().map(SchoolEmployees::getEmployee).collect(Collectors.toList());
+    @Override
+    public User getUpdate() {
+        return null;
     }
-
 }

@@ -6,16 +6,14 @@ import lombok.Setter;
 import ru.project.drivingschool.model.School;
 import ru.project.drivingschool.model.User;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "school_students")
 @Getter @Setter
 @NoArgsConstructor
-public class SchoolUsers {
+public class SchoolStudents {
 
     @EmbeddedId
     protected SchoolUserId id;
@@ -30,13 +28,13 @@ public class SchoolUsers {
 
     protected Boolean enable = true;
 
-    public SchoolUsers(School school, User user) {
+    public SchoolStudents(School school, User user) {
         this.id = new SchoolUserId();
         this.school = school;
         this.user = user;
     }
 
-    public SchoolUsers(School school, User user, Boolean enable) {
+    public SchoolStudents(School school, User user, Boolean enable) {
         this(school, user);
         this.enable = enable;
     }
@@ -44,8 +42,8 @@ public class SchoolUsers {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SchoolUsers)) return false;
-        SchoolUsers that = (SchoolUsers) o;
+        if (!(o instanceof SchoolStudents)) return false;
+        SchoolStudents that = (SchoolStudents) o;
         return id.equals(that.id) &&
                 Objects.equals(school, that.school) &&
                 Objects.equals(user, that.user) &&

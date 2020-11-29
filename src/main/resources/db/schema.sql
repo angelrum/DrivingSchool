@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS schools CASCADE ;
+DROP TABLE IF EXISTS school_users CASCADE ;
 DROP TABLE IF EXISTS school_employees CASCADE ;
-DROP TABLE IF EXISTS school_users;
+DROP TABLE IF EXISTS school_students CASCADE ;
 DROP TABLE IF EXISTS users CASCADE ;
-DROP TABLE IF EXISTS employee_roles;
-DROP TABLE IF EXISTS employees CASCADE ;
+DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS companys;
 DROP SEQUENCE IF EXISTS GLOBAL_SEQ;
 DROP SEQUENCE IF EXISTS REGISTER_SEQ;
@@ -28,7 +28,7 @@ CREATE TABLE companys
     CONSTRAINT company_idx UNIQUE (name)
 );
 
-CREATE TABLE employees
+CREATE TABLE users
 (
     id          BIGINT PRIMARY KEY DEFAULT nextval('REGISTER_SEQ'),
     company_id  INTEGER                         NULL,
@@ -40,27 +40,52 @@ CREATE TABLE employees
     middlename  VARCHAR(30)                     NULL,
     email       VARCHAR(30)                     NULL,
     enabled     BOOLEAN         DEFAULT TRUE    NOT NULL,
-    score       INTEGER         DEFAULT 5       NOT NULL,
+    score       INTEGER                         NOT NULL,
     created_on  TIMESTAMP       DEFAULT now()   ,
     created_by  BIGINT                          NULL,
     changed_on  TIMESTAMP                       NULL,
     changed_by  BIGINT                          NULL,
 
     FOREIGN KEY (company_id) REFERENCES companys (id) ON DELETE CASCADE,
---     FOREIGN KEY (created_by) REFERENCES employees (id),
---     FOREIGN KEY (changed_by) REFERENCES employees (id),
+    FOREIGN KEY (created_by) REFERENCES users (id),
+    FOREIGN KEY (changed_by) REFERENCES users (id),
 
-    CONSTRAINT employee_phone_idx UNIQUE (company_id, phone)
+    CONSTRAINT user_idx UNIQUE (phone)
 );
 
-CREATE TABLE employee_roles
+-- CREATE TABLE employees
+-- (
+--     id          BIGINT PRIMARY KEY DEFAULT nextval('REGISTER_SEQ'),
+--     company_id  INTEGER                         NULL,
+--     phone       VARCHAR(20)                     NOT NULL,
+--     password    VARCHAR                         NOT NULL,
+--     avatar      VARCHAR                         NULL,
+--     firstname   VARCHAR(30)                     NOT NULL,
+--     lastname    VARCHAR(30)                     NOT NULL,
+--     middlename  VARCHAR(30)                     NULL,
+--     email       VARCHAR(30)                     NULL,
+--     enabled     BOOLEAN         DEFAULT TRUE    NOT NULL,
+--     score       INTEGER         DEFAULT 5       NOT NULL,
+--     created_on  TIMESTAMP       DEFAULT now()   ,
+--     created_by  BIGINT                          NULL,
+--     changed_on  TIMESTAMP                       NULL,
+--     changed_by  BIGINT                          NULL,
+--
+--     FOREIGN KEY (company_id) REFERENCES companys (id) ON DELETE CASCADE,
+-- --     FOREIGN KEY (created_by) REFERENCES employees (id),
+-- --     FOREIGN KEY (changed_by) REFERENCES employees (id),
+--
+--     CONSTRAINT employee_phone_idx UNIQUE (company_id, phone)
+-- );
+
+CREATE TABLE user_roles
 (
-    employee_id BIGINT                          NOT NULL,
+    user_id     BIGINT                          NOT NULL,
     role        VARCHAR                         NOT NULL,
 
-    FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
 
-    CONSTRAINT employee_roles_idx UNIQUE (employee_id, role)
+    CONSTRAINT employee_roles_idx UNIQUE (user_id, role)
 );
 
 CREATE TABLE schools
@@ -74,15 +99,15 @@ CREATE TABLE schools
     postal_code VARCHAR(10)                     NULL,
     phone       VARCHAR(20)                     NULL,
     email       VARCHAR(30)                     NULL,
-    enabled     BOOLEAN         DEFAULT TRUE    NOT NULL,
-    created_on  TIMESTAMP       DEFAULT now()   NOT NULL,
+    enabled     BOOLEAN         DEFAULT TRUE    ,
+    created_on  TIMESTAMP       DEFAULT now()   ,
     created_by  BIGINT                          NULL,
     changed_on  TIMESTAMP                       NULL,
     changed_by  BIGINT                          NULL,
 
     FOREIGN KEY (company_id) REFERENCES companys (id) ON DELETE CASCADE,
---     FOREIGN KEY (created_by) REFERENCES employees (id),
---     FOREIGN KEY (changed_by) REFERENCES employees (id),
+    FOREIGN KEY (created_by) REFERENCES users (id),
+    FOREIGN KEY (changed_by) REFERENCES users (id),
 
     CONSTRAINT school_idx UNIQUE (company_id, name)
 );
@@ -90,38 +115,16 @@ CREATE TABLE schools
 CREATE TABLE school_employees
 (
     school_id   INTEGER                         NOT NULL,
-    employee_id BIGINT                          NOT NULL,
-    enable      BOOLEAN DEFAULT TRUE,
+    user_id     BIGINT                          NOT NULL,
+    enable      BOOLEAN DEFAULT TRUE            ,
 
     FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE,
-    FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
 
-    CONSTRAINT school_employee_idx UNIQUE (school_id, employee_id)
+    CONSTRAINT school_employee_idx UNIQUE (school_id, user_id)
 );
 
-CREATE TABLE users
-(
-    id          BIGINT PRIMARY KEY DEFAULT nextval('REGISTER_SEQ'),
-    phone       VARCHAR(20)                     NOT NULL,
-    password    VARCHAR                         NOT NULL,
-    avatar      VARCHAR                         NULL,
-    firstname   VARCHAR(30)                     NOT NULL,
-    lastname    VARCHAR(30)                     NOT NULL,
-    middlename  VARCHAR(30)                     NULL,
-    email       VARCHAR(30)                     NULL,
-    enabled     BOOLEAN         DEFAULT TRUE    NOT NULL,
-    created_on  TIMESTAMP       DEFAULT now()   NOT NULL,
-    created_by  BIGINT                          NULL,
-    changed_on  TIMESTAMP                       NULL,
-    changed_by  BIGINT                          NULL,
-
-    FOREIGN KEY (created_by) REFERENCES employees (id),
-    FOREIGN KEY (changed_by) REFERENCES employees (id),
-
-    CONSTRAINT user_idx UNIQUE (phone)
-);
-
-CREATE TABLE school_users
+CREATE TABLE school_students
 (
     school_id   INTEGER                         NOT NULL,
     user_id     BIGINT                          NOT NULL,
@@ -133,5 +136,5 @@ CREATE TABLE school_users
     FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id)   REFERENCES users (id)   ON DELETE CASCADE,
 
-    CONSTRAINT school_user_idx UNIQUE (school_id, user_id)
+    CONSTRAINT school_student_idx UNIQUE (school_id, user_id)
 )

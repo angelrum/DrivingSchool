@@ -35,7 +35,7 @@ class CompanyServiceTest extends AbstractServiceTest<Company> {
         Company company = service.getWithSchools(testData.getId1());
         List<School> schools = new ArrayList<>(company.getSchools());
         schools.sort(Comparator.comparing(School::id));
-        SCHOOL_MATCHER.assertMatch(schools, schoolTestData.getAll());
+        SCHOOL_MATCHER.assertMatch(schools, schoolTestData.getAllByCompany(testData.getId1()));
     }
 
     @Test

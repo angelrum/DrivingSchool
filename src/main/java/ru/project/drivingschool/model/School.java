@@ -5,7 +5,7 @@ import lombok.*;
 import org.springframework.util.CollectionUtils;
 import ru.project.drivingschool.model.embedded.History;
 import ru.project.drivingschool.model.embedded.SchoolEmployees;
-import ru.project.drivingschool.model.embedded.SchoolUsers;
+import ru.project.drivingschool.model.embedded.SchoolStudents;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -18,7 +18,11 @@ import java.util.*;
 @Getter @Setter @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class School extends AbstractHistoryEntity {
+public class School extends AbstractHistoryEntity implements HasId {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
     @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
@@ -44,14 +48,15 @@ public class School extends AbstractHistoryEntity {
     //https://www.baeldung.com/jpa-many-to-many
     //https://vladmihalcea.com/merge-entity-collections-jpa-hibernate/
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
-    @ToString.Exclude protected Set<SchoolUsers> users;
+    @ToString.Exclude protected Set<SchoolStudents> users;
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
     @ToString.Exclude protected Set<SchoolEmployees> employees;
 
     public School(Long id, @NotNull Company company, @NotBlank String name, @NotBlank String city, @NotBlank String street, @NotBlank String home, @NotBlank String postalCode,
-                  String phone, String email, boolean enabled, Set<SchoolUsers> users, Set<SchoolEmployees> employees, LocalDateTime createdOn, Employee createdBy, LocalDateTime changedOn, Employee changedBy) {
-        super(id, new History(createdOn, createdBy, changedOn, changedBy));
+                  String phone, String email, boolean enabled, Set<SchoolStudents> users, Set<SchoolEmployees> employees, LocalDateTime createdOn, User createdBy, LocalDateTime changedOn, User changedBy) {
+        super(new History(createdOn, createdBy, changedOn, changedBy));
+        this.id = id;
         this.company = company;
         this.name = name;
         this.city = city;
@@ -71,7 +76,7 @@ public class School extends AbstractHistoryEntity {
                 s.getHistory().getCreatedOn(), s.getHistory().getCreatedBy(), s.getHistory().getChangedOn(), s.getHistory().getChangedBy());
     }
 
-    public void setUsers(Set<SchoolUsers> users) {
+    public void setUsers(Set<SchoolStudents> users) {
         this.users = CollectionUtils.isEmpty(users) ? new HashSet<>() : users;
     }
 

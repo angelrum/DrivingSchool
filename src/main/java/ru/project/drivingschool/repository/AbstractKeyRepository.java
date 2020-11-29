@@ -9,11 +9,11 @@ import ru.project.drivingschool.repository.jpa.JpaKeyRepository;
 import java.util.List;
 
 @NoRepositoryBean
-public abstract class AbstractRepository <T extends HasId> {
+public abstract class AbstractKeyRepository<T extends HasId> {
 
     private JpaKeyRepository<T> repository;
 
-    public AbstractRepository(JpaKeyRepository<T> repository) {
+    public AbstractKeyRepository(JpaKeyRepository<T> repository) {
         this.repository = repository;
     }
 

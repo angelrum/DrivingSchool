@@ -34,6 +34,6 @@ public class UserService extends AbstractService<User>{
 
     private User save(User user, long createdBy) {
         checkNotNull(user);
-        return repository.save(user, createdBy);
+        return repository.save(user, createdBy, user.isNew());
     }
 }

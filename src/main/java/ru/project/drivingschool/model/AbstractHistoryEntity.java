@@ -7,18 +7,10 @@ import java.util.Objects;
 
 @MappedSuperclass
 @Getter @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public abstract class AbstractHistoryEntity implements HasId {
-    public static final int START_SEQ = 1_000;
-
-    @Id
-    //@SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+public abstract class AbstractHistoryEntity {
 
     @Embedded
-    @AttributeOverrides({
+    @AttributeOverrides(value = {
             @AttributeOverride(name = "createdOn",
                     column = @Column(name = "created_on", updatable = false)),
             @AttributeOverride(name = "changedOn",
@@ -30,9 +22,17 @@ public abstract class AbstractHistoryEntity implements HasId {
             @AssociationOverride(name = "changedBy",
                     joinColumns = @JoinColumn(name = "changed_by", referencedColumnName = "id"))
     })
-    protected History history = new History();
+    protected History history;
 
-//    @Column(name = "created_on", updatable = false)
+    AbstractHistoryEntity(History history) {
+        this.history = Objects.isNull(history) ? new History() : history;
+    }
+
+    public AbstractHistoryEntity() {
+        this.history = new History();
+    }
+
+    //    @Column(name = "created_on", updatable = false)
 //    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
 //    @CreationTimestamp
 //    protected LocalDateTime createdOn;
@@ -52,7 +52,6 @@ public abstract class AbstractHistoryEntity implements HasId {
     @Override
     public String toString() {
         return "AbstractHistoryEntity{" +
-                "id=" + id +
                 ", createdBy=" + (Objects.isNull(history.getCreatedBy()) ? null : history.getCreatedBy().id) +
                 ", changedBy=" + (Objects.isNull(history.getChangedBy()) ? null : history.getChangedBy().id) +
                 '}';
