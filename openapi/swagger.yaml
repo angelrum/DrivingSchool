@@ -4,7 +4,7 @@ info:
   version: "1.0.0"
   title: "DrivingSchool"
   contact:
-    email: "apiteam@drivingschoolhost.com"
+    email: "team@drivingschoolhost.com"
 host: "api.drivingschoolhost.com"
 basePath: "/v1"
 tags:
@@ -27,9 +27,9 @@ paths:
     post:
       tags:
       - "user"
-      summary: "Create user"
+      summary: "Create user unlinked to a school"
       description: ""
-      operationId: "createUser"
+      operationId: "createUnlinkedUser"
       parameters:
       - in: "body"
         name: "body"
@@ -40,98 +40,62 @@ paths:
       responses:
         "200":
           description: "OK"
+        "405":
+          description: "Invalid input"
       security:
-      - api_key: []          
-  /users/login:
-    get:
+      - api_key: []
+    put:
       tags:
       - "user"
-      summary: "Logs user into the system"
+      summary: "Update user unlinked to a school"
       description: ""
-      operationId: "loginUser"
+      operationId: "updateUnlinkedUser"
       parameters:
-      - name: "username"
-        in: "query"
-        description: "The user name for login"
+      - in: "body"
+        name: "body"
+        description: "Created user object"
         required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "The password for login in clear text"
-        required: true
-        type: "string"
+        schema:
+          $ref: "#/definitions/User"
       responses:
         "200":
           description: "OK"
-          schema:
-            type: "string"
-          headers:
-            X-Rate-Limit:
-              type: "integer"
-              format: "int32"
-              description: "calls per hour allowed by the user"
-            X-Expires-After:
-              type: "string"
-              format: "date-time"
-              description: "date in UTC when token expires"
-        "400":
-          description: "Invalid username/password supplied"
-  /users/logout:
-    get:
-      tags:
-      - "user"
-      summary: "Logs out current logged in user session"
-      description: ""
-      operationId: "logoutUser"
-      parameters: []
-      responses:
-        default:
-          description: "OK"
-  /users/{userId}:
-    get:
-      tags:
-      - "user"
-      summary: "Get user by id"
-      description: ""
-      operationId: "getUser"
-      parameters:
-      - name: "userId"
-        in: "path"
-        description: "The user id that needs to be fetched"
-        required: true
-        type: "integer"
-      responses:
-        "200":
-          description: "OK"
-          schema:
-            $ref: "#/definitions/User"
         "400":
           description: "Invalid user id supplied"
         "404":
           description: "User not found"
       security:
-      - user_auth:
-        - "write:users"
-        - "read:users"          
-    put:
+      - api_key: []      
+  /users/{userId}:
+    get:
       tags:
       - "user"
-      summary: "Update user"
-      description: ""
-      operationId: "updateUser"
+      summary: "Get any user by its ID"
+      description: "User linked or unlinked to a school"
+      operationId: "getUser"
       parameters:
       - name: "userId"
         in: "path"
-        description: "The user id that needs to be updates"
+        description: "Get user object"
         required: true
         type: "integer"
-      - in: "body"
-        name: "body"
-        description: "Updated user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
       responses:
+        "200":
+          description: "OK"
+          schema:
+            allOf:
+            - $ref: "#/definitions/User"
+            - type: "object"
+              properties:
+                school:
+                  type: "array"
+                  items:
+                    allOf:
+                    - $ref: "#/definitions/School"
+                    - type: "object"
+                      properties:
+                        company:
+                          $ref: "#/definitions/Company"
         "400":
           description: "Invalid user id supplied"
         "404":
@@ -161,62 +125,49 @@ paths:
       - user_auth:
         - "write:users"
         - "read:users"           
-  /users/findByCompany:
-    get:
+  /users/{userId}/assign:
+    put:
       tags:
       - "user"
-      summary: "Get users by company"
+      summary: "Update user unlinked to a school"
       description: ""
-      operationId: "findUsersByCompany"
+      operationId: "assignUser"
       parameters:
-      - name: "companyId"
-        in: "query"
-        description: "Company id that needs to be considered for filter"
+      - name: "userId"
+        in: "path"
+        description: ""
         required: true
         type: "integer"
-      - name: "activeStatus"
-        in: "query"
-        description: ""
-        required: false
-        type: "boolean"
-        default: true
+      - name: "body"
+        in: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            company:
+              type : "object"
+              properties:
+                id:
+                  type: "integer"
+                assignStatus:
+                  $ref: "#/definitions/CompanyRefType"
+            school:
+              type : "object"
+              properties:
+                id:
+                  type: "integer"
+                assignStatus:
+                  $ref: "#/definitions/SchoolRefType"
       responses:
         "200":
           description: "OK"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/User"
+        "400":
+          description: "Invalid user id supplied"
+        "404":
+          description: "User not found"
       security:
-      - api_key: []              
-  /users/findBySchool:
-    get:
-      tags:
-      - "user"
-      summary: "Get users by school"
-      description: ""
-      operationId: "findUsersBySchool"
-      parameters:
-      - name: "schoolId"
-        in: "query"
-        description: "Schools id that needs to be considered for filter"
-        required: true
-        type: "integer"
-      - name: "activeStatus"
-        in: "query"
-        description: ""
-        required: false
-        type: "boolean"
-        default: true        
-      responses:
-        "200":
-          description: "OK"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/User"
-      security:
-      - api_key: []              
+      - api_key: []  
   /companies:
     post:
       tags:
@@ -234,6 +185,28 @@ paths:
       responses:
         "200":
           description: "OK"
+        "405":
+          description: "Invalid input"
+    put:
+      tags:
+      - "company"
+      summary: "Update company"
+      description: ""
+      operationId: "updateCompany"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Update company object"
+        required: true
+        schema:
+          $ref: "#/definitions/Company"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Invalid company id supplied"
+        "404":
+          description: "Company not found"
     get:
       tags:
       - "company"
@@ -270,36 +243,27 @@ paths:
           description: "Invalid company id supplied"
         "404":
           description: "Company not found"
-  /companies/findByCity:
-    get:
+    delete:
       tags:
       - "company"
-      summary: "Get company by city"
+      summary: "Delete company"
       description: ""
-      operationId: "findCompanyByCity"
+      operationId: "deleteCompany"
       parameters:
-      - name: "cityId"
-        in: "query"
-        description: "City needs to be considered for filter"
+      - name: "companyId"
+        in: "path"
+        description: "The company id that needs to be deleted"
         required: true
         type: "integer"
-      - name: "activeStatus"
-        in: "query"
-        description: ""
-        required: false
-        type: "boolean"
-        default: true        
       responses:
-        "200":
-          description: "OK"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Company"
+        "400":
+          description: "Invalid company id supplied"
+        "404":
+          description: "Company not found"
   /companies/{companyId}/schools:
     get:
       tags:
-      - "school"
+      - "company"
       summary: "Get all schools of company"
       description: ""
       operationId: "getCompanySchools"
@@ -316,6 +280,45 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/School"
+  /companies/{companyId}/users:
+    get:
+      tags:
+      - "company"
+      summary: "Get users of company"
+      description: ""
+      operationId: "getCompanyUsers"
+      parameters:
+      - name: "companyId"
+        in: "path"
+        description: "Company id which contains schools"
+        required: true
+        type: "integer"  
+      - name: "body"
+        in: "body"
+        description: ""
+        required: true
+        schema:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              userType:
+                $ref: "#/definitions/UserType"
+              assignStatus:
+                type: "array"
+                items:
+                  $ref: "#/definitions/CompanyRefType"
+              userStatus:
+                type: "array"
+                items:
+                  $ref: "#/definitions/ActiveStatusType"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"              
   /schools:
     post:
       tags:
@@ -333,6 +336,45 @@ paths:
       responses:
         "200":
           description: "OK"
+        "405":
+          description: "Invalid input"
+    put:
+      tags:
+      - "school"
+      summary: "Update school"
+      description: ""
+      operationId: "updateSchool"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Update school object"
+        required: true
+        schema:
+          $ref: "#/definitions/School"
+      responses:
+        "400":
+          description: "Invalid school id supplied"
+        "404":
+          description: "School not found"
+    get:
+      tags:
+      - "school"
+      summary: "Get all schools"
+      description: ""
+      operationId: "getAllSchools"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              allOf:
+              - $ref: "#/definitions/School"
+              - type: "object"
+                properties:
+                  company:
+                    $ref: "#/definitions/Company"
   /schools/{schoolId}:
     get:
       tags:
@@ -351,29 +393,6 @@ paths:
           description: "OK"
           schema:
             $ref: "#/definitions/School"
-        "400":
-          description: "Invalid school id supplied"
-        "404":
-          description: "School not found"
-    put:
-      tags:
-      - "school"
-      summary: "Update school"
-      description: ""
-      operationId: "updateSchool"
-      parameters:
-      - name: "schoolId"
-        in: "path"
-        description: "The school id that needs to be updates"
-        required: true
-        type: "integer"
-      - in: "body"
-        name: "body"
-        description: "Updated school object"
-        required: true
-        schema:
-          $ref: "#/definitions/School"
-      responses:
         "400":
           description: "Invalid school id supplied"
         "404":
@@ -439,8 +458,8 @@ paths:
           description: "OK"
           schema:
             type: "array"
-            items: 
-              $ref: "#/definitions/City"
+            items:
+              type: "string"
 securityDefinitions:
   user_auth:
     type: "oauth2"
@@ -457,29 +476,55 @@ definitions:
   Company:
     type: "object"
     required:
+    - "shortName"
+    - "activeStatus"
+    properties:
+      id:
+        type: "integer"
+      shortName:
+        type: "string"
+      fullName:
+        type: "string"
+      legalEntityAddress:
+        $ref: "#/definitions/Address"
+      actualAddress:
+        $ref: "#/definitions/Address"
+      phone:
+        type: "string"
+      email:
+        type: "string"
+      website:
+        type: "string"
+      activeStatus:
+        $ref: "#/definitions/ActiveStatusType"
+    xml:
+      name: "Category"
+  School:
+    type: "object"
+    required:
     - "name"
+    - "companyId"
+    - "address"
     - "activeStatus"
     properties:
       id:
         type: "integer"
       name:
         type: "string"
+      companyId:
+        type: "integer"
       phone:
         type: "string"
       email:
-        type: "string"        
+        type: "string"
       address:
-        type: "string"
-      website:
-        type: "string"
+        $ref: "#/definitions/Address"
       activeStatus:
-        type: "boolean"
-    xml:
-      name: "Category"  
+        $ref: "#/definitions/ActiveStatusType"      
   User:
     type: "object"
     required:
-    - "userType"
+    - "type"
     - "firstName"
     - "lastName"
     - "email"
@@ -488,8 +533,8 @@ definitions:
     properties:
       id:
         type: "integer"
-      userType:
-        type: "integer"
+      type:
+        $ref: "#/definitions/UserType"
       firstName:
         type: "string"
       middleName: 
@@ -506,49 +551,73 @@ definitions:
         type: "string"
       phoneVerifStatus:
         type: "boolean"
-      password:
-        type: "string"        
       activeStatus:
-        type: "boolean"
+        $ref: "#/definitions/ActiveStatusType"
     xml:
       name: "User"
-  City:
+  Address:
     type: "object"
     required:
-    - "name"    
+    - "region"
+    - "city"
+    - "street"
+    - "building"
     properties:
-      id:
-        type: "integer"
-      name:
+      region:
         type: "string"
-    xml:
-      name: "City"
-  School:
-    type: "object"
-    required:
-    - "name"
-    - "companyId"
-    - "cityId"
-    - "activeStatus"
-    properties:
-      id:
-        type: "integer"
-      name:
+      city:
         type: "string"
-      companyId:
-        type: "integer"
-      cityId:
-        type: "integer"
-      districtId:
-        type: "integer"
-      phone:
+      zip:
         type: "string"
-      email:
+      district:
         type: "string"
-      address:
+      street:
         type: "string"
-      activeStatus:
-        type: "boolean"
+      building:
+        type: "string"
+      entrance:
+        type: "string"
+      floor:
+        type: "string"
+      office:
+        type: "string"
+      geopos:
+        type: "object"
+        required:
+        - "latitude"
+        - "longitude"
+        properties:
+          latitude:
+            type: "string"
+          longitude:
+            type: "string"
+  UserType:
+    type: "string"
+    enum:
+    - "admin"
+    - "manager"
+    - "teacher"
+    - "instructor"
+    - "student"  
+  ActiveStatusType:
+    type: "string"
+    enum:
+    - "active"
+    - "inactive"
+  SchoolRefType:
+    type: "string"
+    enum:
+    - "pending"
+    - "enabled"
+    - "disabled"
+  CompanyRefType:
+    type: "string"
+    enum:
+    - "pending"
+    - "contracted"
+    - "blocked"
+    - "released"
+    - "terminated"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
