@@ -1,4 +1,4 @@
-package ru.project.drivingschool.model;
+package ru.project.drivingschool.model.common;
 
 import lombok.*;
 import ru.project.drivingschool.model.embedded.History;
@@ -6,8 +6,9 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @MappedSuperclass
-@Getter @Setter
-public abstract class AbstractHistoryEntity {
+@Getter @Setter @ToString
+@NoArgsConstructor
+public abstract class AbstractKeyHistoryEntity extends AbstractKeyEntity {
 
     @Embedded
     @AttributeOverrides(value = {
@@ -22,14 +23,15 @@ public abstract class AbstractHistoryEntity {
             @AssociationOverride(name = "changedBy",
                     joinColumns = @JoinColumn(name = "changed_by", referencedColumnName = "id"))
     })
-    protected History history;
+    @ToString.Exclude protected History history;
 
-    AbstractHistoryEntity(History history) {
-        this.history = Objects.isNull(history) ? new History() : history;
+    public AbstractKeyHistoryEntity(Long id, History history) {
+        super(id);
+        setHistory(history);
     }
 
-    public AbstractHistoryEntity() {
-        this.history = new History();
+    public void setHistory(History history) {
+        this.history = Objects.isNull(history) ? new History() : history;
     }
 
     //    @Column(name = "created_on", updatable = false)
@@ -49,11 +51,4 @@ public abstract class AbstractHistoryEntity {
 //    @JoinColumn(name = "changed_by", referencedColumnName = "id")
 //    protected Employee changedBy;
 
-    @Override
-    public String toString() {
-        return "AbstractHistoryEntity{" +
-                ", createdBy=" + (Objects.isNull(history.getCreatedBy()) ? null : history.getCreatedBy().id) +
-                ", changedBy=" + (Objects.isNull(history.getChangedBy()) ? null : history.getChangedBy().id) +
-                '}';
-    }
 }

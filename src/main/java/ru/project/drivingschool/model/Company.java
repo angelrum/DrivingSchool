@@ -4,13 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
-import ru.project.drivingschool.util.DateTimeUtil;
-
+import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
+import ru.project.drivingschool.model.embedded.History;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -20,55 +17,48 @@ import java.util.Set;
 @Getter @Setter
 @NoArgsConstructor
 @ToString
-public class Company implements HasId {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+public class Company extends AbstractKeyHistoryEntity {
 
     @NotBlank protected String name;
 
-    @Enumerated(EnumType.STRING)
-    protected Country country;
-
-    protected String city;
-
-    protected String street;
-
-    protected String home;
-
-    @Column(name = "postal_code")
-    protected String postalCode;
+    @Column(name = "short_name")
+    protected String shortName;
 
     @NotBlank protected String phone;
 
     protected String email;
 
+    protected String website;
+
+    protected Boolean active = true;
+
+    @OneToOne(targetEntity = Address.class)
+    @JoinColumn(name = "address_legal_id", referencedColumnName = "id")
+    protected Address addressLegal;
+
+    @OneToOne(targetEntity = Address.class)
+    @JoinColumn(name = "address_actual_id", referencedColumnName = "id")
+    protected Address adressActual;
+
     @OneToMany(targetEntity = School.class)
     @JoinColumn(name = "company_id", referencedColumnName = "id", insertable = false, updatable = false)
-    protected Set<School> schools;
+    @ToString.Exclude protected Set<School> schools;
 
-    @Column(name = "created_on", updatable = false)
-    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
-    @CreationTimestamp
-    protected LocalDateTime createdOn;
-
-    public Company(Long id, @NotBlank String name, Country country, String city, String street, String home, String postalCode, @NotBlank String phone, String email, Set<School> schools, LocalDateTime createdOn) {
-        this.id = id;
+    public Company(Long id, @NotBlank String name, String shortName, @NotBlank String phone, String email, String website, Boolean active, Address addressLegal, Address adressActual, Set<School> schools, History history) {
+        super(id, history);
         this.name = name;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.home = home;
-        this.postalCode = postalCode;
+        this.shortName = shortName;
         this.phone = phone;
         this.email = email;
-        this.createdOn = createdOn;
+        this.website = website;
+        this.active = Objects.isNull(active) ? true : active;
+        this.addressLegal = addressLegal;
+        this.adressActual = adressActual;
         setSchools(schools);
     }
 
     public Company(Company c) {
-        this(c.id, c.name, c.country, c.city, c.street, c.home, c.postalCode, c.phone, c.email, c.schools, c.createdOn);
+        this(c.id, c.name, c.shortName, c.phone, c.email, c.website, c.active, c.addressLegal, c.adressActual, c.schools, c.history);
     }
 
     public void setSchools(Set<School> schools) {

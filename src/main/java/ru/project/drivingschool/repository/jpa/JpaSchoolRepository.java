@@ -8,11 +8,8 @@ import java.util.List;
 
 public interface JpaSchoolRepository extends JpaKeyRepository<School> {
 
-    @Query("SELECT s FROM School s LEFT JOIN FETCH s.users WHERE s.id=:id")
+    @Query("SELECT s FROM School s LEFT JOIN FETCH s.schoolUsers WHERE s.id=:id")
     School getWithUsers(@Param("id") long id);
-
-    @Query("SELECT s FROM School s LEFT JOIN FETCH s.employees WHERE s.id=:id")
-    School getWithEmployees(@Param("id") long id);
     
     @Query("SELECT s FROM School s WHERE s.company.id=:companyId")
     List<School> getAll(@Param("companyId") long companyId);

@@ -1,26 +1,27 @@
 package ru.project.drivingschool.testdata;
 
 import ru.project.drivingschool.TestMatcher;
+import ru.project.drivingschool.model.Address;
 import ru.project.drivingschool.model.Company;
-import ru.project.drivingschool.model.Country;
-import ru.project.drivingschool.model.User;
+import ru.project.drivingschool.model.directory.Country;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyTestData implements TestDataInterface<Company> {
 
-    public static final TestMatcher<Company> COMPANY_MATCHER = TestMatcher.usingFieldsComparator(Company.class, "createdOn", "schools");
+    public static final TestMatcher<Company> COMPANY_MATCHER = TestMatcher.usingFieldsComparator(Company.class, "schools", "history");
 
-    private final long companyId1 = 10000;
+    private final long companyId1 = 10006;
+    private final long companyId2 = 10007;
 
-    private final long companyId2 = 10001;
-    // ('ООО "Рога и копыта"', 'Москва', 'ул.Ленина', 'д.1', '111100', '+7(911)111-11-11'),
-    // ('ООО "Копыта и рога"', 'Москва', 'ул.Ленина', 'д.2', '111100', '+7(911)111-11-12');
+    private Address address1 = new Address(10_000L, Country.RUS, "Москва", "Москва", "123456", "ул. Первого Мая", "стр.1", "д.12", 1, 105, null, null);
+    private Address address2 = new Address(10_001L, Country.RUS, "Москва", "Москва", "123456", "ул. Первого Мая", "стр.1", "д.15", 1, 117, null, null);
+    private Address address3 = new Address(10_002L, Country.RUS, "Москва", "Москва", "123457", "ул. Ленина", null, "д.12", 3, 305, null, null);
 
-    private Company company1 = new Company(companyId1, "ООО \"Рога и копыта\"", Country.RUS, "Москва", "ул.Ленина", "д.1", "111100", "+7(911)111-11-11", null, null, null);
 
-    private Company company2 = new Company(companyId2, "ООО \"Копыта и рога\"", Country.RUS, "Москва", "ул.Ленина", "д.2", "111100", "+7(911)111-11-12", null, null, null);
+    private Company company1 = new Company(companyId1, "ООО \"Рога и копыта\"", "Рога и копыта", "+7(911)311-11-11", "roga@mail.ru", "roga.ru", true, address1, address2, null, null);
+    private Company company2 = new Company(companyId2, "ООО \"Новые рога\"", "Новые рога", "+7(911)311-11-12", "roga_new@mail.ru", "newroga.ru", true, address3, address3, null, null);
 
     @Override
     public Company getNew() {

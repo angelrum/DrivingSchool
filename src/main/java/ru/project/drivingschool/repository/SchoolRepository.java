@@ -2,30 +2,40 @@ package ru.project.drivingschool.repository;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import ru.project.drivingschool.model.Company;
 import ru.project.drivingschool.model.School;
+import ru.project.drivingschool.model.User;
+import ru.project.drivingschool.model.embedded.SchoolUserId;
+import ru.project.drivingschool.model.embedded.SchoolUsers;
 import ru.project.drivingschool.repository.jpa.JpaCompanyRepository;
 import ru.project.drivingschool.repository.jpa.JpaSchoolRepository;
+import ru.project.drivingschool.repository.jpa.JpaSchoolUsersRepository;
 import ru.project.drivingschool.repository.jpa.JpaUserRepository;
 import ru.project.drivingschool.util.ValidationUtil;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 @Transactional(readOnly = true)
-public class SchoolRepository extends AbstractKeyRepository<School> implements InterfaceHistoryRepository<School> {
+public class SchoolRepository extends AbstractKeyHistoryRepository<School> {
     
     private JpaSchoolRepository repository;
 
     private JpaCompanyRepository companyRepository;
 
-    private JpaUserRepository userRepository;
+    private JpaSchoolUsersRepository schoolUsersRepository;
 
-    public SchoolRepository(JpaSchoolRepository repository, JpaCompanyRepository companyRepository, JpaUserRepository userRepository) {
-        super(repository);
+    public SchoolRepository(JpaSchoolRepository repository,
+                            JpaCompanyRepository companyRepository,
+                            JpaUserRepository userRepository,
+                            JpaSchoolUsersRepository schoolUsersRepository) {
+        super(repository, userRepository);
         this.repository = repository;
         this.companyRepository = companyRepository;
-        this.userRepository = userRepository;
+        this.schoolUsersRepository = schoolUsersRepository;
     }
 
     public List<School> getAll(long companyId) {
@@ -35,20 +45,16 @@ public class SchoolRepository extends AbstractKeyRepository<School> implements I
     public School getWithUsers(long id) {
         return repository.getWithUsers(id);
     }
-    
-    public School getWithEmployees(long id) {
-        return repository.getWithEmployees(id);
-    }
 
-    @Transactional
-    public School save(School e, long companyId, long createdBy) {
-        Company company = companyId > ValidationUtil.REGISTER_SEQ ? companyRepository.getOne(companyId) : null;
+    public School save(School e, long companyId, long userId) {
+        Company company = companyRepository.getOne(companyId);
         e.setCompany(company);
-        return save(e, createdBy, e.isNew());
+        if (!e.isNew() && CollectionUtils.isEmpty(e.getSchoolUsers())) {
+            Set<SchoolUsers> users = schoolUsersRepository.getBySchool(e.id());
+            e.setUsers(users);
+        }
+
+        return super.save(e, userId);
     }
 
-    @Override
-    public JpaUserRepository getUserRepository() {
-        return this.userRepository;
-    }
 }

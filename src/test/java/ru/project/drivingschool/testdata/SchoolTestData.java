@@ -1,32 +1,32 @@
 package ru.project.drivingschool.testdata;
 
 import ru.project.drivingschool.TestMatcher;
+import ru.project.drivingschool.model.Address;
 import ru.project.drivingschool.model.School;
+import ru.project.drivingschool.model.directory.Country;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SchoolTestData implements TestDataInterface<School>  {
 
-    public static final TestMatcher<School> SCHOOL_MATCHER = TestMatcher.usingFieldsComparator(School.class, "employees", "users", "company", "history");
-
-    private final long schoolId1 = 10_002;
-    private final long schoolId2 = 10_003;
-    private final long schoolId3 = 10_004;
+    public static final TestMatcher<School> SCHOOL_MATCHER = TestMatcher.usingFieldsComparator(School.class, "schoolUsers", "company", "history");
 
     private CompanyTestData companyData = new CompanyTestData();
 
-    //(10000, 'Школа N1', 'Москва', 'ул.Первого мая', 'д.160, 5 этаж', '111100', '8(495)111-111-11', null, 1000),
-    //(10000, 'Школа N2', 'Москва', 'ул.Нижняя Красносельская', 'д.40, 5 этаж', '111100', '8(495)111-111-12', null, 1000);
+    private final long schoolId1 = 10_008;
+    private final long schoolId2 = 10_009;
+    private final long schoolId3 = 10_010;
 
-    private School school1 = new School(schoolId1, companyData.getObjectById(companyData.getId1()), "Школа N1", "Москва", "ул.Первого мая", "д.160, 5 этаж", "111100", "8(495)111-111-11", null, true, null, null, null, null, null, null);
+    private Address address1 =  new Address(10_003L, Country.RUS, "Москва", "Москва", "123458", "ул. Нижняя Красносельская", null, "д.15", 3, 343, null, null);
+    private Address address2 =  new Address(10_004L, Country.RUS, "Москва", "Москва", "123459", "ул. Антонова", "корп.8", "д.1", 2, 283, null, null);
+    private Address address3 =  new Address(10_005L, Country.RUS, "Москва", "Москва", "123459", "ул. Миронова", null, "д.3", 2, 15, null, null);
 
-    private School school2 = new School(schoolId2, companyData.getObjectById(companyData.getId1()), "Школа N2", "Москва", "ул.Нижняя Красносельская", "д.40, 5 этаж", "111100", "8(495)111-111-12", null, true, null, null, null, null, null, null);
-
-    private School school3 = new School(schoolId3, companyData.getObjectById(companyData.getId2()), "Школа N21", "Москва", "ул.Муравская", "д.1, 1 этаж", "111100", "8(495)111-111-13", null, true, null, null, null, null, null, null);
+    private School school1 = new School(schoolId1, companyData.getObjectById(companyData.getId1()), "Автошкола N1 \"На Первого мая\"", "Автошкола N1", "8(495)111-111-11", "avtonumber1@mail.ru", address1, true, null, null);
+    private School school2 = new School(schoolId2, companyData.getObjectById(companyData.getId1()), "Автошкола N2 \"На Антонова\"", "Автошкола N2", "8(495)211-111-11", "avtonumber2@mail.ru", address2, true, null, null);
+    private School school3 = new School(schoolId3, companyData.getObjectById(companyData.getId2()), "Автошкола N1 \"На Миронова\"", "Автошкола N1", "8(495)311-111-11", "avto_mironova@mail.ru", address3, true, null, null);
 
     @Override
     public long getId1() {
@@ -52,7 +52,7 @@ public class SchoolTestData implements TestDataInterface<School>  {
         School create = new School(school1);
         create.setId(null);
         create.setName("Школа N3");
-        create.setHome("д.220");
+        create.setPhone("8(495)222-111-11");
         create.setEmail("test@test.ru");
         return create;
     }
@@ -60,7 +60,7 @@ public class SchoolTestData implements TestDataInterface<School>  {
     @Override
     public School getUpdate() {
         School upd = new School(school1);
-        upd.setHome("д.30");
+        upd.setName("Обновленная школа");
         upd.setPhone("8(495)211-111-11");
         return upd;
     }

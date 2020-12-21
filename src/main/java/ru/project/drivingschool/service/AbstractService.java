@@ -2,19 +2,19 @@ package ru.project.drivingschool.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.project.drivingschool.model.HasId;
-import ru.project.drivingschool.repository.AbstractKeyRepository;
+import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
+import ru.project.drivingschool.repository.AbstractKeyHistoryRepository;
 import java.util.List;
 
 import static ru.project.drivingschool.util.ValidationUtil.*;
 
-public abstract class AbstractService <T extends HasId> {
+public abstract class AbstractService <T extends AbstractKeyHistoryEntity> {
 
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final AbstractKeyRepository<T> repository;
+    private final AbstractKeyHistoryRepository<T> repository;
 
-    public AbstractService(AbstractKeyRepository<T> repository) {
+    public AbstractService(AbstractKeyHistoryRepository<T> repository) {
         this.repository = repository;
     }
 
@@ -28,17 +28,17 @@ public abstract class AbstractService <T extends HasId> {
         return checkNotFoundWithId(repository.get(id), id);
     }
 
-    public T create(T t) {
+    public T create(T t, Long userId) {
         log.info("Create entity {}", t.toString());
         checkNotNull(t);
         checkNew(t);
-        return repository.save(t);
+        return repository.save(t, userId);
     }
 
-    public T update(T t) {
+    public T update(T t, Long userId) {
         log.info("Update entity {}", t.toString());
         checkNotNull(t);
-        return checkNotFoundWithId(repository.save(t), t.id());
+        return checkNotFoundWithId(repository.save(t, userId), t.id());
     }
 
     public void delete(long id) {

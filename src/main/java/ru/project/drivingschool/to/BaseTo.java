@@ -1,10 +1,8 @@
 package ru.project.drivingschool.to;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.project.drivingschool.model.HasId;
+import ru.project.drivingschool.model.common.HasId;
 
 @Setter
 @NoArgsConstructor

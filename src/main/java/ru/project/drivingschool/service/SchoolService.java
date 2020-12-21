@@ -19,31 +19,25 @@ public class SchoolService extends AbstractService<School> {
     }
 
     public List<School> getAll(long companyId) {
-        log.info("get all schools by company. Company id={}", companyId);
+        log.info("get all schools by company with id={}", companyId);
         checkByGlobalId(companyId);
         return repository.getAll(companyId);
     }
 
     public School getWithUsers(long id) {
-        log.info("get school with users. Id={}", id);
+        log.info("get school with all users. Id = {}", id);
         checkByGlobalId(id);
         return checkNotFoundWithId(repository.getWithUsers(id), id);
     }
 
-    public School getWithEmployees(long id) {
-        log.info("get school with employees. Id={}", id);
-        checkByGlobalId(id);
-        return checkNotFoundWithId(repository.getWithEmployees(id), id);
-    }
-
     public School create(School school, long companyId, long createdBy) {
-        log.info("Create employee {}. Company={} and created={}", school.toString(), companyId, createdBy);
+        log.info("Create schools {}. Company={} and created user = {}", school.toString(), companyId, createdBy);
         checkNew(school);
         return this.save(school, companyId, createdBy);
     }
 
     public School update(School school, long companyId, long changedBy) {
-        log.info("Update employee {}. Company={} and changed={}", school.toString(), companyId, changedBy);
+        log.info("Update school {}. Company = {} and changed user = {}", school.toString(), companyId, changedBy);
         return this.save(school, companyId, changedBy);
     }
 

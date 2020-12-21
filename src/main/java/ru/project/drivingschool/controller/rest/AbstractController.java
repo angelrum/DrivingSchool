@@ -8,10 +8,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.project.drivingschool.AuthorizedUser;
 import ru.project.drivingschool.View;
-import ru.project.drivingschool.model.HasId;
+import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
 import ru.project.drivingschool.service.AbstractService;
 
-public abstract class AbstractController <T extends HasId, To> {
+public abstract class AbstractController <T extends AbstractKeyHistoryEntity, To> {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -31,13 +31,13 @@ public abstract class AbstractController <T extends HasId, To> {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void create(@Validated(View.Web.class) T t) {
         log.info("create object {}", t.toString());
-        service.create(t);
+        service.create(t, AuthorizedUser.getId());
     }
 
     @PutMapping
     public void update(@Validated(View.Web.class) T t) {
         log.info("update employee {}", t.toString());
-        service.update(t);
+        service.update(t, AuthorizedUser.getId());
     }
 
     abstract To createTo(T t);

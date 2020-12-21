@@ -1,9 +1,9 @@
 package ru.project.drivingschool;
 
-public class AuthorizedUser {
+public class AuthorizedUserTest {
 
     public static long getCompanyId() {
-        return 10_000;
+        return 10_006;
     }
 
     public static long getId() {

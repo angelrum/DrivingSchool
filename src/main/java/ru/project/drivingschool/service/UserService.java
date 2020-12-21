@@ -16,9 +16,9 @@ public class UserService extends AbstractService<User>{
         this.repository = repository;
     }
     
-    public User getFirstByPhone(String phone){
+    public User getByPhone(String phone){
         checkNotNull(phone);
-        return checkNotFound(repository.getFirstByPhone(phone), String.format("Not found with phone=%s", phone));
+        return checkNotFound(repository.getByPhone(phone), String.format("Not found with phone=%s", phone));
     }
 
     public User create(User user, long createdBy) {
@@ -34,6 +34,6 @@ public class UserService extends AbstractService<User>{
 
     private User save(User user, long createdBy) {
         checkNotNull(user);
-        return repository.save(user, createdBy, user.isNew());
+        return repository.save(user, createdBy);
     }
 }

@@ -5,9 +5,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.util.CollectionUtils;
+import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
+import ru.project.drivingschool.model.directory.Role;
 import ru.project.drivingschool.model.embedded.History;
-import ru.project.drivingschool.model.embedded.SchoolEmployees;
-import ru.project.drivingschool.model.embedded.SchoolStudents;
+import ru.project.drivingschool.model.embedded.SchoolUsers;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -17,21 +18,13 @@ import java.util.*;
 @Table(name = "users")
 @Getter @Setter @ToString(callSuper = true)
 @NoArgsConstructor
-public class User extends AbstractHistoryEntity implements HasId {
+public class User extends AbstractKeyHistoryEntity {
 
     public static final int DEF_SCORE = 0;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
-    @JoinColumn(name = "company_id", referencedColumnName = "id")
-    @ToString.Exclude protected Company company;
-
-    protected Integer score = 0;
-
     @NotBlank protected String phone;
+
+    protected Boolean phoneStatus = false;
 
     @NotBlank protected String password;
 
@@ -45,7 +38,11 @@ public class User extends AbstractHistoryEntity implements HasId {
 
     protected String email;
 
-    protected boolean enabled = true;
+    protected Boolean emailStatus = false;
+
+    protected Integer score = DEF_SCORE;
+
+    protected Boolean active = true;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
@@ -54,17 +51,12 @@ public class User extends AbstractHistoryEntity implements HasId {
     protected Set<Role> roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @ToString.Exclude protected Set<SchoolEmployees> schoolEmployees;
+    @ToString.Exclude protected Set<SchoolUsers> schoolUsers;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @ToString.Exclude protected Set<SchoolStudents> schoolStudents;
-
-    public User(Long id, Company company, Integer score, @NotBlank String phone, @NotBlank String password, String avatar,
-                @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, boolean enabled,
-                Set<SchoolEmployees> schoolEmployees, Set<SchoolStudents> schoolStudents, History history, Collection<Role> roles) {
-        super(history);
-        this.id = id;
-        this.company = company;
+    public User(Long id, @NotBlank String phone, Boolean phoneStatus, @NotBlank String password, String avatar,
+                @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, Boolean emailStatus,
+                Integer score, Boolean active, Set<SchoolUsers> schoolUsers, History history, Set<Role> roles) {
+        super(id, history);
         this.phone = phone;
         this.password = password;
         this.avatar = avatar;
@@ -72,21 +64,21 @@ public class User extends AbstractHistoryEntity implements HasId {
         this.lastname = lastname;
         this.middlename = middlename;
         this.email = email;
-        this.enabled = enabled;
-        setRoles(roles);
+        setPhoneStatus(phoneStatus);
+        setEmailStatus(emailStatus);
+        setActive(active);
         setScore(score);
-        setSchoolEmployees(schoolEmployees);
-        setSchoolStudents(schoolStudents);
+        setRoles(roles);
+        setSchoolUsers(schoolUsers);
     }
-
-    public User(Long id, Company company, Integer score, @NotBlank String phone, @NotBlank String password, String avatar,
-                @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, boolean enabled,
-                Set<SchoolEmployees> schoolEmployees, Set<SchoolStudents> schoolStudents, History history, Role role, Role...roles) {
-        this(id, company, score, phone, password, avatar, firstname, lastname, middlename, email, enabled, schoolEmployees, schoolStudents, history, EnumSet.of(role, roles));
+    public User(Long id, @NotBlank String phone, Boolean phoneStatus, @NotBlank String password, String avatar,
+                @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, Boolean emailStatus,
+                Integer score, Boolean active, Set<SchoolUsers> schoolUsers, History history, Role... roles) {
+        this(id, phone, phoneStatus, password, avatar, firstname, lastname, middlename, email, emailStatus, score, active, schoolUsers, history, Set.of(roles));
     }
 
     public User(User u) {
-        this(u.id, u.company, u.score, u.phone, u.password, u.avatar, u.firstname, u.lastname, u.middlename, u.email, u.enabled, u.schoolEmployees, u.schoolStudents, u.history, u.roles);
+        this(u.id, u.phone, u.phoneStatus, u.password, u.avatar, u.firstname, u.lastname, u.middlename, u.email, u.emailStatus, u.score, u.active, u.schoolUsers, u.history, u.roles);
     }
 
     public void setRoles(Collection<Role> roles) {
@@ -97,11 +89,19 @@ public class User extends AbstractHistoryEntity implements HasId {
         this.score = Objects.isNull(score) ? DEF_SCORE : score;
     }
 
-    public void setSchoolEmployees(Set<SchoolEmployees> schoolEmployees) {
-        this.schoolEmployees = CollectionUtils.isEmpty(schoolEmployees) ? new HashSet<>() : schoolEmployees;
+    public void setPhoneStatus(Boolean phoneStatus) {
+        this.phoneStatus = Objects.isNull(phoneStatus) ? false : phoneStatus;
     }
 
-    public void setSchoolStudents(Set<SchoolStudents> schoolStudents) {
-        this.schoolStudents = CollectionUtils.isEmpty(schoolStudents) ? new HashSet<>() : schoolStudents;;
+    public void setEmailStatus(Boolean emailStatus) {
+        this.emailStatus = Objects.isNull(emailStatus) ? false : emailStatus;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = Objects.isNull(active) ? true : active;
+    }
+
+    public void setSchoolUsers(Set<SchoolUsers> schoolUsers) {
+        this.schoolUsers = CollectionUtils.isEmpty(schoolUsers) ? new HashSet<>() : schoolUsers;
     }
 }

@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import ru.project.drivingschool.model.Company;
-import ru.project.drivingschool.model.Country;
+import ru.project.drivingschool.model.directory.Country;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -42,6 +42,6 @@ public class CompanyTo extends BaseTo {
     }
 
     public CompanyTo(Company c) {
-        this(c.id(), c.getName(), c.getCountry(), c.getCity(), c.getStreet(), c.getHome(), c.getPostalCode(), c.getPhone(), c.getEmail());
+
     }
 }

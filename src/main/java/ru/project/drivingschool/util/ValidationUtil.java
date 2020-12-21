@@ -2,7 +2,7 @@ package ru.project.drivingschool.util;
 
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
-import ru.project.drivingschool.model.HasId;
+import ru.project.drivingschool.model.common.HasId;
 import ru.project.drivingschool.util.exception.IllegalRequestDataException;
 import ru.project.drivingschool.util.exception.NotFoundException;
 
@@ -10,9 +10,9 @@ import java.util.List;
 
 public class ValidationUtil {
 
-    public final static long REGISTER_SEQ = 1000L;
+    private final static long REGISTER_SEQ = 1000L;
 
-    public final static long GLOBAL_SEQ = 10_000L;
+    private final static long GLOBAL_SEQ = 10_000L;
 
     public static void assureIdConsistent(HasId bean, long id) {
 //      conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)

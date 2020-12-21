@@ -3,26 +3,23 @@ package ru.project.drivingschool.model;
 
 import lombok.*;
 import org.springframework.util.CollectionUtils;
+import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
 import ru.project.drivingschool.model.embedded.History;
-import ru.project.drivingschool.model.embedded.SchoolEmployees;
-import ru.project.drivingschool.model.embedded.SchoolStudents;
+import ru.project.drivingschool.model.embedded.SchoolUsers;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "schools")
 @Getter @Setter @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class School extends AbstractHistoryEntity implements HasId {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+public class School extends AbstractKeyHistoryEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
     @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
@@ -31,56 +28,42 @@ public class School extends AbstractHistoryEntity implements HasId {
 
     @NotBlank protected String name;
 
-    @NotBlank protected String city;
-
-    @NotBlank protected String street;
-
-    @NotBlank protected String home;
-
-    @NotBlank protected String postalCode;
+    @Column(name = "short_name")
+    protected String shortName;
 
     protected String phone;
 
     protected String email;
 
-    protected boolean enabled = true;
+    @OneToOne(targetEntity = Address.class)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    protected Address address;
+
+    protected Boolean active = true;
 
     //https://www.baeldung.com/jpa-many-to-many
     //https://vladmihalcea.com/merge-entity-collections-jpa-hibernate/
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
-    @ToString.Exclude protected Set<SchoolStudents> users;
+    @ToString.Exclude protected Set<SchoolUsers> schoolUsers;
 
-    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
-    @ToString.Exclude protected Set<SchoolEmployees> employees;
-
-    public School(Long id, @NotNull Company company, @NotBlank String name, @NotBlank String city, @NotBlank String street, @NotBlank String home, @NotBlank String postalCode,
-                  String phone, String email, boolean enabled, Set<SchoolStudents> users, Set<SchoolEmployees> employees, LocalDateTime createdOn, User createdBy, LocalDateTime changedOn, User changedBy) {
-        super(new History(createdOn, createdBy, changedOn, changedBy));
-        this.id = id;
+    public School(Long id, @NotNull Company company, @NotBlank String name, String shortName, String phone, String email, Address address, Boolean active, Set<SchoolUsers> schoolUsers, History history) {
+        super(id, history);
         this.company = company;
         this.name = name;
-        this.city = city;
-        this.street = street;
-        this.home = home;
-        this.postalCode = postalCode;
+        this.shortName = shortName;
         this.phone = phone;
         this.email = email;
-        this.enabled = enabled;
-        setUsers(users);
-        setEmployees(employees);
+        this.address = address;
+        this.active = Objects.isNull(active) ? true : active;
+        setUsers(schoolUsers);
     }
 
     public School(School s) {
-        this(s.id, s.company, s.name, s.city, s.street, s.home, s.postalCode,
-                s.phone, s.email, s.enabled, s.users, s.employees,
-                s.getHistory().getCreatedOn(), s.getHistory().getCreatedBy(), s.getHistory().getChangedOn(), s.getHistory().getChangedBy());
+        this(s.id, s.company, s.name, s.shortName, s.phone, s.email, s.address, s.active, s.schoolUsers, s.history);
     }
 
-    public void setUsers(Set<SchoolStudents> users) {
-        this.users = CollectionUtils.isEmpty(users) ? new HashSet<>() : users;
+    public void setUsers(Set<SchoolUsers> schoolUsers) {
+        this.schoolUsers = CollectionUtils.isEmpty(schoolUsers) ? new HashSet<>() : schoolUsers;
     }
 
-    public void setEmployees(Set<SchoolEmployees> employees) {
-        this.employees = CollectionUtils.isEmpty(employees) ? new HashSet<>() : employees;
-    }
 }

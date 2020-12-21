@@ -1,10 +1,11 @@
 package ru.project.drivingschool.testdata;
 
-import ru.project.drivingschool.model.HasId;
+import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
+import ru.project.drivingschool.model.common.HasId;
 
 import java.util.Collection;
 
-public interface TestDataInterface <T extends HasId> {
+public interface TestDataInterface <T extends AbstractKeyHistoryEntity> {
 
     long getId1();
 

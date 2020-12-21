@@ -3,8 +3,7 @@ package ru.project.drivingschool.to;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import ru.project.drivingschool.model.HasId;
-import ru.project.drivingschool.model.Role;
+import ru.project.drivingschool.model.directory.Role;
 
 import javax.validation.constraints.NotBlank;
 import java.beans.ConstructorProperties;

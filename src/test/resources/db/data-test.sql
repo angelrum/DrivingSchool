@@ -1,44 +1,65 @@
-DELETE FROM school_employees;
+DELETE FROM school_users;
 DELETE FROM schools;
-DELETE FROM users;
 DELETE FROM companys;
+DELETE FROM user_roles;
+DELETE FROM users;
+DELETE FROM address;
 
 ALTER SEQUENCE global_seq RESTART WITH 10000;
 ALTER SEQUENCE register_seq RESTART WITH 1000;
 
-INSERT INTO companys (name, city, street, home, postal_code, phone)
-VALUES ('ООО "Рога и копыта"', 'Москва', 'ул.Ленина', 'д.1', '111100', '+7(911)111-11-11'),
-       ('ООО "Копыта и рога"', 'Москва', 'ул.Ленина', 'д.2', '111100', '+7(911)111-11-12');
+INSERT INTO address (country, region, city, zip, street, building, home, floor, office)
+VALUES ('RUS','Москва', 'Москва', '123456', 'ул. Первого Мая', 'стр.1', 'д.12', 1, 105),
+       ('RUS','Москва', 'Москва', '123456', 'ул. Первого Мая', 'стр.1', 'д.15', 1, 117),
+       ('RUS','Москва', 'Москва', '123457', 'ул. Ленина', null, 'д.12', 3, 305),
+       ('RUS','Москва', 'Москва', '123458', 'ул. Нижняя Красносельская', null, 'д.15', 3, 343),
+       ('RUS','Москва', 'Москва', '123459', 'ул. Антонова', 'корп.8', 'д.1', 2, 283),
+       ('RUS','Москва', 'Москва', '123459', 'ул. Миронова', null, 'д.3', 2, 15);
 
-INSERT INTO users (company_id, phone, password, firstname, lastname, middlename, email, score, created_by)
+INSERT INTO users (phone, phone_status, password, firstname, lastname, middlename, email, email_status, active, score, created_by)
         -- сотрудники компании
-VALUES (10000, '+7(911)111-11-11', '12345', 'Иван', 'Иванов', 'Иванович', 'test1@test.ru', 0, null),
-       (10000, '+7(911)111-11-12', '123456', 'Антон', 'Иванов', 'Иванович', 'test2@test.ru', 0, 1000),
-       (10001, '+7(911)111-11-13', '123456', 'Сергей', 'Иванов', 'Иванович', 'test3@test.ru', 0, null),
-       -- ученики
-       (null, '+7(911)111-12-11', '12345', 'Иван', 'Петров', 'Иванович', 'test4@test.ru', 0, null),
-       (null, '+7(911)111-12-12', '123456', 'Антон', 'Петров', 'Иванович', 'test5@test.ru', 0, null),
-       (null, '+7(911)111-12-13', '1234567', 'Сергей', 'Петров', 'Иванович', 'test6@test.ru', 0, null);
+VALUES ('+7(911)111-11-11', true, '12345', 'Иван', 'Иванов', 'Иванович', 'admin1@test.ru', true, true, 0, null), -- админ ООО "Рога и копыта"
+       ('+7(911)111-11-12', true, '123456', 'Антон', 'Иванов', 'Иванович', 'admin2@test.ru', true, true, 0, null), -- админ ООО "Новые рога"
+       -- учитель в ООО "Рога и копыта"
+       ('+7(911)111-11-13', true, '123457', 'Сергей', 'Петров', 'Иванович', 'teacher1@test.ru', true, true, 5, 1000),
+       ('+7(911)111-11-14', true, '123458', 'Петр', 'Петров', 'Иванович', 'teacher2@test.ru', true, true, 5, 1000),
+       -- учитель в ООО "Новые рога"
+       ('+7(911)111-11-15', true, '123459', 'Виктор', 'Иванов', 'Иванович', 'teacher1@test1.ru', true, true, 5, 1001),
+       -- ученики в ООО "Рога и копыта"
+       ('+7(911)211-11-11', true, '12345', 'Артем', 'Антонов', 'Иванович', 'student1@test1.ru', true, true, 5, 1000),
+       ('+7(911)211-11-12', true, '123456', 'Иван', 'Антонов', 'Иванович', 'student2@test1.ru', true, true, 5, 1000),
+       ('+7(911)211-11-13', true, '1234567', 'Иван', 'Антонов', 'Иванович', 'student3@test1.ru', true, true, 5, 1000),
+       -- ученики в ООО "Новые рога"
+       ('+7(911)211-11-14', true, '12345678', 'Сергей', 'Антонов', 'Иванович', 'student4@test1.ru', true, true, 5, 1001);
+
+
+INSERT INTO companys (name, short_name, phone, email, website, address_legal_id, address_actual_id, created_by)
+VALUES ('ООО "Рога и копыта"', 'Рога и копыта', '+7(911)311-11-11', 'roga@mail.ru', 'roga.ru', 10000, 10001, 1000),
+       ('ООО "Новые рога"', 'Новые рога', '+7(911)311-11-12', 'roga_new@mail.ru', 'newroga.ru', 10002, 10002, 1001);
 
 INSERT INTO user_roles (user_id, role)
 VALUES (1000, 'ADMIN'),
-       (1001, 'MANAGER'),
-       (1002, 'ADMIN'),
-       (1003, 'STUDENT'),
-       (1004, 'STUDENT'),
-       (1005, 'STUDENT');
+       (1001, 'ADMIN'),
+       (1002, 'TEACHER'),
+       (1003, 'TEACHER'),
+       (1004, 'TEACHER'),
+       (1005, 'STUDENT'),
+       (1006, 'STUDENT'),
+       (1007, 'STUDENT'),
+       (1008, 'STUDENT');
 
-INSERT INTO schools (company_id, name, city, street, home, postal_code, phone, email, created_by)
-VALUES (10000, 'Школа N1', 'Москва', 'ул.Первого мая', 'д.160, 5 этаж', '111100', '8(495)111-111-11', null, 1000),
-       (10000, 'Школа N2', 'Москва', 'ул.Нижняя Красносельская', 'д.40, 5 этаж', '111100', '8(495)111-111-12', null, 1000),
-       (10001, 'Школа N21', 'Москва', 'ул.Муравская', 'д.1, 1 этаж', '111100', '8(495)111-111-13', null, 1002);
+INSERT INTO schools(company_id, name, short_name, phone, email, address_id, created_by)
+VALUES (10006, 'Автошкола N1 "На Первого мая"', 'Автошкола N1', '8(495)111-111-11', 'avtonumber1@mail.ru', 10003, 1000),
+       (10006, 'Автошкола N2 "На Антонова"', 'Автошкола N2', '8(495)211-111-11', 'avtonumber2@mail.ru', 10004, 1000),
+       (10007, 'Автошкола N1 "На Миронова"', 'Автошкола N1', '8(495)311-111-11', 'avto_mironova@mail.ru', 10005, 1001);
 
-INSERT INTO school_employees (school_id, user_id)
-VALUES (10002, 1000),
-       (10002, 1001),
-       (10003, 1002);
-
-INSERT INTO school_students(school_id, user_id)
-VALUES (10002, 1003),
-       (10002, 1004),
-       (10002, 1005);
+INSERT INTO school_users(school_id, user_id, start_date, end_date, contract, status)
+VALUES (10008, 1000, null, null, null, 'ENABLED'),
+       (10008, 1002, null, null, null, 'ENABLED'),
+       (10008, 1003, null, null, null, 'ENABLED'),
+       (10008, 1005, null, null, null, 'ENABLED'),
+       (10008, 1006, null, null, null, 'ENABLED'),
+       (10008, 1007, null, null, null, 'PENDING'),
+       (10009, 1001, null, null, null, 'ENABLED'),
+       (10009, 1004, null, null, null, 'ENABLED'),
+       (10009, 1008, null, null, null, 'ENABLED');

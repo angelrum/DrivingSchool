@@ -4,9 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import ru.project.drivingschool.AuthorizedUserTest;
 import ru.project.drivingschool.TestMatcher;
 import ru.project.drivingschool.TimingExtension;
-import ru.project.drivingschool.model.HasId;
+import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
+import ru.project.drivingschool.model.common.HasId;
 import ru.project.drivingschool.testdata.TestDataInterface;
 import ru.project.drivingschool.util.exception.NotFoundException;
 
@@ -16,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(TimingExtension.class)
 @Sql(scripts = "classpath:db/data-test.sql", config = @SqlConfig(encoding = "UTF-8"))
-abstract class AbstractServiceTest <T extends HasId> {
+abstract class AbstractServiceTest <T extends AbstractKeyHistoryEntity> {
 
     private AbstractService<T> service;
 
@@ -46,7 +48,7 @@ abstract class AbstractServiceTest <T extends HasId> {
     @Test
     void create() {
         T t = testData.getNew();
-        T create = service.create(t);
+        T create = service.create(t, AuthorizedUserTest.getId());
         t.setId(create.getId());
         Collection<T> collection = testData.getAll();
         collection.add(t);
@@ -66,14 +68,13 @@ abstract class AbstractServiceTest <T extends HasId> {
     @Test
     void update() {
         T upd = testData.getUpdate();
-        service.update(upd);
+        service.update(upd, AuthorizedUserTest.getId());
         matcher.assertMatch(service.get(upd.id()), upd);
     }
 
     @Test
     void getNotFoundId() {
         assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND_ID));
-
     }
 
     @Test
@@ -85,6 +86,6 @@ abstract class AbstractServiceTest <T extends HasId> {
     void updateNotFoundId() {
         T upd = testData.getUpdate();
         upd.setId(NOT_FOUND_ID);
-        assertThrows(NotFoundException.class, ()->service.update(upd));
+        assertThrows(NotFoundException.class, ()->service.update(upd, AuthorizedUserTest.getId()));
     }
 }

@@ -1,4 +1,4 @@
-package ru.project.drivingschool.model;
+package ru.project.drivingschool.model.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.Assert;
