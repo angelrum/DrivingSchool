@@ -10,7 +10,7 @@ import static ru.project.drivingschool.util.ValidationUtil.*;
 
 public abstract class AbstractService <T extends AbstractKeyHistoryEntity> {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    final Logger log = LoggerFactory.getLogger(getClass());
 
     private final AbstractKeyHistoryRepository<T> repository;
 

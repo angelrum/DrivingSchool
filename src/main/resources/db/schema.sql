@@ -48,8 +48,8 @@ CREATE TABLE users
     changed_on      TIMESTAMP                       NULL,
     changed_by      BIGINT                          NULL,
 
-    FOREIGN KEY (created_by) REFERENCES users (id),
-    FOREIGN KEY (changed_by) REFERENCES users (id),
+    FOREIGN KEY (created_by) REFERENCES users (id) ON DELETE SET NULL ,
+    FOREIGN KEY (changed_by) REFERENCES users (id) ON DELETE SET NULL ,
 
     CONSTRAINT user_idx UNIQUE (phone)
 );
@@ -66,14 +66,14 @@ CREATE TABLE companys
     address_legal_id    INTEGER                         ,
     address_actual_id   INTEGER                         ,
     created_on          TIMESTAMP       DEFAULT now(),
-    created_by          BIGINT                          NOT NULL ,
+    created_by          BIGINT                          NULL,
     changed_on          TIMESTAMP                       NULL,
     changed_by          BIGINT                          NULL,
 
-    FOREIGN KEY (created_by) REFERENCES users (id),
-    FOREIGN KEY (changed_by) REFERENCES users (id),
-    FOREIGN KEY (address_legal_id) REFERENCES address(id),
-    FOREIGN KEY (address_actual_id) REFERENCES address(id),
+    FOREIGN KEY (created_by)        REFERENCES users (id)   ON DELETE SET NULL ,
+    FOREIGN KEY (changed_by)        REFERENCES users (id)   ON DELETE SET NULL ,
+    FOREIGN KEY (address_legal_id)  REFERENCES address(id)  ON DELETE SET NULL ,
+    FOREIGN KEY (address_actual_id) REFERENCES address(id)  ON DELETE SET NULL ,
 
     CONSTRAINT company_idx UNIQUE (name)
 );
@@ -105,8 +105,8 @@ CREATE TABLE schools
 
     FOREIGN KEY (company_id) REFERENCES companys (id) ON DELETE CASCADE,
     FOREIGN KEY (address_id) REFERENCES address (id) ON DELETE CASCADE,
-    FOREIGN KEY (created_by) REFERENCES users (id),
-    FOREIGN KEY (changed_by) REFERENCES users (id),
+    FOREIGN KEY (created_by) REFERENCES users (id) ON DELETE SET NULL ,
+    FOREIGN KEY (changed_by) REFERENCES users (id) ON DELETE SET NULL ,
 
     CONSTRAINT school_idx UNIQUE (company_id, name)
 );

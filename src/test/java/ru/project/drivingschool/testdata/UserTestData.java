@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class UserTestData implements TestDataInterface<User>{
 
-    public static final TestMatcher<User> USER_TEST_MATCHER = TestMatcher.usingFieldsComparator(User.class);
+    public static final TestMatcher<User> USER_TEST_MATCHER = TestMatcher.usingFieldsComparator(User.class, "schoolUsers", "history");
     private final long userId1 = 1000;
     private final long userId2 = 1001;
     private final long userId3 = 1002;
