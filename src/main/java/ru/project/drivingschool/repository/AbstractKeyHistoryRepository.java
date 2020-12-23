@@ -43,12 +43,16 @@ public abstract class AbstractKeyHistoryRepository<T extends AbstractKeyHistoryE
         if (!t.isNew() && !repository.existsById(t.id()))
             return null;
         User user = Objects.nonNull(userId) ? userRepository.getOne(userId) : null;
-        History h = t.getHistory();
-        if (t.isNew())
-            h.setCreatedBy(user);
-        else {
+
+        if (t.isNew()) {
+            t.getHistory()
+                    .setCreatedBy(user);
+        } else {
+            T old = repository.getOne(t.id());
+            History h = old.getHistory();
             h.setChangedBy(user);
             h.setChangedOn(LocalDateTime.now());
+            t.setHistory(h);
         }
         return repository.save(t);
     }

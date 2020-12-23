@@ -3,6 +3,7 @@ package ru.project.drivingschool.to;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import ru.project.drivingschool.model.Address;
 import ru.project.drivingschool.model.Company;
 import ru.project.drivingschool.model.directory.Country;
 
@@ -13,35 +14,43 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 public class CompanyTo extends BaseTo {
 
-    @NotBlank private String name;
+    @NotBlank protected String name;
 
-    @NotNull private Country country;
+    protected String shortName;
 
-    private String city;
+    @NotBlank protected String phone;
 
-    private String street;
+    protected String email;
 
-    private String home;
+    protected String website;
 
-    private String postalCode;
+    protected Boolean active = true;
 
-    @NotBlank private String phone;
+    protected Address addressLegal;
 
-    private String email;
+    protected Address adressActual;
 
-    public CompanyTo(Long id, @NotBlank String name, Country country, String city, String street, String home, String postalCode, @NotBlank String phone, String email) {
+    public CompanyTo(Long id, @NotBlank String name, String shortName, @NotBlank String phone, String email, String website, Boolean active, Address addressLegal, Address adressActual) {
         super(id);
         this.name = name;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.home = home;
-        this.postalCode = postalCode;
+        this.shortName = shortName;
         this.phone = phone;
         this.email = email;
+        this.website = website;
+        this.active = active;
+        this.addressLegal = addressLegal;
+        this.adressActual = adressActual;
     }
 
     public CompanyTo(Company c) {
-
+        super(c.id());
+        this.name = c.getName();
+        this.shortName = c.getShortName();
+        this.phone = c.getPhone();
+        this.email = c.getEmail();
+        this.website = c.getWebsite();
+        this.active = c.getActive();
+        this.addressLegal = c.getAddressLegal();
+        this.adressActual = c.getAdressActual();
     }
 }

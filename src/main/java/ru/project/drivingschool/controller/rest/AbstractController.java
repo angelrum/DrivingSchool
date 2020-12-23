@@ -11,9 +11,12 @@ import ru.project.drivingschool.View;
 import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
 import ru.project.drivingschool.service.AbstractService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public abstract class AbstractController <T extends AbstractKeyHistoryEntity, To> {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     private AbstractService<T> service;
 
@@ -21,10 +24,17 @@ public abstract class AbstractController <T extends AbstractKeyHistoryEntity, To
         this.service = service;
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public To get(@PathVariable Long id) {
         log.info("get by id {} and company {}", id, AuthorizedUser.getCompanyId());
         return createTo(service.get(id));
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<To> getAll() {
+        log.info("get all entity");
+        List<T> ts = service.getAll();
+        return ts.stream().map(this::createTo).collect(Collectors.toList());
     }
 
     @PostMapping

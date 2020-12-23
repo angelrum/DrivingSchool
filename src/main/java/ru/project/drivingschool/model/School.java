@@ -35,7 +35,7 @@ public class School extends AbstractKeyHistoryEntity {
 
     protected String email;
 
-    @OneToOne(targetEntity = Address.class)
+    @OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     protected Address address;
 

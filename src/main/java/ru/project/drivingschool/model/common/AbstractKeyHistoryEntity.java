@@ -23,7 +23,7 @@ public abstract class AbstractKeyHistoryEntity extends AbstractKeyEntity {
             @AssociationOverride(name = "changedBy",
                     joinColumns = @JoinColumn(name = "changed_by", referencedColumnName = "id"))
     })
-    @ToString.Exclude protected History history;
+    @ToString.Exclude protected History history = new History();
 
     public AbstractKeyHistoryEntity(Long id, History history) {
         super(id);

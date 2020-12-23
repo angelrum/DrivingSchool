@@ -16,6 +16,7 @@ import ru.project.drivingschool.repository.jpa.JpaUserRepository;
 import ru.project.drivingschool.util.ValidationUtil;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Repository
@@ -24,37 +25,43 @@ public class SchoolRepository extends AbstractKeyHistoryRepository<School> {
     
     private JpaSchoolRepository repository;
 
-    private JpaCompanyRepository companyRepository;
-
     private JpaSchoolUsersRepository schoolUsersRepository;
 
     public SchoolRepository(JpaSchoolRepository repository,
-                            JpaCompanyRepository companyRepository,
                             JpaUserRepository userRepository,
                             JpaSchoolUsersRepository schoolUsersRepository) {
         super(repository, userRepository);
         this.repository = repository;
-        this.companyRepository = companyRepository;
         this.schoolUsersRepository = schoolUsersRepository;
     }
 
     public List<School> getAll(long companyId) {
         return repository.getAll(companyId);
     }
+
+    public List<School> getByCity(String city) {
+        return repository.getByCity(city);
+    }
     
     public School getWithUsers(long id) {
         return repository.getWithUsers(id);
     }
 
-    public School save(School e, long companyId, long userId) {
-        Company company = companyRepository.getOne(companyId);
-        e.setCompany(company);
-        if (!e.isNew() && CollectionUtils.isEmpty(e.getSchoolUsers())) {
-            Set<SchoolUsers> users = schoolUsersRepository.getBySchool(e.id());
-            e.setUsers(users);
+    @Override
+    public School save(School s, Long userId) {
+        if (!s.isNew() && CollectionUtils.isEmpty(s.getSchoolUsers())) {
+            Set<SchoolUsers> users = schoolUsersRepository.getBySchool(s.id());
+            s.setUsers(users);
+        }
+        if (!s.isNew()) {
+            School old = repository.getOne(s.id());
+            if (Objects.isNull(s.getAddress()))
+                s.setAddress(old.getAddress());
+            if (Objects.isNull(s.getHistory()))
+                s.setHistory(old.getHistory());
         }
 
-        return super.save(e, userId);
+        return super.save(s, userId);
     }
 
 }

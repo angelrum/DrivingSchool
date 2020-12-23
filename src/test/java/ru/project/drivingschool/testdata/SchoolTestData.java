@@ -54,6 +54,9 @@ public class SchoolTestData implements TestDataInterface<School>  {
         create.setName("Школа N3");
         create.setPhone("8(495)222-111-11");
         create.setEmail("test@test.ru");
+        Address a = new Address(create.getAddress());
+        a.setId(null);
+        create.setAddress(a);
         return create;
     }
 
@@ -62,6 +65,8 @@ public class SchoolTestData implements TestDataInterface<School>  {
         School upd = new School(school1);
         upd.setName("Обновленная школа");
         upd.setPhone("8(495)211-111-11");
+        Address address = upd.getAddress();
+        address.setStreet("Новая улица");
         return upd;
     }
 

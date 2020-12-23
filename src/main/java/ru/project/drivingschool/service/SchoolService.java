@@ -18,11 +18,22 @@ public class SchoolService extends AbstractService<School> {
         this.repository = repository;
     }
 
+//    public List<School> getAll() {
+//        log.info("get all schools");
+//        return repository.getAll();
+//    }
+
     public List<School> getAll(long companyId) {
         log.info("get all schools by company with id={}", companyId);
         checkByGlobalId(companyId);
         return repository.getAll(companyId);
     }
+
+    public List<School> getAllByCity(String city) {
+        log.info("get all school by city {}", city);
+        return repository.getByCity(city);
+    }
+
 
     public School getWithUsers(long id) {
         log.info("get school with all users. Id = {}", id);
@@ -30,19 +41,21 @@ public class SchoolService extends AbstractService<School> {
         return checkNotFoundWithId(repository.getWithUsers(id), id);
     }
 
-    public School create(School school, long companyId, long createdBy) {
-        log.info("Create schools {}. Company={} and created user = {}", school.toString(), companyId, createdBy);
+    @Override
+    public School create(School school, Long createdBy) {
+        log.info("Create schools {}. Created user = {}", school.toString(), createdBy);
         checkNew(school);
-        return this.save(school, companyId, createdBy);
+        return this.save(school, createdBy);
     }
 
-    public School update(School school, long companyId, long changedBy) {
-        log.info("Update school {}. Company = {} and changed user = {}", school.toString(), companyId, changedBy);
-        return this.save(school, companyId, changedBy);
+    @Override
+    public School update(School school, Long changedBy) {
+        log.info("Update school {}. Changed user = {}", school.toString(), changedBy);
+        return this.save(school, changedBy);
     }
 
-    private School save(School school, long companyId, long changedBy) {
+    private School save(School school, long changedBy) {
         checkNotNull(school);
-        return checkNotFoundWithId(repository.save(school, companyId, changedBy), companyId, changedBy);
+        return checkNotFoundWithId(repository.save(school, changedBy), changedBy);
     }
 }

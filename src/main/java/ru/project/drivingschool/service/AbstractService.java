@@ -18,7 +18,7 @@ public abstract class AbstractService <T extends AbstractKeyHistoryEntity> {
         this.repository = repository;
     }
 
-    List<T> getAll() {
+    public List<T> getAll() {
         log.info("Get all entity");
         return repository.getAll();
     }

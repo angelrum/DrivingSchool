@@ -14,4 +14,7 @@ public interface JpaSchoolRepository extends JpaKeyRepository<School> {
     @Query("SELECT s FROM School s WHERE s.company.id=:companyId")
     List<School> getAll(@Param("companyId") long companyId);
 
+    @Query("SELECT s FROM School s WHERE s.address.city LIKE %:city% AND s.active = true")
+    List<School> getByCity(@Param("city") String city);
+
 }
