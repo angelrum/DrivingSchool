@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.project.drivingschool.model.User;
-import ru.project.drivingschool.service.AbstractService;
 import ru.project.drivingschool.service.UserService;
+import ru.project.drivingschool.to.SchoolTo;
 import ru.project.drivingschool.to.UserTo;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -27,8 +27,11 @@ public class UserController extends AbstractController<User, UserTo> {
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserTo get(@PathVariable Long id) {
         log.info("get users by id {} with scholls", id);
+        User u = service.get(id);
+        UserTo to = new UserTo(u);
+        to.setSchools(u.getSchoolUsers().stream().map(su->new SchoolTo(su.getSchool())).collect(Collectors.toSet()));
 
-        return super.get(id);
+        return to;
     }
 
     @Override
