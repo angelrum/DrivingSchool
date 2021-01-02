@@ -1,10 +1,7 @@
 package ru.project.drivingschool.controller.rest;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.project.drivingschool.model.User;
 import ru.project.drivingschool.service.UserService;
 import ru.project.drivingschool.to.SchoolTo;
@@ -12,6 +9,7 @@ import ru.project.drivingschool.to.UserTo;
 
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/users")
 public class UserController extends AbstractController<User, UserTo> {

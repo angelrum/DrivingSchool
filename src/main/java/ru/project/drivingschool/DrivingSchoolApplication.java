@@ -16,6 +16,21 @@ public class DrivingSchoolApplication extends SpringBootServletInitializer {
         SpringApplication.run(DrivingSchoolApplication.class, args);
     }
 
+//    @Bean
+//    public MappingJackson2HttpMessageConverter jackson2HttpMessageConverter() {
+//        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(JacksonObjectMapper.getMapper());
+//        return converter;
+//    }
+//
+//    @Bean
+//    public StringHttpMessageConverter stringHttpMessageConverter() {
+//        StringHttpMessageConverter messageConverter = new StringHttpMessageConverter();
+//        messageConverter.setSupportedMediaTypes(List.of(
+//                new MediaType(MediaType.TEXT_PLAIN, Charset.forName(DEF_ENCODING)),
+//                new MediaType(MediaType.TEXT_HTML, Charset.forName(DEF_ENCODING))));
+//        return messageConverter;
+//    }
+
     //For WAR deployment
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

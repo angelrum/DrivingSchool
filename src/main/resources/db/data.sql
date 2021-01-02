@@ -16,21 +16,21 @@ VALUES ('RUS','Москва', 'Москва', '123456', 'ул. Первого М
        ('RUS','Москва', 'Москва', '123459', 'ул. Антонова', 'корп.8', 'д.1', 2, 283),
        ('RUS','Москва', 'Москва', '123459', 'ул. Миронова', null, 'д.3', 2, 15);
 
-INSERT INTO users (phone, phone_status, password, firstname, lastname, middlename, email, email_status, active, score, created_by)
+INSERT INTO users (avatar, phone, phone_status, password, firstname, lastname, middlename, email, email_status, active, score, created_by)
     -- сотрудники компании
-VALUES ('+7(911)111-11-11', true, '12345', 'Иван', 'Иванов', 'Иванович', 'admin1@test.ru', true, true, 0, null), -- админ ООО "Рога и копыта"
-       ('+7(911)111-11-12', true, '123456', 'Антон', 'Иванов', 'Иванович', 'admin2@test.ru', true, true, 0, null), -- админ ООО "Новые рога"
+VALUES ('https://img.icons8.com/bubbles/100/000000/elvis-presley.png', '+7(911)111-11-11', true, '12345', 'Иван', 'Иванов', 'Иванович', 'admin1@test.ru', true, true, 0, null), -- админ ООО "Рога и копыта"
+       (null, '+7(911)111-11-12', true, '123456', 'Антон', 'Иванов', 'Иванович', 'admin2@test.ru', true, true, 0, null), -- админ ООО "Новые рога"
        -- учитель в ООО "Рога и копыта"
-       ('+7(911)111-11-13', true, '123457', 'Сергей', 'Петров', 'Иванович', 'teacher1@test.ru', true, true, 5, 1000),
-       ('+7(911)111-11-14', true, '123458', 'Петр', 'Петров', 'Иванович', 'teacher2@test.ru', true, true, 5, 1000),
+       (null, '+7(911)111-11-13', true, '123457', 'Сергей', 'Петров', 'Иванович', 'teacher1@test.ru', true, true, 5, 1000),
+       (null, '+7(911)111-11-14', true, '123458', 'Петр', 'Петров', 'Иванович', 'teacher2@test.ru', true, true, 5, 1000),
        -- учитель в ООО "Новые рога"
-       ('+7(911)111-11-15', true, '123459', 'Виктор', 'Иванов', 'Иванович', 'teacher1@test1.ru', true, true, 5, 1001),
+       (null, '+7(911)111-11-15', true, '123459', 'Виктор', 'Иванов', 'Иванович', 'teacher1@test1.ru', true, true, 5, 1001),
        -- ученики в ООО "Рога и копыта"
-       ('+7(911)211-11-11', true, '12345', 'Артем', 'Антонов', 'Иванович', 'student1@test1.ru', true, true, 5, 1000),
-       ('+7(911)211-11-12', true, '123456', 'Иван', 'Антонов', 'Иванович', 'student2@test1.ru', true, true, 5, 1000),
-       ('+7(911)211-11-13', true, '1234567', 'Иван', 'Антонов', 'Иванович', 'student3@test1.ru', true, true, 5, 1000),
+       (null, '+7(911)211-11-11', true, '12345', 'Артем', 'Антонов', 'Иванович', 'student1@test1.ru', true, true, 5, 1000),
+       (null, '+7(911)211-11-12', true, '123456', 'Иван', 'Антонов', 'Иванович', 'student2@test1.ru', true, true, 5, 1000),
+       (null, '+7(911)211-11-13', true, '1234567', 'Иван', 'Антонов', 'Иванович', 'student3@test1.ru', true, true, 5, 1000),
        -- ученики в ООО "Новые рога"
-       ('+7(911)211-11-14', true, '12345678', 'Сергей', 'Антонов', 'Иванович', 'student4@test1.ru', true, true, 5, 1001);
+       (null, '+7(911)211-11-14', true, '12345678', 'Сергей', 'Антонов', 'Иванович', 'student4@test1.ru', true, true, 5, 1001);
 
 
 INSERT INTO companys (name, short_name, phone, email, website, address_legal_id, address_actual_id, created_by)
@@ -60,6 +60,7 @@ VALUES (10008, 1000, null, null, null, 'ENABLED'),
        (10008, 1005, null, null, null, 'ENABLED'),
        (10008, 1006, null, null, null, 'ENABLED'),
        (10008, 1007, null, null, null, 'PENDING'),
-       (10009, 1001, null, null, null, 'ENABLED'),
-       (10009, 1004, null, null, null, 'ENABLED'),
-       (10009, 1008, null, null, null, 'ENABLED');
+       (10009, 1000, null, null, null, 'ENABLED'),
+       (10010, 1001, null, null, null, 'ENABLED'),
+       (10010, 1004, null, null, null, 'ENABLED'),
+       (10010, 1008, null, null, null, 'ENABLED');

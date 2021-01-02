@@ -45,7 +45,8 @@ public abstract class AbstractController <T extends AbstractKeyHistoryEntity, To
     }
 
     @PutMapping
-    public void update(@Validated(View.Web.class) T t) {
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void update(@RequestBody T t) {
         log.info("update employee {}", t.toString());
         service.update(t, AuthorizedUser.getId());
     }
