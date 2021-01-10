@@ -11,6 +11,7 @@ import ru.project.drivingschool.model.embedded.History;
 import ru.project.drivingschool.model.embedded.SchoolUsers;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.*;
@@ -19,7 +20,7 @@ import java.util.*;
 @Table(name = "users")
 @Getter @Setter @ToString(callSuper = true)
 @NoArgsConstructor
-public class User extends AbstractKeyHistoryEntity {
+public class User extends AbstractKeyHistoryEntity implements Serializable {
 
     public static final int DEF_SCORE = 0;
 
@@ -37,7 +38,7 @@ public class User extends AbstractKeyHistoryEntity {
 
     protected String middlename;
 
-    protected String email;
+    @Email protected String email;
 
     protected Boolean emailStatus = false;
 

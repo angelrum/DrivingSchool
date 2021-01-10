@@ -4,13 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.project.drivingschool.AuthorizedUser;
-import ru.project.drivingschool.View;
 import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
 import ru.project.drivingschool.service.AbstractService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,14 +38,14 @@ public abstract class AbstractController <T extends AbstractKeyHistoryEntity, To
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void create(@Validated(View.Web.class) T t) {
+    public void create(@Valid @RequestBody T t) {
         log.info("create object {}", t.toString());
         service.create(t, AuthorizedUser.getId());
     }
 
     @PutMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody T t) {
+    public void update(@Valid @RequestBody T t) {
         log.info("update employee {}", t.toString());
         service.update(t, AuthorizedUser.getId());
     }
