@@ -23,8 +23,7 @@ public class DrivingSchoolSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests().anyRequest().authenticated()
-                .and().httpBasic()
-                .and().sessionManagement().disable();
+                .and().httpBasic();
     }
 
     @Override

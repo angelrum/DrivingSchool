@@ -27,11 +27,6 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
         super(repository);
         this.repository = repository;
     }
-
-//    public List<User> getAll() {
-//        log.info("get all users");
-//        return repository.getAll();
-//    }
     
     public User getByPhone(String phone){
         checkNotNull(phone);
