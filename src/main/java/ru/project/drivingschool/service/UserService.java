@@ -1,17 +1,27 @@
 package ru.project.drivingschool.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.project.drivingschool.AuthorizedUser;
 import ru.project.drivingschool.model.User;
 import ru.project.drivingschool.repository.UserRepository;
 
 import java.util.List;
+import java.util.Objects;
 
 import static ru.project.drivingschool.util.ValidationUtil.*;
 
 @Service
-public class UserService extends AbstractService<User>{
+public class UserService extends AbstractService<User> implements UserDetailsService {
     
     private UserRepository repository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     public UserService(UserRepository repository) {
         super(repository);
@@ -42,5 +52,17 @@ public class UserService extends AbstractService<User>{
     private User save(User user, long createdBy) {
         checkNotNull(user);
         return repository.save(user, createdBy);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+        log.info("authenticate user by phone {}", phone);
+        User u = this.repository.getByPhone(phone);
+        if (Objects.isNull(u))
+            throw new UsernameNotFoundException(String.format("User %s is not found", phone));
+        String bpass = this.passwordEncoder.encode(u.getPassword());
+        log.info("New bPass {} for password {}", bpass, u.getPassword());
+        u.setPassword(bpass);
+        return new AuthorizedUser(u);
     }
 }

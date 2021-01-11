@@ -26,10 +26,7 @@ public class UserController extends AbstractController<User, UserTo> {
     public UserTo get(@PathVariable Long id) {
         log.info("get users by id {} with scholls", id);
         User u = service.get(id);
-        UserTo to = new UserTo(u);
-        to.setSchools(u.getSchoolUsers().stream().map(su->new SchoolTo(su.getSchool())).collect(Collectors.toSet()));
-
-        return to;
+        return new UserTo(u, u.getSchoolUsers());
     }
 
     @Override

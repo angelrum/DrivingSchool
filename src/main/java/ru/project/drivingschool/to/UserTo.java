@@ -1,14 +1,19 @@
 package ru.project.drivingschool.to;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.project.drivingschool.model.Company;
 import ru.project.drivingschool.model.User;
 import ru.project.drivingschool.model.directory.Role;
+import ru.project.drivingschool.model.embedded.SchoolUsers;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -74,5 +79,17 @@ public class UserTo extends BaseTo {
         this.score = u.getScore();
         this.active = u.getActive();
         this.roles = u.getRoles();
+    }
+
+    public UserTo(User u, Set<SchoolUsers> su) {
+        this(u);
+        //setSchools(su);
+    }
+
+    private void setSchools(Set<SchoolUsers> su) {
+        this.schools = su.stream()
+                .map(SchoolUsers::getSchool)
+                .map(SchoolTo::new)
+                .collect(Collectors.toSet());
     }
 }
