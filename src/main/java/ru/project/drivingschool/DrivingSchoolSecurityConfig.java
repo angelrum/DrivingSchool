@@ -1,6 +1,7 @@
 package ru.project.drivingschool;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,7 +10,25 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import ru.project.drivingschool.security.JwtTokenRepository;
+import ru.project.drivingschool.security.JwtCsrfFilter;
 import ru.project.drivingschool.service.UserService;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static ru.project.drivingschool.security.JwtCsrfFilter.CSRF_NAME;
+
+// Пример реализации с минимальным привлечением Spring Security
+// https://octoperf.com/blog/2018/03/08/securing-rest-api-spring-security/#securityconfig
 
 @Configuration
 @EnableWebSecurity
@@ -18,21 +37,64 @@ public class DrivingSchoolSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService service;
 
+    @Autowired
+    private JwtTokenRepository jwtTokenRepository;
+
+    @Autowired
+    @Qualifier("handlerExceptionResolver")
+    private HandlerExceptionResolver resolver;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .authorizeRequests().anyRequest().authenticated()
-                .and().httpBasic();
+                .addFilterAt(new JwtCsrfFilter(jwtTokenRepository, resolver), CsrfFilter.class)
+                .csrf()
+                    .ignoringAntMatchers("/**") //игнорируем обработку стандартного CsrfFilter
+                    .csrfTokenRepository(jwtTokenRepository)
+                .and()
+                    .authorizeRequests()
+                    .antMatchers("/auth/login")
+                    .authenticated()
+                .and()
+                    .httpBasic()
+                    .authenticationEntryPoint((request, response, e) -> resolver.resolveException(request, response, null, e))//обрабатываем ошибку аутентификации AuthenticationException
+                .and()
+                    .logout(logout -> logout
+                                    .logoutUrl("/auth/logout")
+                                    .clearAuthentication(true)
+                                    .invalidateHttpSession(true)
+                            .addLogoutHandler((request, response, auth) -> { //чистим куки
+                                cookieToDelete(request)
+                                        .forEach(response::addCookie);
+                                response.setHeader(CSRF_NAME, ""); //чистим токен
+                            })
+                    );
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(this.service);
     }
+//https://www.baeldung.com/spring-security-session#concurrent-sessions
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    private List<Cookie> cookieToDelete(HttpServletRequest request) {
+        Function<Cookie, Cookie> clearCookie = cookie -> {
+            Cookie c = new Cookie(cookie.getName(), null);
+            c.setMaxAge(0);
+            return c;
+        };
+
+        return Arrays.stream(request.getCookies())
+                .map(clearCookie).collect(Collectors.toList());
+
     }
 }

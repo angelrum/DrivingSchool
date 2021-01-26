@@ -7,7 +7,6 @@ import ru.project.drivingschool.model.User;
 import ru.project.drivingschool.model.directory.Role;
 import ru.project.drivingschool.to.UserTo;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
