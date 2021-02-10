@@ -2,9 +2,6 @@ package ru.project.drivingschool.security;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AuthorizationServiceException;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
@@ -14,7 +11,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.security.core.AuthenticationException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +26,7 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
 
     private final HandlerExceptionResolver resolver;
 
-    public static final String CSRF_NAME = "X-CSRF-TOKEN";
+    public static final String CSRF_NAME = "x-csrf-token";
 
     public static final String CSRF_PARAMETER = "_csrf";
 

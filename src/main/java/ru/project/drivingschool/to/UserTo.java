@@ -83,7 +83,7 @@ public class UserTo extends BaseTo {
 
     public UserTo(User u, Set<SchoolUsers> su) {
         this(u);
-        //setSchools(su);
+        setSchools(su);
     }
 
     private void setSchools(Set<SchoolUsers> su) {

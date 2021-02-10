@@ -11,8 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.project.drivingschool.controller.json.JacksonObjectMapper;
 
 import java.nio.charset.Charset;
@@ -63,4 +61,5 @@ public class DrivingSchoolApplication extends SpringBootServletInitializer {
         MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(messageSource);
         return messageSourceAccessor;
     }
+
 }
