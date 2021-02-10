@@ -35,4 +35,20 @@ public class SchoolService extends AbstractService<School> {
         checkByGlobalId(id);
         return checkNotFoundWithId(repository.getWithEmployees(id), id);
     }
+
+    public School create(School school, long companyId, long createdBy) {
+        log.info("Create employee {}. Company={} and created={}", school.toString(), companyId, createdBy);
+        checkNew(school);
+        return this.save(school, companyId, createdBy);
+    }
+
+    public School update(School school, long companyId, long changedBy) {
+        log.info("Update employee {}. Company={} and changed={}", school.toString(), companyId, changedBy);
+        return this.save(school, companyId, changedBy);
+    }
+
+    private School save(School school, long companyId, long changedBy) {
+        checkNotNull(school);
+        return checkNotFoundWithId(repository.save(school, companyId, changedBy), companyId, changedBy);
+    }
 }

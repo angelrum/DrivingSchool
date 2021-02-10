@@ -41,7 +41,7 @@ CREATE TABLE employees
     email       VARCHAR(30)                     NULL,
     enabled     BOOLEAN         DEFAULT TRUE    NOT NULL,
     score       INTEGER         DEFAULT 5       NOT NULL,
-    created_on  TIMESTAMP       DEFAULT now()   NOT NULL,
+    created_on  TIMESTAMP       DEFAULT now()   ,
     created_by  BIGINT                          NULL,
     changed_on  TIMESTAMP                       NULL,
     changed_by  BIGINT                          NULL,
@@ -126,6 +126,9 @@ CREATE TABLE school_users
     school_id   INTEGER                         NOT NULL,
     user_id     BIGINT                          NOT NULL,
     enable      BOOLEAN DEFAULT TRUE,
+    start_date  DATE                            NULL,
+    end_date    DATE                            NULL,
+    contract    VARCHAR(120),
 
     FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id)   REFERENCES users (id)   ON DELETE CASCADE,

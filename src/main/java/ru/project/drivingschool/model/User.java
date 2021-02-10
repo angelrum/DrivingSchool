@@ -38,7 +38,8 @@ public class User extends AbstractNamedEntity {
 
     public User(User u) {
         this(u.id, u.phone, u.password, u.avatar, u.firstname, u.lastname, u.middlename,
-                u.email, u.enabled, u.createdOn, u.createdBy, u.changedOn, u.changedBy, u.schools);
+                u.email, u.enabled, u.getHistory().getCreatedOn(), u.getHistory().getCreatedBy(),
+                u.getHistory().getChangedOn(), u.getHistory().getChangedBy(), u.schools);
     }
 
     public void setSchools(Set<School> schools) {

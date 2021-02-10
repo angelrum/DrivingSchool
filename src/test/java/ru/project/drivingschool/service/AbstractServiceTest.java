@@ -24,7 +24,7 @@ abstract class AbstractServiceTest <T extends HasId> {
 
     private TestMatcher<T> matcher;
 
-    private static final long NOT_FOUND_ID = 9999L;
+    protected static final long NOT_FOUND_ID = 9999L;
 
     AbstractServiceTest(AbstractService<T> service, TestDataInterface<T> testData, TestMatcher<T> matcher) {
         this.service = service;
@@ -86,6 +86,5 @@ abstract class AbstractServiceTest <T extends HasId> {
         T upd = testData.getUpdate();
         upd.setId(NOT_FOUND_ID);
         assertThrows(NotFoundException.class, ()->service.update(upd));
-
     }
 }

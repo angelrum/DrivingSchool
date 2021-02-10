@@ -22,7 +22,6 @@ public class Employee extends AbstractNamedEntity {
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     @ToString.Exclude protected Company company;
 
-    @Column(name = "score")
     protected Integer score = 5;
 
     @Enumerated(EnumType.STRING)
@@ -31,7 +30,7 @@ public class Employee extends AbstractNamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     protected Set<Role> roles;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     @ToString.Exclude protected Set<SchoolEmployees> schools;
 
     public Employee(Long id, Company company, @NotBlank String phone, @NotBlank String password, String avatar,
@@ -51,7 +50,8 @@ public class Employee extends AbstractNamedEntity {
     }
 
     public Employee(Employee e) {
-        this(e.id, e.company, e.phone, e.password, e.avatar, e.firstname, e.lastname, e.middlename, e.email, e.enabled, e.score, e.createdOn, e.createdBy, e.changedOn, e.changedBy, e.schools, e.roles);
+        this(e.id, e.company, e.phone, e.password, e.avatar, e.firstname, e.lastname, e.middlename, e.email, e.enabled, e.score,
+                e.getHistory().getCreatedOn(), e.getHistory().getCreatedBy(), e.getHistory().getChangedOn(), e.getHistory().getChangedBy(), e.schools, e.roles);
 
     }
 

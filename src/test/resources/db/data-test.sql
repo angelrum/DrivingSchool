@@ -37,5 +37,5 @@ VALUES (10002, 1000),
        (10003, 1000);
 
 INSERT INTO school_users (school_id, user_id)
-VALUES (10002, 1003),
-       (10002, 1004);
+VALUES (10002, 1003);
+--        (10002, 1004);

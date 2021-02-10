@@ -1,12 +1,8 @@
 package ru.project.drivingschool.model;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
-import ru.project.drivingschool.util.DateTimeUtil;
-
+import ru.project.drivingschool.model.embedded.History;
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -21,29 +17,44 @@ public abstract class AbstractHistoryEntity implements HasId {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column(name = "created_on", updatable = false)
-    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
-    @CreationTimestamp
-    protected LocalDateTime createdOn;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "createdOn",
+                    column = @Column(name = "created_on", updatable = false)),
+            @AttributeOverride(name = "changedOn",
+                    column = @Column(name = "changed_on"))
+    })
+    @AssociationOverrides({
+            @AssociationOverride(name = "createdBy",
+                    joinColumns = @JoinColumn(name = "created_by", referencedColumnName = "id", updatable = false)),
+            @AssociationOverride(name = "changedBy",
+                    joinColumns = @JoinColumn(name = "changed_by", referencedColumnName = "id"))
+    })
+    protected History history = new History();
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Employee.class)
-    @JoinColumn(name = "created_by", referencedColumnName = "id", updatable = false)
-    protected Employee createdBy;
-
-    @Column(name = "changed_on")
-    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
-    protected LocalDateTime changedOn;
-
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Employee.class)
-    @JoinColumn(name = "changed_by", referencedColumnName = "id")
-    protected Employee changedBy;
+//    @Column(name = "created_on", updatable = false)
+//    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
+//    @CreationTimestamp
+//    protected LocalDateTime createdOn;
+//
+//    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Employee.class)
+//    @JoinColumn(name = "created_by", referencedColumnName = "id", updatable = false)
+//    protected Employee createdBy;
+//
+//    @Column(name = "changed_on")
+//    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
+//    protected LocalDateTime changedOn;
+//
+//    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Employee.class)
+//    @JoinColumn(name = "changed_by", referencedColumnName = "id")
+//    protected Employee changedBy;
 
     @Override
     public String toString() {
         return "AbstractHistoryEntity{" +
                 "id=" + id +
-//                ", createdBy=" + (Objects.isNull(createdBy) ? null : createdBy.id) +
-//                ", changedBy=" + (Objects.isNull(changedBy) ? null : changedBy.id) +
+                ", createdBy=" + (Objects.isNull(history.getCreatedBy()) ? null : history.getCreatedBy().id) +
+                ", changedBy=" + (Objects.isNull(history.getChangedBy()) ? null : history.getChangedBy().id) +
                 '}';
     }
 }

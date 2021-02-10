@@ -1,5 +1,6 @@
 package ru.project.drivingschool.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.Assert;
 
 import java.util.Objects;
@@ -10,6 +11,7 @@ public interface HasId {
 
     void setId(Long id);
 
+    @JsonIgnore
     default boolean isNew() {
         return Objects.isNull(getId());
     }

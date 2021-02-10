@@ -46,6 +46,11 @@ public class EmployeeService extends AbstractService<Employee> {
         return checkNotFoundWithId(repository.save(employee, companyId, createdBy), companyId, employee.id());
     }
 
+    @Override
+    public Employee update(Employee employee) {
+        return update(employee, 0L, 0L);
+    }
+
     public void delete(long companyId, long id) {
         log.info("Delete employee. Company={}, id={}", companyId, id);
         if (!repository.delete(companyId, id))

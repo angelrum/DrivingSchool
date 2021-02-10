@@ -5,6 +5,18 @@
     <groupId>ru.project</groupId>
     <artifactId>drivingschool</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>13</source>
+                    <target>13</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <name>DrivingSchool</name>
     <packaging>war</packaging>
     <description>Demo project for Spring Boot</description>
@@ -24,6 +36,7 @@
         <hibernate.version>5.4.12.Final</hibernate.version>
         <hibernate-validator.version>6.1.2.Final</hibernate-validator.version>
         <spring.thymeleaf>2.3.2.RELEASE</spring.thymeleaf>
+        <jackson-json.version>2.10.2</jackson-json.version>
         <assert.version>3.15.0</assert.version>
         <!-- Для Tomcat необходимо указать путь к главному файлу (замена xml)-->
         <start-class>ru.project.drivingschool.DrivingSchoolApplication
