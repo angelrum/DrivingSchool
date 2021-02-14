@@ -5,12 +5,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.CollectionUtils;
 import ru.project.drivingschool.model.Company;
+import ru.project.drivingschool.model.School;
 import ru.project.drivingschool.model.User;
 import ru.project.drivingschool.model.directory.Role;
 import ru.project.drivingschool.model.embedded.SchoolUsers;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,6 +48,8 @@ public class UserTo extends BaseTo {
     protected Set<Role> roles;
 
     protected Set<SchoolTo> schools;
+
+    protected CompanyTo company;
 
     public UserTo(Long id, @NotBlank String phone, Boolean phoneStatus, @NotBlank String password, String avatar,
                   @NotBlank String firstname, @NotBlank String lastname, String middlename,
@@ -91,5 +96,13 @@ public class UserTo extends BaseTo {
                 .map(SchoolUsers::getSchool)
                 .map(SchoolTo::new)
                 .collect(Collectors.toSet());
+        su.stream()
+                .findAny()
+                .map(SchoolUsers::getSchool)
+                .map(School::getCompany).ifPresent(this::setCompany);
+    }
+
+    public void setCompany(Company company) {
+        this.company = new CompanyTo(company);
     }
 }

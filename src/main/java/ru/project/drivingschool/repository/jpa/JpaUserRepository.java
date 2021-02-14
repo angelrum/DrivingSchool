@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public interface JpaUserRepository extends JpaKeyRepository<User> {
 
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.schoolUsers WHERE u.phone=:phone")
+    @Query("SELECT u FROM User u " +
+            "LEFT JOIN FETCH u.schoolUsers su " +
+            "WHERE u.phone=:phone")
     User getByPhone(String phone);
 
     @Override

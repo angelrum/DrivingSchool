@@ -27,7 +27,7 @@ public class SecurityUtil {
     }
 
     public static long authUserId() {
-        return get().getTo().getId();
+        return get().getUser().getId();
     }
 
 }

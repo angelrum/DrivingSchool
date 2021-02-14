@@ -15,11 +15,11 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
     private static final long serialVersionUID = 1L;
     private static final String ROLE_PREFIX = "ROLE_";
 
-    @Getter private UserTo to;
+    @Getter private User user;
 
     public AuthorizedUser(User user) {
         super(user.getPhone(), user.getPassword(), user.getActive(), true, true, true, getAuthority(user.getRoles()));
-        this.to = new UserTo(user);
+        this.user = user;
     }
 
     public static long getCompanyId() {
