@@ -38,13 +38,13 @@ public class Company extends AbstractKeyHistoryEntity {
 
     @OneToOne(targetEntity = Address.class)
     @JoinColumn(name = "address_actual_id", referencedColumnName = "id")
-    protected Address adressActual;
+    protected Address addressActual;
 
     @OneToMany(targetEntity = School.class)
     @JoinColumn(name = "company_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ToString.Exclude protected Set<School> schools;
 
-    public Company(Long id, @NotBlank String name, String shortName, @NotBlank String phone, String email, String website, Boolean active, Address addressLegal, Address adressActual, Set<School> schools, History history) {
+    public Company(Long id, @NotBlank String name, String shortName, @NotBlank String phone, String email, String website, Boolean active, Address addressLegal, Address addressActual, Set<School> schools, History history) {
         super(id, history);
         this.name = name;
         this.shortName = shortName;
@@ -53,12 +53,12 @@ public class Company extends AbstractKeyHistoryEntity {
         this.website = website;
         this.active = Objects.isNull(active) ? true : active;
         this.addressLegal = addressLegal;
-        this.adressActual = adressActual;
+        this.addressActual = addressActual;
         setSchools(schools);
     }
 
     public Company(Company c) {
-        this(c.id, c.name, c.shortName, c.phone, c.email, c.website, c.active, c.addressLegal, c.adressActual, c.schools, c.history);
+        this(c.id, c.name, c.shortName, c.phone, c.email, c.website, c.active, c.addressLegal, c.addressActual, c.schools, c.history);
     }
 
     public void setSchools(Set<School> schools) {

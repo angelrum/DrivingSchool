@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.project.drivingschool.model.Address;
 import ru.project.drivingschool.model.Company;
-import ru.project.drivingschool.model.directory.Country;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
@@ -28,9 +26,9 @@ public class CompanyTo extends BaseTo {
 
     protected Address addressLegal;
 
-    protected Address adressActual;
+    protected Address addressActual;
 
-    public CompanyTo(Long id, @NotBlank String name, String shortName, @NotBlank String phone, String email, String website, Boolean active, Address addressLegal, Address adressActual) {
+    public CompanyTo(Long id, @NotBlank String name, String shortName, @NotBlank String phone, String email, String website, Boolean active, Address addressLegal, Address addressActual) {
         super(id);
         this.name = name;
         this.shortName = shortName;
@@ -39,7 +37,7 @@ public class CompanyTo extends BaseTo {
         this.website = website;
         this.active = active;
         this.addressLegal = addressLegal;
-        this.adressActual = adressActual;
+        this.addressActual = addressActual;
     }
 
     public CompanyTo(Company c) {
@@ -51,6 +49,6 @@ public class CompanyTo extends BaseTo {
         this.website = c.getWebsite();
         this.active = c.getActive();
         this.addressLegal = c.getAddressLegal();
-        this.adressActual = c.getAdressActual();
+        this.addressActual = c.getAddressActual();
     }
 }

@@ -29,8 +29,8 @@ public class CompanyRepository extends AbstractKeyHistoryRepository<Company> {
             Company old = repository.getOne(company.id());
             if (Objects.isNull(company.getAddressLegal()))
                 company.setAddressLegal(old.getAddressLegal());
-            if (Objects.isNull(company.getAdressActual()))
-                company.setAdressActual(old.getAdressActual());
+            if (Objects.isNull(company.getAddressActual()))
+                company.setAddressActual(old.getAddressActual());
         }
 
         return super.save(company, userId);
