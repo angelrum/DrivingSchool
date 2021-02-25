@@ -36,7 +36,13 @@ public class JwtTokenRepository implements CsrfTokenRepository {
     public CsrfToken generateToken(HttpServletRequest request) {
         String id = UUID.randomUUID().toString().replace("-", "");
         String headers = request.getHeader(AUTHORIZATION);
+        String ip = request.getHeader("X-FORWARDED-FOR");
+
         if (Objects.nonNull(headers) && headers.length() >= 6) id = headers.substring(6);
+
+        if (StringUtils.isEmpty(ip)) ip = request.getRemoteAddr();
+        this.secret = StringUtils.isEmpty(ip) || "0:0:0:0:0:0:0:1".equals(ip) ? secret : ip;
+
         Date now = new Date();
         Date exp = Date.from(LocalDateTime.now().plusMinutes(timeout)
                 .atZone(ZoneId.systemDefault()).toInstant());

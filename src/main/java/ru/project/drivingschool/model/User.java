@@ -28,7 +28,7 @@ public class User extends AbstractKeyHistoryEntity implements Serializable {
 
     protected Boolean phoneStatus = false;
 
-    @NotBlank protected String password;
+    protected String password;
 
     protected String avatar;
 

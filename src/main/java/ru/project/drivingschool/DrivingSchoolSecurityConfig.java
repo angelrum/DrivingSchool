@@ -5,11 +5,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
@@ -22,6 +26,7 @@ import ru.project.drivingschool.security.JwtCsrfFilter;
 import ru.project.drivingschool.service.UserService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +45,9 @@ public class DrivingSchoolSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserService service;
+
+    @Value("${spring.profiles.active:}")
+    private String activeProfiles;
 
     @Value("${cors.allowed.origins}")
     private String corsAllowedOrigins;
@@ -69,14 +77,14 @@ public class DrivingSchoolSecurityConfig extends WebSecurityConfigurerAdapter {
                     .authenticationEntryPoint((request, response, e) -> resolver.resolveException(request, response, null, e))//обрабатываем ошибку аутентификации AuthenticationException
                 .and()
                     .logout(logout -> logout
-                                    .logoutUrl("/auth/logout")
-                                    .clearAuthentication(true)
-                                    .invalidateHttpSession(true)
-                            .addLogoutHandler((request, response, auth) -> { //чистим куки
-                                cookieToDelete(request)
-                                        .forEach(response::addCookie);
+                            .logoutUrl("/auth/logout")
+                            .clearAuthentication(true)
+                            .invalidateHttpSession(true)
+                            .addLogoutHandler((request, response, auth) -> {
+                                cookieToDelete(request).forEach(response::addCookie); //чистим куки
                                 jwtTokenRepository.clearToken(response);//чистим токен
                             })
+                            .logoutSuccessHandler((req, resp, auth) -> resp.setStatus(HttpServletResponse.SC_OK)) //отключаем редирект на /login?logout https://www.baeldung.com/spring-security-disable-logout-redirects
                     );
     }
 
@@ -88,7 +96,7 @@ public class DrivingSchoolSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(List.of(ACCESS_CONTROL_ALLOW_HEADERS, ACCESS_CONTROL_ALLOW_ORIGIN, ACCESS_CONTROL_REQUEST_METHOD,
                 ACCESS_CONTROL_REQUEST_HEADERS, ORIGIN, CACHE_CONTROL, CONTENT_TYPE, AUTHORIZATION, CSRF_NAME));
-        configuration.setAllowedMethods(List.of("POST", "GET", "OPTIONS", "DELETE", "PUT"));
+        configuration.setAllowedMethods(Arrays.stream(HttpMethod.values()).map(Enum::name).collect(Collectors.toList()));//List.of("POST", "GET", "OPTIONS", "DELETE", "PUT")
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -106,7 +114,14 @@ public class DrivingSchoolSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    @Profile("dev")
+    public PasswordEncoder devPasswordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+
+    @Bean
+    @Profile("prod")
+    public PasswordEncoder prodPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

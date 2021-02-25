@@ -2,6 +2,8 @@ package ru.project.drivingschool.security;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
@@ -22,8 +24,6 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
 
     private final CsrfTokenRepository tokenRepository;
 
-    private final AccessDeniedHandler accessDeniedHandler;
-
     private final HandlerExceptionResolver resolver;
 
     public static final String CSRF_NAME = "x-csrf-token";
@@ -31,7 +31,6 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
     public static final String CSRF_PARAMETER = "_csrf";
 
     public JwtCsrfFilter(CsrfTokenRepository csrfTokenRepository, HandlerExceptionResolver resolver) {
-        this.accessDeniedHandler = new AccessDeniedHandlerImpl();
         Assert.notNull(csrfTokenRepository, "csrfTokenRepository cannot be null");
         this.tokenRepository = csrfTokenRepository;
         this.resolver = resolver;
@@ -54,7 +53,7 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
             try {
                 filterChain.doFilter(request, response);
             } catch (Exception e) {
-                this.accessDeniedHandler.handle(request, response, new MissingCsrfTokenException(csrfToken.getToken()));
+                resolver.resolveException(request, response, null, new MissingCsrfTokenException(csrfToken.getToken()));
             }
         } else {
             String actualToken = request.getHeader(csrfToken.getHeaderName());
@@ -71,16 +70,16 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
                     } else
                         filterChain.doFilter(request, response);
                 } else
-                    this.accessDeniedHandler.handle(request, response, new InvalidCsrfTokenException(csrfToken, actualToken));
+                    resolver.resolveException(request, response, null, new InvalidCsrfTokenException(csrfToken, actualToken));
             } catch (JwtException e) {
                 if (this.logger.isDebugEnabled()) {
                     this.logger.debug("Invalid CSRF token found for " + UrlUtils.buildFullRequestUrl(request));
                 }
 
                 if (missingToken) {
-                    this.accessDeniedHandler.handle(request, response, new MissingCsrfTokenException(actualToken));
+                    resolver.resolveException(request, response, null, new MissingCsrfTokenException(actualToken));
                 } else {
-                    this.accessDeniedHandler.handle(request, response, new InvalidCsrfTokenException(csrfToken, actualToken));
+                    resolver.resolveException(request, response, null, new InvalidCsrfTokenException(csrfToken, actualToken));
                 }
             }
         }

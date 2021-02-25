@@ -27,8 +27,6 @@ public class UserTo extends BaseTo {
 
     protected Boolean phoneStatus = false;
 
-    @NotBlank protected String password;
-
     protected String avatar;
 
     @NotBlank protected String firstname;
@@ -51,13 +49,12 @@ public class UserTo extends BaseTo {
 
     protected CompanyTo company;
 
-    public UserTo(Long id, @NotBlank String phone, Boolean phoneStatus, @NotBlank String password, String avatar,
+    public UserTo(Long id, @NotBlank String phone, Boolean phoneStatus, String avatar,
                   @NotBlank String firstname, @NotBlank String lastname, String middlename,
                   String email, Boolean emailStatus, Integer score, Boolean active, Set<Role> roles, Set<SchoolTo> schools) {
         super(id);
         this.phone = phone;
         this.phoneStatus = phoneStatus;
-        this.password = password;
         this.avatar = avatar;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -74,7 +71,6 @@ public class UserTo extends BaseTo {
         super(u.id());
         this.phone = u.getPhone();
         this.phoneStatus = u.getPhoneStatus();
-        this.password = u.getPassword();
         this.avatar = u.getAvatar();
         this.firstname = u.getFirstname();
         this.lastname = u.getLastname();

@@ -1,16 +1,14 @@
 package ru.project.drivingschool.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import ru.project.drivingschool.AuthorizedUser;
 import ru.project.drivingschool.model.User;
 import ru.project.drivingschool.repository.UserRepository;
 
-import java.util.List;
 import java.util.Objects;
 
 import static ru.project.drivingschool.util.ValidationUtil.*;
@@ -19,9 +17,6 @@ import static ru.project.drivingschool.util.ValidationUtil.*;
 public class UserService extends AbstractService<User> implements UserDetailsService {
     
     private UserRepository repository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     
     public UserService(UserRepository repository) {
         super(repository);
@@ -33,14 +28,20 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
         return checkNotFound(repository.getByPhone(phone), String.format("Not found with phone=%s", phone));
     }
 
-    public User create(User user, long createdBy) {
+    @Override
+    public User create(User user, Long createdBy) {
         log.info("Create user {}. Created={}", user.toString(), createdBy);
         checkNew(user);
         return this.save(user, createdBy);
     }
 
-    public User update(User user, long changedBy) {
+    @Override
+    public User update(User user, Long changedBy) {
         log.info("Update user {}. Changed={}", user.toString(), changedBy);
+        if(StringUtils.isEmpty(user.getPassword())) {
+            User old = super.get(user.id());
+            user.setPassword(old.getPassword());
+        }
         return this.save(user, changedBy);
     }
 
@@ -55,9 +56,6 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
         User u = this.repository.getByPhone(phone);
         if (Objects.isNull(u))
             throw new UsernameNotFoundException(String.format("User %s is not found", phone));
-        String bpass = this.passwordEncoder.encode(u.getPassword());
-        log.info("New bPass {} for password {}", bpass, u.getPassword());
-        u.setPassword(bpass);
         return new AuthorizedUser(u);
     }
 }

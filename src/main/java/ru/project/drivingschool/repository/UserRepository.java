@@ -25,6 +25,7 @@ public class UserRepository extends AbstractKeyHistoryRepository<User> {
         this.schoolUsersRepository = schoolUsersRepository;
     }
 
+    @Transactional
     public User save(User u, long userId) {
         if (!u.isNew() && CollectionUtils.isEmpty(u.getSchoolUsers())) {
             Set<SchoolUsers> schoolUsers = schoolUsersRepository.getByUser(u.id());
