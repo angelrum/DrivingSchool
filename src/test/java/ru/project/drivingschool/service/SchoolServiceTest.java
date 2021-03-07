@@ -53,6 +53,14 @@ class SchoolServiceTest extends AbstractServiceTest<School> {
         SCHOOL_MATCHER.assertMatch(service.getAll(companyData.getId1()), testData.getAllByCompany(companyData.getId1()));
     }
 
+    @Test
+    void updateAddress() {
+        School school = testData.getObjectById(testData.getId1());
+        school.getAddress().setStreet("Новая улица");
+        service.update(school, userData.getId1());
+        SCHOOL_MATCHER.assertMatch(service.get(school.id()), school);
+    }
+
 //    @Test
 //    void addUserInSchool() {
 //        School school = service.getWithUsers(testData.getId1());

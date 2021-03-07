@@ -32,11 +32,11 @@ public class Company extends AbstractKeyHistoryEntity {
 
     protected Boolean active = true;
 
-    @OneToOne(targetEntity = Address.class)
+    @OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_legal_id", referencedColumnName = "id")
     protected Address addressLegal;
 
-    @OneToOne(targetEntity = Address.class)
+    @OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_actual_id", referencedColumnName = "id")
     protected Address addressActual;
 

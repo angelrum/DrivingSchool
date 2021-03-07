@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.project.drivingschool.AuthorizedUserTest;
+import ru.project.drivingschool.model.Address;
 import ru.project.drivingschool.model.Company;
 import ru.project.drivingschool.model.School;
 import ru.project.drivingschool.testdata.CompanyTestData;
 import ru.project.drivingschool.testdata.SchoolTestData;
+import ru.project.drivingschool.testdata.UserTestData;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -22,6 +24,8 @@ class CompanyServiceTest extends AbstractServiceTest<Company> {
 
     private CompanyTestData testData;
 
+    private UserTestData userData;
+
     private SchoolTestData schoolTestData = new SchoolTestData();
 
     @Autowired
@@ -29,6 +33,17 @@ class CompanyServiceTest extends AbstractServiceTest<Company> {
         super(service, new CompanyTestData(), CompanyTestData.COMPANY_MATCHER);
         this.service = service;
         this.testData = new CompanyTestData();
+        this.userData = new UserTestData();
+    }
+
+    @Test
+    void updateAddress() {
+        Company company = testData.getObjectById(testData.getId1());
+        Address address = company.getAddressActual();
+        address.setStreet("Новая улица");
+        service.update(company, userData.getId1());
+        Company upd = service.get(company.id());
+        CompanyTestData.COMPANY_MATCHER.assertMatch(company, upd);
     }
 
 //    @Test

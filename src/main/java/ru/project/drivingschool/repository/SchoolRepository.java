@@ -48,6 +48,7 @@ public class SchoolRepository extends AbstractKeyHistoryRepository<School> {
     }
 
     @Override
+    @Transactional
     public School save(School s, Long userId) {
         if (!s.isNew() && CollectionUtils.isEmpty(s.getSchoolUsers())) {
             Set<SchoolUsers> users = schoolUsersRepository.getBySchool(s.id());
