@@ -24,7 +24,7 @@ public class School extends AbstractKeyHistoryEntity {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
     @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
     @ToString.Exclude
-    @NotNull protected Company company;
+    protected Company company;
 
     @NotBlank protected String name;
 
