@@ -17,16 +17,17 @@ CREATE TABLE address
 (
     id          INTEGER PRIMARY KEY DEFAULT nextval('GLOBAL_SEQ'),
     country     VARCHAR(3)      DEFAULT 'RUS',
+    postal_code VARCHAR(10)                     NULL,
     region      VARCHAR(120)                    NOT NULL ,
     city        VARCHAR(120)                    NOT NULL ,
-    zip         VARCHAR(10)                     NULL,
-    street      VARCHAR(120)                    NULL,
-    building    VARCHAR(10),
-    home        VARCHAR(10)                     NULL,
+    settlement  VARCHAR(200)                    NULL ,
+    street      VARCHAR(120)                    NOT NULL ,
+    house       VARCHAR(10)                     NOT NULL,
     floor       INTEGER,
-    office      INTEGER,
-    latitude    VARCHAR(30),
-    longitude   VARCHAR(30)
+    office      VARCHAR(10),
+    latitude     VARCHAR(30),
+    longitude     VARCHAR(30),
+    qc_geo      VARCHAR(1)      DEFAULT '5'
 );
 
 CREATE TABLE users

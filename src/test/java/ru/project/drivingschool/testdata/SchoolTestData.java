@@ -20,9 +20,9 @@ public class SchoolTestData implements TestDataInterface<School>  {
     private final long schoolId2 = 10_009;
     private final long schoolId3 = 10_010;
 
-    private Address address1 =  new Address(10_003L, Country.RUS, "Москва", "Москва", "123458", "ул. Нижняя Красносельская", null, "д.15", 3, 343, null, null);
-    private Address address2 =  new Address(10_004L, Country.RUS, "Москва", "Москва", "123459", "ул. Антонова", "корп.8", "д.1", 2, 283, null, null);
-    private Address address3 =  new Address(10_005L, Country.RUS, "Москва", "Москва", "123459", "ул. Миронова", null, "д.3", 2, 15, null, null);
+    private Address address1 =  new Address(10_003L, Country.RUS, "123458", "Москва", "Москва", null, "ул. Нижняя Красносельская", "д.15", 3, "343", null, null, 5);
+    private Address address2 =  new Address(10_004L, Country.RUS, "123459", "Москва", "Москва", null, "ул. Антонова", "д.1", 2, "283", null, null, 5);
+    private Address address3 =  new Address(10_005L, Country.RUS, "123459", "Москва", "Москва", null, "ул. Миронова", "д.3", 2, "15", null, null, 5);
 
     private School school1 = new School(schoolId1, companyData.getObjectById(companyData.getId1()), "Автошкола N1 \"На Первого мая\"", "Автошкола N1", "8(495)111-111-11", "avtonumber1@mail.ru", address1, true, null, null);
     private School school2 = new School(schoolId2, companyData.getObjectById(companyData.getId1()), "Автошкола N2 \"На Антонова\"", "Автошкола N2", "8(495)211-111-11", "avtonumber2@mail.ru", address2, true, null, null);

@@ -15,9 +15,10 @@ public class CompanyTestData implements TestDataInterface<Company> {
     private final long companyId1 = 10006;
     private final long companyId2 = 10007;
 
-    private Address address1 = new Address(10_000L, Country.RUS, "Москва", "Москва", "123456", "ул. Первого Мая", "стр.1", "д.12", 1, 105, null, null);
-    private Address address2 = new Address(10_001L, Country.RUS, "Москва", "Москва", "123456", "ул. Первого Мая", "стр.1", "д.15", 1, 117, null, null);
-    private Address address3 = new Address(10_002L, Country.RUS, "Москва", "Москва", "123457", "ул. Ленина", null, "д.12", 3, 305, null, null);
+    private Address address1 = new Address(10_000L, Country.RUS, "123456", "Москва", "Москва", null, "ул. Первого Мая", "д.12", 1, "105", null, null, 5);
+    private Address address2 = new Address(10_001L, Country.RUS, "123456", "Москва", "Москва", null, "ул. Первого Мая", "д.15", 1, "117", null, null, 5);
+    private Address address3 = new Address(10_002L, Country.RUS, "123457", "Москва", "Москва", null, "ул. Ленина", "д.15", 3, "305", null, null, 5);
+    private Address address4 = new Address(10_003L, Country.RUS, "123458", "Москва", "Москва", null, "ул. Нижняя Красносельская", "д.15", 3, "343", null, null, 5);
 
 
     private Company company1 = new Company(companyId1, "ООО \"Рога и копыта\"", "Рога и копыта", "+7(911)311-11-11", "roga@mail.ru", "roga.ru", true, address1, address2, null, null);

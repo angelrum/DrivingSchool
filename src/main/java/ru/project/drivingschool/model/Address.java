@@ -22,27 +22,29 @@ public class Address implements HasId {
     @Enumerated(EnumType.STRING)
     protected Country country = Country.RUS;
 
+    protected String postalCode;
+
     protected String region;
 
     @NotBlank protected String city;
 
-    protected String zip;
+    protected String settlement;
 
     @NotBlank protected String street;
 
-    protected String building;
-
-    protected String home;
+    protected String house;
 
     protected Integer floor;
 
-    protected Integer office;
+    protected String office;
 
     protected String latitude;
 
     protected String longitude;
 
+    protected Integer qcGeo = 5;
+
     public Address(Address a) {
-        this(a.id, a.country, a.region, a.city, a.zip, a.street, a.building, a.home, a.floor, a.office, a.latitude, a.longitude);
+        this(a.id, a.country, a.postalCode, a.region, a.city, a.settlement, a.street, a.house, a.floor, a.office, a.latitude, a.longitude, a.qcGeo);
     }
 }

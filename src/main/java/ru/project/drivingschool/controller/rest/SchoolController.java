@@ -1,13 +1,16 @@
 package ru.project.drivingschool.controller.rest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.project.drivingschool.model.School;
 import ru.project.drivingschool.model.embedded.SchoolUsers;
+import ru.project.drivingschool.security.SecurityUtil;
 import ru.project.drivingschool.service.SchoolService;
 import ru.project.drivingschool.to.SchoolTo;
 import ru.project.drivingschool.to.UserTo;
 
+import javax.validation.Valid;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,14 @@ public class SchoolController extends AbstractController<School, SchoolTo> {
                 .map(SchoolUsers::getUser)
                 .map(UserTo::new)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    @PutMapping
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void update(@Valid School school) {
+        log.info("update employee {}", school.toString());
+        service.update(school, SecurityUtil.authUserId());
     }
 
     @Override

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 public class SchoolTo extends BaseTo {
 
-    @NotNull protected Long companyId;
+//    @NotNull protected Long companyId;
 
     @NotBlank protected String name;
 
@@ -29,9 +29,8 @@ public class SchoolTo extends BaseTo {
 
     protected Boolean active = true;
 
-    public SchoolTo(Long id, @NotNull Long companyId, @NotBlank String name, String shortName, String phone, String email, Address address, Boolean active) {
+    public SchoolTo(Long id, @NotBlank String name, String shortName, String phone, String email, Address address, Boolean active) {
         super(id);
-        this.companyId = companyId;
         this.name = name;
         this.shortName = shortName;
         this.phone = phone;
@@ -42,7 +41,7 @@ public class SchoolTo extends BaseTo {
 
     public SchoolTo(School s) {
         super(s.id());
-        this.companyId = s.getCompany().id();
+//        this.companyId = s.getCompany().id();
         this.name = s.getName();
         this.shortName = s.getShortName();
         this.phone = s.getPhone();

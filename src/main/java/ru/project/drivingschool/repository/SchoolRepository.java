@@ -60,7 +60,6 @@ public class SchoolRepository extends AbstractKeyHistoryRepository<School> {
                 s.setAddress(old.getAddress());
             if (Objects.isNull(s.getHistory()))
                 s.setHistory(old.getHistory());
-            s.setCompany(old.getCompany());
         }
 
         return super.save(s, userId);
