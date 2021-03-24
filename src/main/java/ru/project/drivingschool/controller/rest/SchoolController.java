@@ -37,9 +37,9 @@ public class SchoolController extends AbstractController<School, SchoolTo> {
     }
 
     @Override
-    @PutMapping
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@Valid School school) {
+    public void update(@Valid @RequestBody School school) {
         log.info("update employee {}", school.toString());
         service.update(school, SecurityUtil.authUserId());
     }
