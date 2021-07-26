@@ -15,10 +15,15 @@ import java.io.Serializable;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class AbstractKeyEntity implements HasId, Serializable {
+public abstract class AbstractKeyEntity implements HasId, Serializable, Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

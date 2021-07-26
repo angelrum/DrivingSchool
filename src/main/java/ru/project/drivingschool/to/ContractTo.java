@@ -47,9 +47,14 @@ public class ContractTo extends BaseTo {
         if (Objects.nonNull(child)) {
             Set<ContractTo> cts = new HashSet<>();
             child.forEach(c -> {
-                c.setChild(null);
-                c.setParent(null);
-                cts.add(new ContractTo(c));
+                try {
+                    Contract contract = (Contract) c.clone();
+                    contract.setChild(null);
+                    contract.setParent(null);
+                    cts.add(new ContractTo(c));
+                } catch (CloneNotSupportedException e) {
+                    //ignore
+                }
             });
             this.child = cts;
         }

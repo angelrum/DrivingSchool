@@ -1,8 +1,10 @@
 package ru.project.drivingschool.controller.rest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import ru.project.drivingschool.AuthorizedUser;
 import ru.project.drivingschool.model.User;
 import ru.project.drivingschool.model.embedded.SchoolUserId;
 import ru.project.drivingschool.model.link.UserRoles;
@@ -17,6 +19,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.validation.Valid;
+import java.util.List;
 
 
 @CrossOrigin(origins = "*")

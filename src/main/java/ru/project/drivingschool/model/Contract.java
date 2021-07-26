@@ -7,6 +7,8 @@ import ru.project.drivingschool.util.DateTimeUtil;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -14,7 +16,6 @@ import java.util.Set;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @ToString
 public class Contract extends AbstractKeyHistoryEntity {
 
@@ -33,5 +34,22 @@ public class Contract extends AbstractKeyHistoryEntity {
     protected Contract parent;
 
     @Transient
-    protected Set<Contract> child;
+    @ToString.Exclude protected Set<Contract> child = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contract)) return false;
+        if (!super.equals(o)) return false;
+        Contract contract = (Contract) o;
+        return number.equals(contract.number) &&
+                startDate.equals(contract.startDate) &&
+                endDate.equals(contract.endDate) &&
+                Objects.equals(parent, contract.parent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), number, startDate, endDate, parent);
+    }
 }
