@@ -2,6 +2,7 @@ package ru.project.drivingschool.to;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.project.drivingschool.model.Address;
 import ru.project.drivingschool.model.Company;
@@ -9,12 +10,17 @@ import ru.project.drivingschool.model.Company;
 import javax.validation.constraints.NotBlank;
 
 @Getter @Setter
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class CompanyTo extends BaseTo {
 
     @NotBlank protected String name;
 
     protected String shortName;
+
+    protected Address addressLegal;
+
+    protected Address addressActual;
 
     @NotBlank protected String phone;
 
@@ -24,11 +30,8 @@ public class CompanyTo extends BaseTo {
 
     protected Boolean active = true;
 
-    protected Address addressLegal;
-
-    protected Address addressActual;
-
-    public CompanyTo(Long id, @NotBlank String name, String shortName, @NotBlank String phone, String email, String website, Boolean active, Address addressLegal, Address addressActual) {
+    public CompanyTo(Long id, @NotBlank String name, String shortName, @NotBlank String phone,
+                     String email, String website, Boolean active, Address addressLegal, Address addressActual) {
         super(id);
         this.name = name;
         this.shortName = shortName;

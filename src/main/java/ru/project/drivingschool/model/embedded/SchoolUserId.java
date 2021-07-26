@@ -13,13 +13,11 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class SchoolUserId implements Serializable {
 
-    @Column(name = "school_id")
     private Long schoolId;
 
-    @Column(name = "user_id")
     private Long userId;
 
-    public SchoolUserId(@NonNull Long schoolId, @NonNull Long userId) {
+    public SchoolUserId(@NonNull Long schoolId, Long userId) {
         this.schoolId = schoolId;
         this.userId = userId;
     }

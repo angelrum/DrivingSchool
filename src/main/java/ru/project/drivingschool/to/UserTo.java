@@ -1,21 +1,24 @@
 package ru.project.drivingschool.to;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.util.CollectionUtils;
 import ru.project.drivingschool.model.Company;
 import ru.project.drivingschool.model.School;
 import ru.project.drivingschool.model.User;
 import ru.project.drivingschool.model.directory.Role;
-import ru.project.drivingschool.model.embedded.SchoolUsers;
+import ru.project.drivingschool.model.link.CompanyUsers;
+import ru.project.drivingschool.model.link.SchoolUsers;
+import ru.project.drivingschool.model.link.UserRoles;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter @Setter
@@ -23,35 +26,38 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 public class UserTo extends BaseTo {
 
-    @NotBlank protected String phone;
-
-    protected Boolean phoneStatus = false;
+    protected Set<UserRolesTo> roles;
 
     protected String avatar;
 
     @NotBlank protected String firstname;
 
-    @NotBlank protected String lastname;
-
     protected String middlename;
 
-    protected String email;
+    @NotBlank protected String lastname;
+
+    protected LocalDate birthdate;
+
+    @Email protected String email;
 
     protected Boolean emailStatus = false;
 
-    protected Integer score = User.DEF_SCORE;
+    @NotBlank protected String phone;
+
+    protected Boolean phoneStatus = false;
 
     protected Boolean active = true;
 
-    protected Set<Role> roles;
+    protected Integer score = User.DEF_SCORE;
 
-    protected Set<SchoolTo> schools;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    protected String password;
 
-    protected CompanyTo company;
+    protected Set<UserSchoolTo> schools;
 
     public UserTo(Long id, @NotBlank String phone, Boolean phoneStatus, String avatar,
                   @NotBlank String firstname, @NotBlank String lastname, String middlename,
-                  String email, Boolean emailStatus, Integer score, Boolean active, Set<Role> roles, Set<SchoolTo> schools) {
+                  @Email String email, Boolean emailStatus, Integer score, Boolean active, String password, Set<UserRolesTo> roles, Set<UserSchoolTo> schools) {
         super(id);
         this.phone = phone;
         this.phoneStatus = phoneStatus;
@@ -79,26 +85,35 @@ public class UserTo extends BaseTo {
         this.emailStatus = u.getEmailStatus();
         this.score = u.getScore();
         this.active = u.getActive();
-        this.roles = u.getRoles();
+        this.password = u.getPassword();
+        setRoles(u.getRoles());
+        setSchools(u.getSchoolUsers(), u.getCompanyUsers());
     }
 
-    public UserTo(User u, Set<SchoolUsers> su) {
+    public UserTo(User u, Set<SchoolUsers> su, Set<CompanyUsers> cu) {
         this(u);
-        setSchools(su);
+        setSchools(su, cu);
     }
 
-    private void setSchools(Set<SchoolUsers> su) {
-        this.schools = su.stream()
-                .map(SchoolUsers::getSchool)
-                .map(SchoolTo::new)
+    public void setRoles(Set<UserRoles> userRoles) {
+        Map<Long, List<Role>> map = new HashMap<>();
+        userRoles.forEach(ur -> {
+            List<Role> roles = map.computeIfAbsent(ur.getSchool().id(), k -> new ArrayList<>());
+            roles.add(ur.getRole());
+        });
+        this.roles = map.entrySet().stream()
+                .map(entry -> new UserRolesTo(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toSet());
-        su.stream()
-                .findAny()
-                .map(SchoolUsers::getSchool)
-                .map(School::getCompany).ifPresent(this::setCompany);
     }
-
-    public void setCompany(Company company) {
-        this.company = new CompanyTo(company);
+    private void setSchools(Set<SchoolUsers> schoolUsers, Set<CompanyUsers> companyUsers) {
+        Set<UserSchoolTo> usTos = new HashSet<>();
+        schoolUsers.forEach(su -> {
+            CompanyUsers companyUser = companyUsers.stream()
+                    .filter(cu -> cu.getCompany().getId().equals(su.getSchool().getCompany().getId()))
+                    .findFirst().orElse(null);
+            if (Objects.nonNull(companyUser))
+                usTos.add(new UserSchoolTo(su, companyUser));
+        });
+        this.schools = usTos;
     }
 }

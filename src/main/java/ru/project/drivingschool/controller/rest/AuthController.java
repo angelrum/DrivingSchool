@@ -20,12 +20,12 @@ public class AuthController {
 
     @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody UserTo login() {
-        return new UserTo(SecurityUtil.get().getUser());
+        return new UserTo();
     }
 
     @GetMapping(path = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody UserTo getAuthUser() {
-        User authUser = service.get(SecurityUtil.authUserId());
-        return new UserTo(authUser, authUser.getSchoolUsers());
+        User authUser = service.get(SecurityUtil.getInstance().authUserId());
+        return null; //new UserTo(authUser, authUser.getSchoolUsers());
     }
 }

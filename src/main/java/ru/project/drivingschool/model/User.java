@@ -4,16 +4,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
-import ru.project.drivingschool.model.directory.Role;
 import ru.project.drivingschool.model.embedded.History;
-import ru.project.drivingschool.model.embedded.SchoolUsers;
+import ru.project.drivingschool.model.link.CompanyUsers;
+import ru.project.drivingschool.model.link.SchoolUsers;
+import ru.project.drivingschool.model.link.UserRoles;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -24,13 +26,7 @@ public class User extends AbstractKeyHistoryEntity implements Serializable {
 
     public static final int DEF_SCORE = 0;
 
-    @NotBlank protected String phone;
-
-    protected Boolean phoneStatus = false;
-
-    protected String password;
-
-    protected String avatar;
+    private static final String PHONE_FORMAT = "+X(XXX) XXX-XX-XX";
 
     @NotBlank protected String firstname;
 
@@ -38,72 +34,94 @@ public class User extends AbstractKeyHistoryEntity implements Serializable {
 
     protected String middlename;
 
+    protected LocalDate birthdate;
+
     @Email protected String email;
 
     protected Boolean emailStatus = false;
 
-    protected Integer score = DEF_SCORE;
+    @NotBlank protected String phone;
+
+    protected Boolean phoneStatus = false;
+
+    protected String avatar;
+
+    protected String password;
 
     protected Boolean active = true;
 
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    @ElementCollection(fetch = FetchType.EAGER)
-    protected Set<Role> roles;
+    protected Integer score = DEF_SCORE;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = UserRoles.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @ToString.Exclude protected Set<UserRoles> roles;
+
+    @OneToMany(targetEntity = SchoolUsers.class, mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude protected Set<SchoolUsers> schoolUsers;
 
-    public User(Long id, @NotBlank String phone, Boolean phoneStatus, @NotBlank String password, String avatar,
-                @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, Boolean emailStatus,
-                Integer score, Boolean active, Set<SchoolUsers> schoolUsers, History history, Set<Role> roles) {
+    @OneToMany(targetEntity = CompanyUsers.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ToString.Exclude protected Set<CompanyUsers> companyUsers;
+
+    public User(Long id, String firstname, String lastname, String middlename,
+                LocalDate birthdate, String email, Boolean emailStatus, String phone, Boolean phoneStatus,
+                String avatar, String password, Boolean active, Integer score, Set<UserRoles> roles, History history) {
         super(id, history);
-        this.phone = phone;
-        this.password = password;
-        this.avatar = avatar;
         this.firstname = firstname;
         this.lastname = lastname;
         this.middlename = middlename;
+        this.birthdate = birthdate;
         this.email = email;
-        setPhoneStatus(phoneStatus);
-        setEmailStatus(emailStatus);
-        setActive(active);
-        setScore(score);
-        setRoles(roles);
-        setSchoolUsers(schoolUsers);
+        this.phone = phone;
+        this.avatar = avatar;
+        this.password = password;
+        this.roles = roles;
+        this.setScore(score);
+        this.setPhoneStatus(phoneStatus);
+        this.setEmailStatus(emailStatus);
+        this.setActive(active);
     }
-    public User(Long id, @NotBlank String phone, Boolean phoneStatus, @NotBlank String password, String avatar,
-                @NotBlank String firstname, @NotBlank String lastname, String middlename, String email, Boolean emailStatus,
-                Integer score, Boolean active, Set<SchoolUsers> schoolUsers, History history, Role... roles) {
-        this(id, phone, phoneStatus, password, avatar, firstname, lastname, middlename, email, emailStatus, score, active, schoolUsers, history, Set.of(roles));
+
+    public User(String firstname, String lastname, String middlename, LocalDate birthdate,
+                String email, String phone, String avatar, String password, Set<UserRoles> roles) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.middlename = middlename;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.phone = phone;
+        this.avatar = avatar;
+        this.password = password;
+        this.roles = roles;
     }
 
     public User(User u) {
-        this(u.id, u.phone, u.phoneStatus, u.password, u.avatar, u.firstname, u.lastname, u.middlename, u.email, u.emailStatus, u.score, u.active, u.schoolUsers, u.history, u.roles);
+        this(u.getId(), u.getFirstname(), u.getLastname(), u.getMiddlename(),
+                u.getBirthdate(), u.getEmail(), u.getEmailStatus(), u.getPhone(), u.getPhoneStatus(),
+                u.getAvatar(), u.getPassword(), u.getActive(), u.getScore(), u.getRoles(), u.getHistory());
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
-    }
+//    public void setScore(Integer score) {
+//        this.score = Objects.isNull(score) ? DEF_SCORE : score;
+//    }
+//
+//    public void setPhoneStatus(Boolean phoneStatus) {
+//        this.phoneStatus = !Objects.isNull(phoneStatus) && phoneStatus;
+//    }
+//
+//    public void setEmailStatus(Boolean emailStatus) {
+//        this.emailStatus = !Objects.isNull(emailStatus) && emailStatus;
+//    }
+//
+//    public void setActive(Boolean active) {
+//        this.active = Objects.isNull(active) || active;
+//    }
 
-    public void setScore(Integer score) {
-        this.score = Objects.isNull(score) ? DEF_SCORE : score;
-    }
-
-    public void setPhoneStatus(Boolean phoneStatus) {
-        this.phoneStatus = Objects.isNull(phoneStatus) ? false : phoneStatus;
-    }
-
-    public void setEmailStatus(Boolean emailStatus) {
-        this.emailStatus = Objects.isNull(emailStatus) ? false : emailStatus;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = Objects.isNull(active) ? true : active;
-    }
-
-    public void setSchoolUsers(Set<SchoolUsers> schoolUsers) {
-        this.schoolUsers = CollectionUtils.isEmpty(schoolUsers) ? new HashSet<>() : schoolUsers;
+    public void setPhone(String phone) {
+        if (StringUtils.hasText(phone)) {
+            String cl = phone.replaceAll("[^0-9]", "");
+            String convertPhone = PHONE_FORMAT;
+            for (int i = 0; i < cl.length(); i++)
+                convertPhone = convertPhone.replaceFirst("X", String.valueOf(cl.charAt(i)));
+            this.phone = convertPhone.contains("X") ? phone.trim() : convertPhone;
+        }
     }
 }

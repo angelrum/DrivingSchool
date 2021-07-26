@@ -3,11 +3,18 @@ package ru.project.drivingschool.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
+import ru.project.drivingschool.model.Address;
 import ru.project.drivingschool.model.School;
 import ru.project.drivingschool.testdata.CompanyTestData;
 import ru.project.drivingschool.testdata.SchoolTestData;
 import ru.project.drivingschool.testdata.UserTestData;
+import ru.project.drivingschool.to.SchoolTo;
+import ru.project.drivingschool.util.Util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import static ru.project.drivingschool.testdata.SchoolTestData.*;
@@ -17,8 +24,6 @@ class SchoolServiceTest extends AbstractServiceTest<School> {
 
     private UserTestData userData = new UserTestData();
 
-    private CompanyTestData companyData = new CompanyTestData();
-
     private SchoolTestData testData = new SchoolTestData();
 
     private SchoolService service;
@@ -27,6 +32,13 @@ class SchoolServiceTest extends AbstractServiceTest<School> {
     SchoolServiceTest(SchoolService service) {
         super(service, new SchoolTestData(), SCHOOL_MATCHER);
         this.service = service;
+    }
+
+    @Test
+    void test() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, InstantiationException {
+        School s = testData.getObjectById(SCHOOL_ID_1);
+        SchoolTo to = Util.copyFieldToFieldByName(s, SchoolTo.class);
+        System.out.println(to.toString());
     }
 
     //    @Test
@@ -48,10 +60,11 @@ class SchoolServiceTest extends AbstractServiceTest<School> {
 //                List.of(userData.getObjectById(userData.getId1())));
 //    }
 
-    @Test
-    void getAllByCompany() {
-        SCHOOL_MATCHER.assertMatch(service.getAll(companyData.getId1()), testData.getAllByCompany(companyData.getId1()));
-    }
+//    @Test
+//    void getAllByCompany() throws InterruptedException {
+//        Thread.sleep(100);
+//        SCHOOL_MATCHER.assertMatch(service.getAll(companyData.getId2()), testData.getAllByCompany(companyData.getId2()));
+//    }
 
     @Test
     void updateAddress() {

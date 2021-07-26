@@ -12,7 +12,7 @@ class CompanyRepositoryTest {
 
     @Test
     void getAll() {
-        repository.getAll().forEach(System.out::println);
+//        repository.getAll().forEach(System.out::println);
     }
 
 }

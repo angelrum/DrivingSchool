@@ -3,6 +3,7 @@ package ru.project.drivingschool.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.project.drivingschool.model.User;
 
 @SpringBootTest
 public class UserRepositoryTest {
@@ -12,7 +13,10 @@ public class UserRepositoryTest {
 
     @Test
     void getAll() {
-        repository.getAll().forEach(System.out::println);
+//        for (User user : repository.getAll().toList()) {
+//            System.out.println(user);
+//            user.getRoles().forEach(System.out::println);
+//        }
     }
 
     @Test

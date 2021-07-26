@@ -15,8 +15,10 @@ import java.io.Serializable;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class AbstractKeyEntity implements HasId {
+public abstract class AbstractKeyEntity implements HasId, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
+
+    private static final long serialVersionUID = 1L;
 }

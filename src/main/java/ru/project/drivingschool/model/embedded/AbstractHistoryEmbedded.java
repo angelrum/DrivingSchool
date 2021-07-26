@@ -1,15 +1,16 @@
-package ru.project.drivingschool.model.common;
+package ru.project.drivingschool.model.embedded;
 
-import lombok.*;
-import ru.project.drivingschool.model.embedded.History;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @MappedSuperclass
-@Getter @Setter @ToString
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public abstract class AbstractKeyHistoryEntity extends AbstractKeyEntity {
+@Getter @Setter
+public class AbstractHistoryEmbedded {
 
     @Embedded
     @AttributeOverrides(value = {
@@ -26,12 +27,11 @@ public abstract class AbstractKeyHistoryEntity extends AbstractKeyEntity {
     })
     protected History history = new History();
 
-    public AbstractKeyHistoryEntity(Long id, History history) {
-        super(id);
-        this.history = Objects.isNull(history) ? new History() : history;
+    public AbstractHistoryEmbedded(History history) {
+        setHistory(history);
     }
 
-//    public void setHistory(History history) {
-//        this.history = Objects.isNull(history) ? new History() : history;
-//    }
+    public void setHistory(History history) {
+        this.history = Objects.isNull(history) ? new History() : history;
+    }
 }

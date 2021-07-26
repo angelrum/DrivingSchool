@@ -4,9 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.project.drivingschool.model.embedded.SchoolUserId;
-import ru.project.drivingschool.model.embedded.SchoolUsers;
+import ru.project.drivingschool.model.link.SchoolUsers;
 
-import java.util.List;
 import java.util.Set;
 
 public interface JpaSchoolUsersRepository extends JpaRepository<SchoolUsers, SchoolUserId> {

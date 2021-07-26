@@ -6,11 +6,11 @@ import ru.project.drivingschool.model.common.HasId;
 
 @Setter
 @NoArgsConstructor
-public abstract class BaseTo implements HasId {
+public class BaseTo implements HasId {
 
     private Long id;
 
-    BaseTo(Long id) {
+    public BaseTo(Long id) {
         this.id = id;
     }
 

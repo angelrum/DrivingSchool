@@ -7,12 +7,15 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import ru.project.drivingschool.AuthorizedUserTest;
 import ru.project.drivingschool.TestMatcher;
 import ru.project.drivingschool.TimingExtension;
+import ru.project.drivingschool.model.Index;
 import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
 import ru.project.drivingschool.model.common.HasId;
 import ru.project.drivingschool.testdata.TestDataInterface;
 import ru.project.drivingschool.util.exception.NotFoundException;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,12 +39,12 @@ abstract class AbstractServiceTest <T extends AbstractKeyHistoryEntity> {
 
     @Test
     void getAll() {
-        matcher.assertMatch(service.getAll(), testData.getAll());
+        matcher.assertMatch(service.getAll().getResult(), testData.getAll());
     }
 
     @Test
     void get() {
-        long id = testData.getId1();
+        long id = testData.getId2();
         matcher.assertMatch(service.get(id), testData.getObjectById(id));
     }
 
@@ -53,7 +56,7 @@ abstract class AbstractServiceTest <T extends AbstractKeyHistoryEntity> {
         Collection<T> collection = testData.getAll();
         collection.add(t);
         matcher.assertMatch(service.get(t.id()), t);
-        matcher.assertMatch(service.getAll(), collection);
+        matcher.assertMatch(service.getAll().getResult(), collection);
     }
 
     @Test
@@ -62,7 +65,7 @@ abstract class AbstractServiceTest <T extends AbstractKeyHistoryEntity> {
         service.delete(id);
         Collection<T> collection = testData.getAll();
         collection.removeIf(t->t.id() == id);
-        matcher.assertMatch(service.getAll(), collection);
+        matcher.assertMatch(service.getAll().getResult(), collection);
     }
 
     @Test

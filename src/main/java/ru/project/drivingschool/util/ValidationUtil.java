@@ -10,6 +10,7 @@ import ru.project.drivingschool.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
 
 public class ValidationUtil {
 
@@ -52,9 +53,13 @@ public class ValidationUtil {
         return objects;
     }
 
+    public static <T> List<T> checkNotFound(List<T> objects) {
+        checkNotFound(!CollectionUtils.isEmpty(objects), String.valueOf("Collection is empty"));
+        return objects;
+    }
+
     public static void checknotfoundwithid(boolean found, long id) {
         checkNotFound(found, String.format("id=%s", id));
-
     }
 
     public static <T> T checkNotFound(T object, String msg) {

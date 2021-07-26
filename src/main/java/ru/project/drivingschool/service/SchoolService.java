@@ -18,22 +18,10 @@ public class SchoolService extends AbstractService<School> {
         this.repository = repository;
     }
 
-//    public List<School> getAll() {
-//        log.info("get all schools");
-//        return repository.getAll();
-//    }
-
-    public List<School> getAll(long companyId) {
-        log.info("get all schools by company with id={}", companyId);
-        checkByGlobalId(companyId);
-        return repository.getAll(companyId);
-    }
-
     public List<School> getAllByCity(String city) {
         log.info("get all school by city {}", city);
         return repository.getByCity(city);
     }
-
 
     public School getWithUsers(long id) {
         log.info("get school with all users. Id = {}", id);
@@ -57,5 +45,13 @@ public class SchoolService extends AbstractService<School> {
     private School save(School school, long changedBy) {
         checkNotNull(school);
         return checkNotFoundWithId(repository.save(school, changedBy), changedBy);
+    }
+
+    @Override
+    School getExample(boolean active) {
+        School s = new School();
+        s.setActive(active);
+        s.setHistory(null);
+        return s;
     }
 }

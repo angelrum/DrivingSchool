@@ -7,6 +7,6 @@ public class AuthorizedUserTest {
     }
 
     public static long getId() {
-        return 1_000;
+        return 1_000L;
     }
 }

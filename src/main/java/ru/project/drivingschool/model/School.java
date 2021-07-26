@@ -5,11 +5,10 @@ import lombok.*;
 import org.springframework.util.CollectionUtils;
 import ru.project.drivingschool.model.common.AbstractKeyHistoryEntity;
 import ru.project.drivingschool.model.embedded.History;
-import ru.project.drivingschool.model.embedded.SchoolUsers;
+import ru.project.drivingschool.model.link.SchoolUsers;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -22,7 +21,7 @@ import java.util.Set;
 public class School extends AbstractKeyHistoryEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Company.class)
-    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false, updatable = false)
     @ToString.Exclude
     protected Company company;
 
@@ -43,10 +42,11 @@ public class School extends AbstractKeyHistoryEntity {
 
     //https://www.baeldung.com/jpa-many-to-many
     //https://vladmihalcea.com/merge-entity-collections-jpa-hibernate/
-    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "school", targetEntity = SchoolUsers.class, cascade = CascadeType.ALL)
     @ToString.Exclude protected Set<SchoolUsers> schoolUsers;
 
-    public School(Long id, @NotNull Company company, @NotBlank String name, String shortName, String phone, String email, Address address, Boolean active, Set<SchoolUsers> schoolUsers, History history) {
+    public School(Long id, Company company, String name, String shortName,
+                  String phone, String email, Address address, Boolean active, Set<SchoolUsers> schoolUsers, History history) {
         super(id, history);
         this.company = company;
         this.name = name;
@@ -54,16 +54,15 @@ public class School extends AbstractKeyHistoryEntity {
         this.phone = phone;
         this.email = email;
         this.address = address;
-        this.active = Objects.isNull(active) ? true : active;
-        setUsers(schoolUsers);
+        this.active = Objects.isNull(active) || active;
+        this.setSchoolUsers(schoolUsers);
     }
 
     public School(School s) {
         this(s.id, s.company, s.name, s.shortName, s.phone, s.email, s.address, s.active, s.schoolUsers, s.history);
     }
 
-    public void setUsers(Set<SchoolUsers> schoolUsers) {
+    public void setSchoolUsers(Set<SchoolUsers> schoolUsers) {
         this.schoolUsers = CollectionUtils.isEmpty(schoolUsers) ? new HashSet<>() : schoolUsers;
     }
-
 }
